@@ -7,16 +7,12 @@ The objective is to maintain complete transparency throughout development.
 ---
 
 ## 31 July 2026
-
 ### Objective
 Begin data acquisition for the SEED-IV EEG dataset.
-
 ### Work Completed
 - Submitted a request for access to the SEED-IV dataset through the official distribution portal.
-
 ### Outcome
 Access request submitted; approval pending.
-
 ### Notes
 > 🚧 Next Steps: Await dataset access approval before beginning data preparation.
 
