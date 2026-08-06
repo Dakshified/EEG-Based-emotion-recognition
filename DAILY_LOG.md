@@ -164,4 +164,4 @@ Milestone Achieved — Corrected, literature-consistent results obtained (see Se
 ## Lessons Learned
 -  **Engineering Decision:** Time spent waiting on external dataset approval was used productively to plan the project workflow and research direction in advance, rather than left idle.
 -  **Engineering Decision:** An implausibly high baseline accuracy (99.69%) was treated as a red flag rather than a result, prompting an investigation that uncovered trial-level data leakage — a reminder to sanity-check results against literature before accepting them.
-- 💡 **Engineering Decision:** Handed off routine but error-prone implementation work (data loading, verification, baseline modeling) to an AI coding agent, while retaining ownership of experimental design, validation, and error diagnosis.
+-  **Engineering Decision:** Handed off routine but error-prone implementation work (data loading, verification, baseline modeling) to an AI coding agent, while retaining ownership of experimental design, validation, and error diagnosis.
