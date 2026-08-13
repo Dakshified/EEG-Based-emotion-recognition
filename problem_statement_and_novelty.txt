@@ -1,0 +1,144 @@
+================================================================================
+PROJECT: EEG-Based Emotion Recognition (SEED-IV)
+Frequency-Aware, Explainable, Responsible AI Approach
+================================================================================
+
+--------------------------------------------------------------------------------
+PROBLEM STATEMENT
+--------------------------------------------------------------------------------
+Emotion detection from EEG signals: given a person's multi-channel EEG 
+recording, classify their emotional state into one of four categories 
+(neutral, sad, fear, happy), using the SEED-IV dataset.
+
+This is a well-established problem in affective computing. The contribution 
+of this work does not lie in the problem itself, but in HOW it is solved: 
+with a rigorously evaluated, explainable, and trustworthy architecture that 
+goes beyond raw accuracy as the sole measure of success.
+
+--------------------------------------------------------------------------------
+DATASET
+--------------------------------------------------------------------------------
+SEED-IV (SJTU Emotion EEG Dataset - IV)
+- 15 subjects, 3 sessions each, 24 trials per session
+- 62-channel EEG (10-20 system)
+- 4 emotion classes: Neutral, Sad, Fear, Happy
+- Differential Entropy (DE) features with LDS smoothing, 5 frequency bands
+  (Delta 1-4Hz, Theta 4-8Hz, Alpha 8-14Hz, Beta 14-31Hz, Gamma 31-50Hz)
+- Final processed dataset: 37,575 samples (verified, leakage-free)
+
+--------------------------------------------------------------------------------
+CORE NOVELTY CONTRIBUTIONS (10)
+--------------------------------------------------------------------------------
+
+1. GRANGER-CAUSALITY-INFORMED GAT ADJACENCY
+   Claim: A graph built from directional, predictive relationships between 
+   EEG channels (Granger causality) produces a more stable, less 
+   over-smoothed structural prior than a fully-learned dense adjacency.
+   Method: Compare DGCNN's fully-learned graph, a distance-based k-NN graph, 
+   and a Granger-causality-informed graph, all feeding the same GAT.
+   Evidence: DGCNN's learned adjacency measurably collapsed (avg degree 
+   12.39 -> 1.35, sparsity -> 97.78%); test whether a causally-informed 
+   graph avoids this failure mode.
+
+2. FAITHFULNESS-VERIFIED EXPLAINABILITY
+   Claim: Attention maps alone do not prove a model's explanation is real; 
+   faithfulness must be quantitatively tested.
+   Method: Deletion/insertion AUC testing on attention-based band/channel 
+   importance rankings, compared against random-removal as a control.
+   Evidence: Deletion/insertion AUC curves showing explanations are 
+   meaningfully better than random.
+
+3. CALIBRATED UNCERTAINTY WITH ABSTENTION
+   Claim: A trustworthy EEG emotion model should know when it is uncertain 
+   and be allowed to abstain rather than always forcing a guess.
+   Method: Evidential/MC-Dropout uncertainty head; Expected Calibration 
+   Error (ECE) and accuracy-vs-rejection curve.
+   Evidence: ECE score, reliability diagram, accuracy improvement when 
+   low-confidence predictions are excluded.
+
+4. NOISE/ARTIFACT-ROBUST TRAINING (SIMULATED ELECTRODE FAILURE)
+   Claim: A model explicitly trained to tolerate missing EEG channels 
+   remains more reliable under real-world sensor conditions.
+   Method: Train a variant with random channel-masking augmentation; 
+   evaluate all models on the same corrupted test set (channels 
+   progressively dropped).
+   Evidence: Accuracy-vs-corruption-severity degradation curves across 
+   all models.
+
+5. EXPLANATION STABILITY UNDER NOISE (NEW METRIC)
+   Claim: A trustworthy model's reasoning should stay consistent under 
+   small input perturbations, not just its final answer.
+   Method: Compare attention maps on clean vs. slightly-noised input 
+   (cases where prediction stayed correct) via cosine similarity/rank 
+   correlation.
+   Evidence: A stability score - a new evaluation axis not currently 
+   reported in EEG-emotion literature.
+
+6. FAITHFULNESS-VS-CAPACITY TRADE-OFF CURVE
+   Claim: In small-per-subject-data regimes, explanation faithfulness may 
+   degrade BEFORE accuracy does, as model size increases.
+   Method: Train 3-4 size variants of the proposed model; plot both 
+   accuracy and faithfulness against parameter count.
+   Evidence: A transferable, citable insight on the relationship between 
+   model capacity and explanation reliability.
+
+7. PER-BAND AUXILIARY SUPERVISION (WEIGHTED MULTI-LOSS)
+   Claim: Supervising each frequency band's own mini-classifier (not just 
+   the final fused prediction) improves both accuracy and interpretability 
+   of which bands matter.
+   Method: Auxiliary loss per band, dynamically weighted by that band's 
+   own current accuracy.
+   Evidence: Ablation (with vs. without auxiliary loss) - accuracy delta 
+   + per-band importance ranking as a free explainability output.
+
+8. NEUROSCIENCE-GROUNDED VALIDATION OF LEARNED ATTENTION
+   Claim: The model's learned spatial/spectral attention should align with 
+   established EEG-emotion physiology (e.g., frontal alpha asymmetry, 
+   gamma-band arousal engagement).
+   Method: Statistically compare attention-highlighted channels/bands 
+   against literature-reported regions per emotion class.
+   Evidence: A concrete interpretation table (band x region x attention 
+   sign x known finding).
+
+9. SUBJECT-LEVEL FAIRNESS AND RELIABILITY PROFILING
+   Claim: Reporting only mean accuracy hides which individuals a model 
+   actually fails for.
+   Method: Per-subject accuracy, worst-case subject performance, and 
+   uncertainty decomposition (aleatoric vs. epistemic) to check whether 
+   failure is due to noisy signal or the model under-learning that subject.
+   Evidence: Per-subject reliability table flagging any subject the model 
+   is silently unreliable for.
+
+10. CROSS-ARCHITECTURE ROBUSTNESS BENCHMARKING UNDER IDENTICAL NOISE
+    Claim: No existing SEED-IV study benchmarks classical ML, sequence 
+    models, graph models, and transformers all under the exact same 
+    simulated electrode-failure conditions.
+    Method: Apply the same corrupted-test protocol to SVM, CNN-LSTM, 
+    DGCNN, Transformer, and both GAT-KAN variants - one unified 
+    robustness comparison.
+    Evidence: A single degradation-curve figure comparing 6 architecture 
+    families - a reusable reference for future EEG robustness research.
+
+--------------------------------------------------------------------------------
+SUPPORTING PILLARS (woven through all novelties above)
+--------------------------------------------------------------------------------
+EXPLAINABLE AI   -> Novelties 2, 5, 6, 7, 8
+RESPONSIBLE AI   -> Novelties 3, 4, 9, 10
+ETHICAL AI       -> Public de-identified data only, strict leakage-free 
+                     evaluation, honest reporting of all results, explicit 
+                     research-only / non-diagnostic use statement, 
+                     reproducibility (code, weights, fixed seeds released)
+
+--------------------------------------------------------------------------------
+ONE-PARAGRAPH SUMMARY
+--------------------------------------------------------------------------------
+Using EEG-based emotion recognition on SEED-IV as the testbed, this work 
+proposes a Granger-causality-informed Graph Attention Network combined with 
+cross-band Transformer attention and a parameter-efficient KAN classification 
+head. Beyond accuracy, the model's explanations are verified for faithfulness 
+and stability, its confidence is calibrated with an abstention mechanism, its 
+performance is reported fairly across individual subjects, and its resilience 
+to simulated sensor/electrode failure is benchmarked against four classical 
+and deep learning baselines under an identical, rigorously leakage-free 
+evaluation protocol.
+================================================================================
