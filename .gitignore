@@ -1,0 +1,6 @@
+__pycache__/
+venv/
+*.pyc
+.vscode/
+*.npz
+eeg_feature_smooth/
