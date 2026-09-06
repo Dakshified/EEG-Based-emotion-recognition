@@ -16,17 +16,21 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 
 ### Comprehensive Model Benchmark Comparison
 
-| Model Architecture | Model Family / Mechanism | Subject-Dependent Accuracy | Cross-Subject Accuracy | Subject-Dependent Macro-F1 | Cross-Subject Macro-F1 |
+| Model Architecture | Model Family / Mechanism | Subject-Dependent Accuracy (95% CI) | Cross-Subject Accuracy (95% CI) | Subject-Dependent Macro-F1 (95% CI) | Cross-Subject Macro-F1 (95% CI) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Calibrated Inductive DANN** ($w_{\text{dom}}=0.1$) | Adversarial MLP / 130.7K | **65.53%** [65.04%, 65.99%] | **38.41%** [37.95%, 38.92%] | **0.6538** [0.6488, 0.6585] | **0.3825** [0.3776, 0.3874] |
+| **Calibrated Inductive DANN** ($w_{\text{dom}}=0.1$) | Adversarial MLP / 130.7K | **65.53%** [65.04%, 65.99%] | **38.41%** [37.93%, 38.89%] | **0.6538** [0.6488, 0.6585] | **0.3825** [0.3776, 0.3874] |
 | **LightGBM** | GBDT / Tabular Ensembling | **61.30%** [60.79%, 61.81%] | **38.23%** [37.74%, 38.72%] | **0.6105** [0.6055, 0.6156] | **0.3811** [0.3763, 0.3860] |
 | **Compact EEGNet** | CNN / 1.5K params | **58.24%** [57.75%, 58.73%] | **34.68%** [34.23%, 35.14%] | **0.5793** [0.5746, 0.5840] | **0.3456** [0.3409, 0.3503] |
 | **Plain Transformer** | Transformer / 71.7K params | **53.85%** [53.37%, 54.36%] | **29.66%** [29.19%, 30.11%] | **0.5364** [0.5317, 0.5417] | **0.2918** [0.2871, 0.2963] |
 | **RGNN** | Regularized GCN / 13.3K | **39.18%** [38.71%, 39.66%] | **27.60%** [27.16%, 28.07%] | **0.3859** [0.3811, 0.3909] | **0.2695** [0.2651, 0.2741] |
 | **Riemannian TS + LR** | Tangent Space / 1.95K feats | **36.35%** [35.86%, 36.81%] | **30.17%** [29.71%, 30.66%] | **0.3632** [0.3583, 0.3679] | **0.2982** [0.2936, 0.3030] |
 | **GAT-KAN v2 (Augmented)** | Graph Attention + KAN / 102.6K | **32.50%** [32.01%, 32.97%] | **26.07%** [25.61%, 26.50%] | **0.3136** [0.3087, 0.3183] | **0.2596** [0.2551, 0.2641] |
-| **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **67.09%** [66.62%, 67.57%] | **40.52%** [40.03%, 41.01%] | **0.6698** [0.6651, 0.6746] | **0.4048** [0.3999, 0.4098] |
-| **3-Model Weighted Synergy** | DANN (0.45) + LGB (0.40) + EEGNet (0.15) | **67.43%** [66.97%, 67.90%] | **41.09%** [40.61%, 41.59%] | **0.6734** [0.6687, 0.6780] | **0.4106** [0.4056, 0.4154] |
+| **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **66.58%** [66.09%, 67.07%] | **40.52%** [40.03%, 40.99%] | **0.6625** [0.6578, 0.6677] | **0.4061** [0.4012, 0.4107] |
+| **3-Model Weighted Synergy** | Tuned Optimal Weights | **68.09%** [67.61%, 68.54%] | **41.09%** [40.60%, 41.58%] | **0.6780** [0.6732, 0.6826] | **0.4126** [0.4078, 0.4175] |
+
+> **3-Model Synergy Optimal Weights**:
+> - *Subject-Dependent*: $\alpha_{\text{DANN}}=0.44, \alpha_{\text{LGB}}=0.34, \alpha_{\text{EEGNet}}=0.22 \implies \mathbf{68.09\%}$ Accuracy ($+2.56\%$ over standalone DANN).
+> - *Cross-Subject*: $\alpha_{\text{DANN}}=0.04, \alpha_{\text{LGB}}=0.54, \alpha_{\text{EEGNet}}=0.42 \implies \mathbf{41.09\%}$ Accuracy ($+2.68\%$ over standalone DANN).
 
 > **Notice on Few-Shot Calibration**: The Few-Shot Calibration experiment (`evaluate_few_shot_calibration.py`) is INCOMPLETE -- a confirmed statistical inconsistency in the confidence interval computation was found and the experiment was halted pending investigation. Results are not yet valid and are excluded pending a fix.
 
@@ -141,6 +145,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 * **Structured Results**:
   * `dann_final_results.json` / `dann_final_results.csv`
   * `three_model_ensemble_results.json` / `three_model_ensemble_results.csv`
+  * `hybrid_ensemble_results.json` / `hybrid_ensemble_results.csv`
   * `statistical_significance_results.json`
   * `dann_ablation_results.json`
 
