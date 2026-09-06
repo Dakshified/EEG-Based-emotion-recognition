@@ -6,7 +6,7 @@
 
 A rigorous, leakage-safe experimental framework for four-class EEG affective state recognition (**Neutral, Sad, Fear, Happy**) on the **SEED-IV** benchmark ($N = 37,575$ samples, 62 channels, 5 frequency bands, 15 human subjects). 
 
-This repository implements strictly quarantined **Subject-Dependent** (5-fold Trial-Grouped CV) and **Cross-Subject** (5-fold Leave-3-Subjects-Out Nested CV) protocols, contrasting 7 distinct model families, domain-adversarial representation learning (**Calibrated Inductive DANN**), multi-method feature attribution (XAI), uncertainty decomposition, and few-shot subject calibration.
+This repository implements strictly quarantined **Subject-Dependent** (5-fold Trial-Grouped CV) and **Cross-Subject** (5-fold Leave-3-Subjects-Out Nested CV) protocols, contrasting 7 distinct model families, domain-adversarial representation learning (**Calibrated Inductive DANN**), multi-method feature attribution (XAI), uncertainty decomposition, and multi-model ensemble synergies.
 
 ---
 
@@ -28,15 +28,7 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 | **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **67.09%** [66.62%, 67.57%] | **40.52%** [40.03%, 41.01%] | **0.6698** [0.6651, 0.6746] | **0.4048** [0.3999, 0.4098] |
 | **3-Model Weighted Synergy** | DANN (0.45) + LGB (0.40) + EEGNet (0.15) | **67.43%** [66.97%, 67.90%] | **41.09%** [40.61%, 41.59%] | **0.6734** [0.6687, 0.6780] | **0.4106** [0.4056, 0.4154] |
 
-### Few-Shot Subject Calibration Summary
-
-| Calibration Level ($K$) | Cumulative EEG Time | Calibrated DANN Accuracy (95% CI) | Macro-F1 (Mean $\pm$ Std) | Cohen's $\kappa$ | Gap Closure % |
-| :---: | :---: | :---: | :---: | :---: | :---: |
-| $K = 0$ | $0.0\text{ min}$ | **38.41%** [37.95%, 38.92%] | $0.3825 \pm 0.0000$ | $0.1765$ | $0.00\%$ (Baseline) |
-| $K = 1$ | $2.3\text{ min}$ | **38.06%** [37.84%, 38.28%] | $0.3773 \pm 0.0143$ | $0.1718$ | $-1.29\%$ |
-| $K = 2$ | $4.6\text{ min}$ | **35.88%** [35.67%, 36.11%] | $0.3552 \pm 0.0125$ | $0.1434$ | $-9.34\%$ (Class Imbalance Dip) |
-| $K = 4$ | $9.3\text{ min}$ | **38.13%** [37.91%, 38.37%] | $0.3784 \pm 0.0062$ | $0.1729$ | $-1.03\%$ |
-| $\mathbf{K = 8}$ | $\mathbf{18.6\text{ min}}$ | $\mathbf{45.17\%}$ $\mathbf{[44.94\%, 45.41\%]}$ | $\mathbf{0.4490 \pm 0.0153}$ | $\mathbf{0.2681}$ | $\mathbf{+24.94\%}$ |
+> **Notice on Few-Shot Calibration**: The Few-Shot Calibration experiment (`evaluate_few_shot_calibration.py`) is INCOMPLETE -- a confirmed statistical inconsistency in the confidence interval computation was found and the experiment was halted pending investigation. Results are not yet valid and are excluded pending a fix.
 
 ---
 
@@ -103,7 +95,6 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── figures/                     # 151 publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
-│   ├── calibration/             # 4-panel Few-Shot Subject Calibration figure
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
 │   └── responsible_ai/          # ECE reliability diagrams & selective abstention curves
@@ -114,7 +105,6 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── baseline_*.py                # 6 comparative baseline implementations
 ├── evaluate_dann_explainability.py   # XAI attribution & faithfulness suite
 ├── evaluate_dann_responsible_ai.py   # ECE, selective abstention & MC-Dropout uncertainty
-├── evaluate_few_shot_calibration.py  # Few-shot target calibration pipeline
 ├── evaluate_7models_significance.py  # Friedman omnibus & Holm-Bonferroni tests
 ├── evaluate_three_model_ensemble.py  # 3-model weighted synergy pipeline
 └── requirements.txt             # Pinned project dependencies
@@ -125,10 +115,6 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 * **Train Primary Calibrated DANN Model**:
   ```bash
   python train_final_dann.py
-  ```
-* **Run Few-Shot Subject Calibration Experiment**:
-  ```bash
-  python evaluate_few_shot_calibration.py
   ```
 * **Run Explainability & Feature Attribution**:
   ```bash
@@ -142,17 +128,21 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
   ```bash
   python evaluate_7models_significance.py
   ```
+* **Run 3-Model Hybrid Ensemble Evaluation**:
+  ```bash
+  python evaluate_three_model_ensemble.py
+  ```
 
 ---
 
 ## 5. Key Documentation & Artifacts
 
-* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive 17-section documentation covering theoretical formulations, data quarantine audits, ablation studies, explainability axioms, and calibration dynamics.
+* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, and ensemble synergies.
 * **Structured Results**:
   * `dann_final_results.json` / `dann_final_results.csv`
-  * `few_shot_calibration_results.json` / `few_shot_calibration_results.csv`
   * `three_model_ensemble_results.json` / `three_model_ensemble_results.csv`
   * `statistical_significance_results.json`
+  * `dann_ablation_results.json`
 
 ---
 
@@ -163,7 +153,7 @@ If you find this codebase or benchmark methodology helpful in your research, ple
 ```bibtex
 @misc{eeg_emotion_seed_iv_2026,
   author = {Daksh and Contributors},
-  title = {Leakage-Safe EEG-Based Emotion Recognition and Few-Shot Calibration on SEED-IV},
+  title = {Leakage-Safe EEG-Based Emotion Recognition and Domain Adaptation on SEED-IV},
   year = {2026},
   publisher = {GitHub},
   journal = {GitHub Repository},
