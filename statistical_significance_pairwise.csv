@@ -1,0 +1,85 @@
+Protocol,Metric,Model_1,Model_2,Mean_1,Mean_2,Mean_Difference,Wilcoxon_Stat,p_value_raw,p_value_holm,Is_Significant_Holm,Cliffs_Delta,Rank_Biserial,Status
+subject_dependent,accuracy,Calibrated DANN (w=0.1),LightGBM,0.6548,0.6127,0.0421,0.0,0.0625,1.0000,False,0.6000,1.0000,Confirmatory
+subject_dependent,accuracy,Calibrated DANN (w=0.1),Compact EEGNet,0.6548,0.5821,0.0727,0.0,0.0625,1.0000,False,0.9200,1.0000,Confirmatory
+subject_dependent,accuracy,Calibrated DANN (w=0.1),Plain Transformer,0.6548,0.5391,0.1156,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Calibrated DANN (w=0.1),RGNN,0.6548,0.3913,0.2635,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Calibrated DANN (w=0.1),Riemannian TS + LR,0.6548,0.3634,0.2914,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Calibrated DANN (w=0.1),GAT-KAN v2 (Ver A),0.6548,0.3109,0.3439,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,LightGBM,Compact EEGNet,0.6127,0.5821,0.0306,0.0,0.0625,1.0000,False,0.5200,1.0000,Confirmatory
+subject_dependent,accuracy,LightGBM,Plain Transformer,0.6127,0.5391,0.0735,0.0,0.0625,1.0000,False,0.8400,1.0000,Confirmatory
+subject_dependent,accuracy,LightGBM,RGNN,0.6127,0.3913,0.2214,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,LightGBM,Riemannian TS + LR,0.6127,0.3634,0.2493,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,LightGBM,GAT-KAN v2 (Ver A),0.6127,0.3109,0.3018,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Compact EEGNet,Plain Transformer,0.5821,0.5391,0.0429,3.0,0.3125,1.0000,False,0.5200,0.6000,Confirmatory
+subject_dependent,accuracy,Compact EEGNet,RGNN,0.5821,0.3913,0.1908,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Compact EEGNet,Riemannian TS + LR,0.5821,0.3634,0.2187,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Compact EEGNet,GAT-KAN v2 (Ver A),0.5821,0.3109,0.2712,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Plain Transformer,RGNN,0.5391,0.3913,0.1479,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Plain Transformer,Riemannian TS + LR,0.5391,0.3634,0.1757,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Plain Transformer,GAT-KAN v2 (Ver A),0.5391,0.3109,0.2282,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,RGNN,Riemannian TS + LR,0.3913,0.3634,0.0279,1.0,0.1250,1.0000,False,0.6000,0.8667,Confirmatory
+subject_dependent,accuracy,RGNN,GAT-KAN v2 (Ver A),0.3913,0.3109,0.0804,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,accuracy,Riemannian TS + LR,GAT-KAN v2 (Ver A),0.3634,0.3109,0.0525,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Calibrated DANN (w=0.1),LightGBM,0.6513,0.6069,0.0444,0.0,0.0625,1.0000,False,0.7600,1.0000,Confirmatory
+subject_dependent,f1,Calibrated DANN (w=0.1),Compact EEGNet,0.6513,0.5760,0.0753,0.0,0.0625,1.0000,False,0.9200,1.0000,Confirmatory
+subject_dependent,f1,Calibrated DANN (w=0.1),Plain Transformer,0.6513,0.5366,0.1146,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Calibrated DANN (w=0.1),RGNN,0.6513,0.3823,0.2690,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Calibrated DANN (w=0.1),Riemannian TS + LR,0.6513,0.3623,0.2889,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Calibrated DANN (w=0.1),GAT-KAN v2 (Ver A),0.6513,0.2909,0.3603,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,LightGBM,Compact EEGNet,0.6069,0.5760,0.0309,1.0,0.1250,1.0000,False,0.5200,0.8667,Confirmatory
+subject_dependent,f1,LightGBM,Plain Transformer,0.6069,0.5366,0.0702,0.0,0.0625,1.0000,False,0.9200,1.0000,Confirmatory
+subject_dependent,f1,LightGBM,RGNN,0.6069,0.3823,0.2246,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,LightGBM,Riemannian TS + LR,0.6069,0.3623,0.2445,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,LightGBM,GAT-KAN v2 (Ver A),0.6069,0.2909,0.3159,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Compact EEGNet,Plain Transformer,0.5760,0.5366,0.0393,3.0,0.3125,1.0000,False,0.5200,0.6000,Confirmatory
+subject_dependent,f1,Compact EEGNet,RGNN,0.5760,0.3823,0.1937,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Compact EEGNet,Riemannian TS + LR,0.5760,0.3623,0.2136,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Compact EEGNet,GAT-KAN v2 (Ver A),0.5760,0.2909,0.2850,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Plain Transformer,RGNN,0.5366,0.3823,0.1544,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Plain Transformer,Riemannian TS + LR,0.5366,0.3623,0.1743,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Plain Transformer,GAT-KAN v2 (Ver A),0.5366,0.2909,0.2457,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,RGNN,Riemannian TS + LR,0.3823,0.3623,0.0199,3.0,0.3125,1.0000,False,0.5200,0.6000,Confirmatory
+subject_dependent,f1,RGNN,GAT-KAN v2 (Ver A),0.3823,0.2909,0.0913,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+subject_dependent,f1,Riemannian TS + LR,GAT-KAN v2 (Ver A),0.3623,0.2909,0.0714,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,Calibrated DANN (w=0.1),LightGBM,0.3841,0.3823,0.0018,7.0,1.0000,1.0000,False,0.1200,-0.0667,Confirmatory
+cross_subject,accuracy,Calibrated DANN (w=0.1),Compact EEGNet,0.3841,0.3468,0.0373,1.5,0.1875,1.0000,False,0.4400,0.8000,Confirmatory
+cross_subject,accuracy,Calibrated DANN (w=0.1),Plain Transformer,0.3841,0.2966,0.0875,0.0,0.0625,1.0000,False,0.9200,1.0000,Confirmatory
+cross_subject,accuracy,Calibrated DANN (w=0.1),RGNN,0.3841,0.2760,0.1081,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,Calibrated DANN (w=0.1),Riemannian TS + LR,0.3841,0.3017,0.0824,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,Calibrated DANN (w=0.1),GAT-KAN v2 (Ver A),0.3841,0.2612,0.1229,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,LightGBM,Compact EEGNet,0.3823,0.3468,0.0355,5.0,0.6250,1.0000,False,0.2800,0.3333,Confirmatory
+cross_subject,accuracy,LightGBM,Plain Transformer,0.3823,0.2966,0.0857,0.0,0.0625,1.0000,False,0.8400,1.0000,Confirmatory
+cross_subject,accuracy,LightGBM,RGNN,0.3823,0.2760,0.1063,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,LightGBM,Riemannian TS + LR,0.3823,0.3017,0.0806,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,LightGBM,GAT-KAN v2 (Ver A),0.3823,0.2612,0.1211,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,Compact EEGNet,Plain Transformer,0.3468,0.2966,0.0502,2.0,0.1875,1.0000,False,0.6000,0.7333,Confirmatory
+cross_subject,accuracy,Compact EEGNet,RGNN,0.3468,0.2760,0.0708,0.0,0.0625,1.0000,False,0.9200,1.0000,Confirmatory
+cross_subject,accuracy,Compact EEGNet,Riemannian TS + LR,0.3468,0.3017,0.0451,1.0,0.1250,1.0000,False,0.8400,0.8667,Confirmatory
+cross_subject,accuracy,Compact EEGNet,GAT-KAN v2 (Ver A),0.3468,0.2612,0.0856,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,accuracy,Plain Transformer,RGNN,0.2966,0.2760,0.0206,5.0,0.6250,1.0000,False,0.2800,0.3333,Confirmatory
+cross_subject,accuracy,Plain Transformer,Riemannian TS + LR,0.2966,0.3017,-0.0051,6.0,0.8125,1.0000,False,-0.2000,-0.2000,Confirmatory
+cross_subject,accuracy,Plain Transformer,GAT-KAN v2 (Ver A),0.2966,0.2612,0.0354,4.0,0.4375,1.0000,False,0.3600,0.4667,Confirmatory
+cross_subject,accuracy,RGNN,Riemannian TS + LR,0.2760,0.3017,-0.0257,3.0,0.3125,1.0000,False,-0.3600,-0.6000,Confirmatory
+cross_subject,accuracy,RGNN,GAT-KAN v2 (Ver A),0.2760,0.2612,0.0149,3.0,0.3125,1.0000,False,0.1200,0.6000,Confirmatory
+cross_subject,accuracy,Riemannian TS + LR,GAT-KAN v2 (Ver A),0.3017,0.2612,0.0406,1.0,0.1250,1.0000,False,0.8400,0.8667,Confirmatory
+cross_subject,f1,Calibrated DANN (w=0.1),LightGBM,0.3581,0.3630,-0.0049,7.0,1.0000,1.0000,False,-0.0400,-0.0667,Confirmatory
+cross_subject,f1,Calibrated DANN (w=0.1),Compact EEGNet,0.3581,0.3155,0.0427,0.0,0.0625,1.0000,False,0.6000,1.0000,Confirmatory
+cross_subject,f1,Calibrated DANN (w=0.1),Plain Transformer,0.3581,0.2725,0.0856,1.0,0.1250,1.0000,False,0.6800,0.8667,Confirmatory
+cross_subject,f1,Calibrated DANN (w=0.1),RGNN,0.3581,0.2540,0.1042,1.0,0.1250,1.0000,False,0.9200,0.8667,Confirmatory
+cross_subject,f1,Calibrated DANN (w=0.1),Riemannian TS + LR,0.3581,0.2934,0.0647,0.0,0.0625,1.0000,False,0.8400,1.0000,Confirmatory
+cross_subject,f1,Calibrated DANN (w=0.1),GAT-KAN v2 (Ver A),0.3581,0.2380,0.1201,0.0,0.0625,1.0000,False,1.0000,1.0000,Confirmatory
+cross_subject,f1,LightGBM,Compact EEGNet,0.3630,0.3155,0.0475,4.0,0.4375,1.0000,False,0.4400,0.4667,Confirmatory
+cross_subject,f1,LightGBM,Plain Transformer,0.3630,0.2725,0.0905,1.0,0.1250,1.0000,False,0.6800,0.8667,Confirmatory
+cross_subject,f1,LightGBM,RGNN,0.3630,0.2540,0.1090,1.0,0.1250,1.0000,False,0.8400,0.8667,Confirmatory
+cross_subject,f1,LightGBM,Riemannian TS + LR,0.3630,0.2934,0.0696,2.0,0.1875,1.0000,False,0.5200,0.7333,Confirmatory
+cross_subject,f1,LightGBM,GAT-KAN v2 (Ver A),0.3630,0.2380,0.1250,0.0,0.0625,1.0000,False,0.9200,1.0000,Confirmatory
+cross_subject,f1,Compact EEGNet,Plain Transformer,0.3155,0.2725,0.0430,4.0,0.4375,1.0000,False,0.5200,0.4667,Confirmatory
+cross_subject,f1,Compact EEGNet,RGNN,0.3155,0.2540,0.0615,1.0,0.1250,1.0000,False,0.6800,0.8667,Confirmatory
+cross_subject,f1,Compact EEGNet,Riemannian TS + LR,0.3155,0.2934,0.0221,4.0,0.4375,1.0000,False,0.3600,0.4667,Confirmatory
+cross_subject,f1,Compact EEGNet,GAT-KAN v2 (Ver A),0.3155,0.2380,0.0775,1.0,0.1250,1.0000,False,0.9200,0.8667,Confirmatory
+cross_subject,f1,Plain Transformer,RGNN,0.2725,0.2540,0.0185,5.0,0.6250,1.0000,False,0.0400,0.3333,Confirmatory
+cross_subject,f1,Plain Transformer,Riemannian TS + LR,0.2725,0.2934,-0.0209,4.0,0.4375,1.0000,False,-0.2800,-0.4667,Confirmatory
+cross_subject,f1,Plain Transformer,GAT-KAN v2 (Ver A),0.2725,0.2380,0.0345,4.0,0.4375,1.0000,False,0.2800,0.4667,Confirmatory
+cross_subject,f1,RGNN,Riemannian TS + LR,0.2540,0.2934,-0.0394,1.0,0.1250,1.0000,False,-0.5200,-0.8667,Confirmatory
+cross_subject,f1,RGNN,GAT-KAN v2 (Ver A),0.2540,0.2380,0.0159,2.0,0.1875,1.0000,False,0.2000,0.7333,Confirmatory
+cross_subject,f1,Riemannian TS + LR,GAT-KAN v2 (Ver A),0.2934,0.2380,0.0554,1.0,0.1250,1.0000,False,0.8400,0.8667,Confirmatory

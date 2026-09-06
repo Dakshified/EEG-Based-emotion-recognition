@@ -1,0 +1,5 @@
+Protocol,Metric,Friedman_Chi2,DF,p_value,Is_Significant,Model_Mean_Ranks
+subject_dependent,accuracy,29.1429,6,5.7164e-05,True,Calibrated DANN (w=0.1): 1.00; LightGBM: 2.00; Compact EEGNet: 3.40; Plain Transformer: 3.60; RGNN: 5.20; Riemannian TS + LR: 5.80; GAT-KAN v2 (Ver A): 7.00
+subject_dependent,f1,28.6286,6,7.1515e-05,True,Calibrated DANN (w=0.1): 1.00; LightGBM: 2.20; Compact EEGNet: 3.20; Plain Transformer: 3.60; RGNN: 5.20; Riemannian TS + LR: 5.80; GAT-KAN v2 (Ver A): 7.00
+cross_subject,accuracy,21.7714,6,1.3319e-03,True,Calibrated DANN (w=0.1): 1.80; LightGBM: 1.80; Compact EEGNet: 2.80; Plain Transformer: 5.20; RGNN: 5.60; Riemannian TS + LR: 4.60; GAT-KAN v2 (Ver A): 6.20
+cross_subject,f1,14.7429,6,2.2354e-02,True,Calibrated DANN (w=0.1): 2.00; LightGBM: 2.20; Compact EEGNet: 3.80; Plain Transformer: 4.80; RGNN: 5.00; Riemannian TS + LR: 4.00; GAT-KAN v2 (Ver A): 6.20

@@ -1,0 +1,31 @@
+Rank,Channel,Region,Band,Mean_Attribution_Cross_Subject,Mean_Attribution_Subject_Dependent
+1,Fpz,Frontal,Gamma,0.82513,1.20196
+2,CB1,Parieto-Occipital / Occipital,Delta,0.50292,0.63544
+3,C6,Frontocentral / Central,Gamma,0.50212,0.57155
+4,Fpz,Frontal,Beta,0.49608,0.85663
+5,FC1,Frontocentral / Central,Delta,0.49042,0.40332
+6,F1,Frontal,Delta,0.47057,0.63419
+7,C1,Frontocentral / Central,Delta,0.46701,0.44059
+8,FCz,Frontocentral / Central,Delta,0.45874,0.37442
+9,C5,Frontocentral / Central,Delta,0.44207,0.38428
+10,PO8,Parieto-Occipital / Occipital,Gamma,0.43937,0.42348
+11,F8,Frontal,Gamma,0.43490,0.60554
+12,FT7,Frontocentral / Central,Delta,0.42715,0.48370
+13,FT7,Frontocentral / Central,Gamma,0.42315,0.53382
+14,C1,Frontocentral / Central,Alpha,0.42092,0.21144
+15,CB1,Parieto-Occipital / Occipital,Gamma,0.41660,0.68537
+16,F2,Frontal,Delta,0.41656,0.59153
+17,CP5,Centroparietal / Parietal,Gamma,0.41125,0.45358
+18,PO3,Parieto-Occipital / Occipital,Theta,0.39605,0.55649
+19,FC1,Frontocentral / Central,Alpha,0.39081,0.16218
+20,TP8,Temporal,Gamma,0.39017,0.45696
+21,T7,Temporal,Delta,0.38541,0.49154
+22,FC5,Frontocentral / Central,Gamma,0.38035,0.54881
+23,C3,Frontocentral / Central,Gamma,0.37604,0.37762
+24,FCz,Frontocentral / Central,Beta,0.37166,0.22167
+25,Fp2,Frontal,Gamma,0.36890,0.41704
+26,FT8,Frontocentral / Central,Gamma,0.36607,0.31758
+27,Oz,Parieto-Occipital / Occipital,Gamma,0.36506,0.50589
+28,P7,Centroparietal / Parietal,Delta,0.36214,0.39685
+29,FT7,Frontocentral / Central,Beta,0.35505,0.33727
+30,T8,Temporal,Gamma,0.35429,0.48734

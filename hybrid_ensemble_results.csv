@@ -1,0 +1,9 @@
+Protocol,Model,Accuracy,Macro-F1,Macro-AUC,Kappa,Oracle_Upper_Bound
+subject_dependent,Standalone DANN,65.53%,0.6538,0.8663,0.5393,77.06%
+subject_dependent,Standalone LightGBM,61.30%,0.6105,0.8321,0.4825,77.06%
+subject_dependent,Hybrid Ensemble (Variant A: Raw),66.58%,0.6625,0.8727,0.5529,77.06%
+subject_dependent,Hybrid Ensemble (Variant B: Calibrated),63.97%,0.6368,0.8767,0.5182,77.06%
+cross_subject,Standalone DANN,38.41%,0.3825,0.6235,0.1765,51.21%
+cross_subject,Standalone LightGBM,38.23%,0.3811,0.6281,0.1786,51.21%
+cross_subject,Hybrid Ensemble (Variant A: Raw),40.52%,0.4061,0.6410,0.2063,51.21%
+cross_subject,Hybrid Ensemble (Variant B: Calibrated),38.60%,0.3854,0.6385,0.1835,51.21%

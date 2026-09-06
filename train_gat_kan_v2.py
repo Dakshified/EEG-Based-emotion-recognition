@@ -1,4 +1,10 @@
 import os
+os.environ["OMP_NUM_THREADS"] = "2"
+os.environ["MKL_NUM_THREADS"] = "2"
+os.environ["OPENBLAS_NUM_THREADS"] = "2"
+os.environ["VECLIB_MAXIMUM_THREADS"] = "2"
+os.environ["NUMEXPR_NUM_THREADS"] = "2"
+
 import time
 import csv
 import json
@@ -10,9 +16,17 @@ from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import precision_recall_fscore_support, roc_auc_score, cohen_kappa_score
 import matplotlib.pyplot as plt
 
+# Configure CPU threading
+torch.set_num_threads(2)
+
 # Set random seeds for reproducibility
 np.random.seed(42)
 torch.manual_seed(42)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(42)
+
+CLASS_NAMES = ['Neutral', 'Sad', 'Fear', 'Happy']
+EMOTION_COLORS = ['#4C72B0', '#55A868', '#C44E52', '#8172B2']
 
 # =========================================================================
 # HELPER FUNCTIONS & GRANGER CAUSALITY
@@ -56,10 +70,12 @@ def build_knn_adjacency(x_coords, y_coords, k=14):
 
 def compute_fold_granger_adjacency(features, labels, subject_ids, session_nums, trial_ids, train_indices):
     """
-    Computes a $62 \times 62$ Granger-causality adjacency matrix fresh for the current
-    fold, using ONLY the training indices.
+    Computes a 62 x 62 Granger-causality adjacency matrix fresh for the current
+    fold, using ONLY the training indices. Optimized with precomputed restricted
+    model RSS and progress printing.
     """
     print("  [STATS] Computing Granger-Causality adjacency on training fold only...", flush=True)
+    t0 = time.time()
     num_channels = 62
     
     # 1. Group windows chronologically by trial for training indices
@@ -80,56 +96,48 @@ def compute_fold_granger_adjacency(features, labels, subject_ids, session_nums, 
         if ts.shape[0] > 5: # Needs enough timesteps to fit VAR lag 1
             trial_series.append(ts)
             
-    # 2. Compute lag-1 VAR Granger causality F-statistics per channel pair
     # To keep it fast on CPU, we limit to a subset of 30 randomly selected trials if there are many
     if len(trial_series) > 30:
+        np.random.seed(42)
         indices = np.random.choice(len(trial_series), 30, replace=False)
         trial_series = [trial_series[i] for i in indices]
         
-    F_matrix = np.zeros((num_channels, num_channels))
+    n_obs_total = sum(len(ts) - 1 for ts in trial_series)
     
-    for i in range(num_channels):
-        for j in range(num_channels):
-            if i == j:
-                continue
-            
-            rss_rest_total = 0.0
-            rss_unrest_total = 0.0
-            n_obs_total = 0
-            
-            for ts in trial_series:
-                y_i = ts[1:, i]
-                y_i_lag1 = ts[:-1, i]
-                y_j_lag1 = ts[:-1, j]
-                
-                L = len(y_i)
-                if L < 5:
-                    continue
-                
-                # Fit restricted model: y_i_t = c1 + a1 * y_i_lag1 + error
-                X_rest = np.column_stack((np.ones(L), y_i_lag1))
-                beta_rest, _, _, _ = np.linalg.lstsq(X_rest, y_i, rcond=None)
-                pred_rest = X_rest @ beta_rest
-                rss_rest = np.sum((y_i - pred_rest)**2)
-                
-                # Fit unrestricted model: y_i_t = c2 + b1 * y_i_lag1 + b2 * y_j_lag1 + error
-                X_unrest = np.column_stack((np.ones(L), y_i_lag1, y_j_lag1))
-                beta_unrest, _, _, _ = np.linalg.lstsq(X_unrest, y_i, rcond=None)
-                pred_unrest = X_unrest @ beta_unrest
-                rss_unrest = np.sum((y_i - pred_unrest)**2)
-                
-                rss_rest_total += rss_rest
-                rss_unrest_total += rss_unrest
-                n_obs_total += L
-                
-            if n_obs_total > 5:
-                # F-statistic formula: ((RSS_rest - RSS_unrest) / 1) / (RSS_unrest / (N - 3))
-                # Add epsilon to prevent division by zero
-                den = rss_unrest_total / (n_obs_total - 3)
-                if den > 1e-10:
-                    F_val = (rss_rest_total - rss_unrest_total) / den
-                    F_matrix[i, j] = max(0.0, F_val)
-                    
+    # 2. Vectorized Per-Trial Frisch-Waugh-Lovell (FWL) Granger Adjacency Computation
+    rss_rest_total = np.zeros(num_channels)
+    rss_unrest_total = np.zeros((num_channels, num_channels))
+
+    for ts in trial_series:
+        y_k = ts[1:] # (L, 62)
+        x_k = ts[:-1] # (L, 62)
+        y_tilde = y_k - np.mean(y_k, axis=0, keepdims=True) # (L, 62)
+        x_tilde = x_k - np.mean(x_k, axis=0, keepdims=True) # (L, 62)
+        
+        # Cross-products: S_xx (62, 62), S_xy (62, 62), S_yy (62,)
+        S_xx = x_tilde.T @ x_tilde # (62, 62)
+        S_xy = x_tilde.T @ y_tilde # (62, 62)
+        S_yy = np.sum(y_tilde**2, axis=0) # (62,)
+        
+        diag_xx = np.diag(S_xx) # (62,)
+        diag_xy = np.diag(S_xy) # (62,)
+        
+        # Restricted RSS for this trial
+        rss_rest_k = S_yy - (diag_xy**2) / np.maximum(diag_xx, 1e-12) # (62,)
+        rss_rest_total += rss_rest_k
+        
+        # Unrestricted RSS via FWL projection
+        u_norm_sq = diag_xx[None, :] - (S_xx**2) / np.maximum(diag_xx[:, None], 1e-12) # [i, j]
+        u_dot_y = S_xy.T - (S_xx * diag_xy[:, None]) / np.maximum(diag_xx[:, None], 1e-12) # [i, j]
+        
+        rss_drop = (u_dot_y**2) / np.maximum(u_norm_sq, 1e-12) # [i, j]
+        rss_unrest_k = rss_rest_k[:, None] - rss_drop # [i, j]
+        rss_unrest_total += rss_unrest_k
+
+    den = rss_unrest_total / (n_obs_total - 3)
+    F_matrix = np.maximum(0.0, (rss_rest_total[:, None] - rss_unrest_total) / np.maximum(den, 1e-10))
+    np.fill_diagonal(F_matrix, 0.0)
+
     # Normalize to [0, 1]
     max_F = F_matrix.max()
     if max_F > 0:
@@ -137,6 +145,7 @@ def compute_fold_granger_adjacency(features, labels, subject_ids, session_nums, 
         
     # Add self-loops
     np.fill_diagonal(F_matrix, 1.0)
+    print(f"  [STATS] Completed Granger-Causality adjacency computation in {time.time() - t0:.2f}s", flush=True)
     return F_matrix
 
 # =========================================================================
@@ -174,8 +183,11 @@ class KANLinear(nn.Module):
 
     def forward(self, x):
         base_out = F.linear(x, self.base_weight)
-        splines = self.b_splines(x)
-        spline_out = torch.einsum("bij,oij->bo", splines, self.spline_weight)
+        splines = self.b_splines(x) # (batch, in_features, grid_size + spline_order)
+        # Flatten on-the-fly to use optimized F.linear instead of torch.einsum on CPU
+        splines_flat = splines.view(splines.size(0), -1)
+        weight_flat = self.spline_weight.view(self.out_features, -1)
+        spline_out = F.linear(splines_flat, weight_flat)
         return base_out + spline_out
 
 class GraphAttentionLayer(nn.Module):
@@ -193,6 +205,10 @@ class GraphAttentionLayer(nn.Module):
         self.leakyrelu = nn.LeakyReLU(0.2)
         self.dropout = nn.Dropout(dropout)
         
+        # Cache for adj log mask to avoid redundant calculations on CPU
+        self.cached_adj = None
+        self.cached_adj_mask = None
+        
     def forward(self, h, adj):
         # h shape: (batch_size, num_nodes, in_features)
         # adj shape: (num_nodes, num_nodes)
@@ -207,10 +223,12 @@ class GraphAttentionLayer(nn.Module):
         attn_matrix = attn_s + attn_d.transpose(-2, -1) # (batch, heads, nodes, nodes)
         attn_matrix = self.leakyrelu(attn_matrix)
         
-        # Apply soft masking using the blended adjacency matrix
-        # adj is (nodes, nodes). We add epsilon to prevent log of 0
-        adj_mask = torch.log(adj + 1e-10).view(1, 1, num_nodes, num_nodes)
-        attn_matrix = attn_matrix + adj_mask
+        # Cache adj_mask to avoid recomputing log(adj) every forward pass
+        if self.cached_adj is not adj:
+            self.cached_adj = adj
+            self.cached_adj_mask = torch.log(adj + 1e-10).view(1, 1, num_nodes, num_nodes)
+            
+        attn_matrix = attn_matrix + self.cached_adj_mask
         
         attn_weights = F.softmax(attn_matrix, dim=-1)
         attn_weights = self.dropout(attn_weights)
@@ -261,39 +279,33 @@ class GATKANv2(nn.Module):
         # x shape: (batch_size, 62, 5)
         batch_size, num_nodes, num_bands = x.size()
         
-        # Spatial-spectral processing
-        band_tokens = []
-        spatial_attns = []
+        # 1. Project 5 bands: list of (batch, 62, d_model)
+        h_proj_list = [self.band_encoders[b](x[:, :, b:b+1]) for b in range(5)]
         
-        for b in range(5):
-            h_band = x[:, :, b].unsqueeze(-1) # (batch, 62, 1)
-            h_proj = self.band_encoders[b](h_band) # (batch, 62, d_model)
-            
-            # GAT spatial representation
-            h_gat1, attn1 = self.gat1(h_proj, adj)
-            h_gat1 = F.relu(h_gat1 + h_proj) # Residual skip
-            
-            h_gat2, attn2 = self.gat2(h_gat1, adj)
-            h_gat = F.relu(h_gat2 + h_gat1) # Residual skip
-            
-            # Average pool over nodes (channels) to get band representation
-            h_band_avg = h_gat.mean(dim=1) # (batch, d_model)
-            band_tokens.append(h_band_avg)
-            
-            spatial_attns.append(attn2) # Track attention maps
-            
-        # Shape: (batch, 5, d_model)
-        band_tokens = torch.stack(band_tokens, dim=1)
+        # 2. Stack into (batch_size, 5, 62, d_model) and reshape to (batch_size * 5, 62, d_model)
+        h_proj_batched = torch.stack(h_proj_list, dim=1).view(batch_size * 5, num_nodes, -1)
         
-        # Cross-band attention via Transformer
+        # 3. Batched GAT spatial representation across all 5 bands simultaneously
+        h_gat1, attn1 = self.gat1(h_proj_batched, adj)
+        h_gat1 = F.relu(h_gat1 + h_proj_batched) # Residual skip
+        
+        h_gat2, attn2 = self.gat2(h_gat1, adj)
+        h_gat = F.relu(h_gat2 + h_gat1) # Residual skip
+        
+        # 4. Average pool over nodes (channels) to get band representation
+        h_band_avg = h_gat.mean(dim=1) # (batch_size * 5, d_model)
+        band_tokens = h_band_avg.view(batch_size, 5, -1) # (batch_size, 5, d_model)
+        
+        # 5. Extract attention maps shaped as list of 5 (batch_size, 4, 62, 62) tensors
+        spatial_attns = list(attn2.view(batch_size, 5, 4, num_nodes, num_nodes).unbind(dim=1))
+        
+        # 6. Cross-band attention via Transformer
         trans_out = self.transformer(band_tokens) # (batch, 5, d_model)
         
-        # Generate auxiliary predictions for per-band loss
-        aux_preds = []
-        for b in range(5):
-            aux_preds.append(self.aux_heads[b](trans_out[:, b, :]))
-            
-        # Main classification head input: average pool over the 5 bands
+        # 7. Generate auxiliary predictions for per-band loss
+        aux_preds = [self.aux_heads[b](trans_out[:, b, :]) for b in range(5)]
+        
+        # 8. Main classification head input: average pool over the 5 bands
         main_rep = trans_out.mean(dim=1) # (batch, d_model)
         
         if self.use_subject_embedding and subject_ids is not None:
@@ -318,7 +330,8 @@ class EEGDataset(Dataset):
         return len(self.labels)
         
     def __getitem__(self, idx):
-        x = self.features[idx] # (62, 5)
+        # Clone to prevent random channel masking from mutating the underlying dataset in-place
+        x = self.features[idx].clone() # (62, 5)
         
         # Random channel masking augmentation for Version B
         if self.augment and np.random.rand() < 0.5:
@@ -463,13 +476,14 @@ class StandardScaler:
 # =========================================================================
 
 def train_gat_kan_fold(model, train_loader, val_loader, adj_matrix_torch, device, augment=False, epochs=100, patience=25):
-    """Trains GAT-KAN v2 on a single fold with dynamic auxiliary loss weighting."""
+    """Trains GAT-KAN v2 on a single fold with dynamic auxiliary loss weighting and val_acc early stopping."""
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-3, weight_decay=1e-4)
-    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=5)
+    scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='max', factor=0.5, patience=5)
     
-    best_val_loss = float('inf')
+    best_val_acc = 0.0
     patience_counter = 0
     best_weights = None
+    best_epoch = 0
     
     train_history = {'loss': [], 'acc': []}
     val_history = {'loss': [], 'acc': []}
@@ -484,7 +498,7 @@ def train_gat_kan_fold(model, train_loader, val_loader, adj_matrix_torch, device
         total_train = 0
         
         for batch_x, batch_y, batch_sub in train_loader:
-            batch_x, batch_y = batch_x.to(device), batch_y.to(device)
+            batch_x, batch_y, batch_sub = batch_x.to(device), batch_y.to(device), batch_sub.to(device)
             
             optimizer.zero_grad()
             out, aux_preds, _ = model(batch_x, adj_matrix_torch, batch_sub)
@@ -513,7 +527,7 @@ def train_gat_kan_fold(model, train_loader, val_loader, adj_matrix_torch, device
         
         with torch.no_grad():
             for batch_x, batch_y, batch_sub in val_loader:
-                batch_x, batch_y = batch_x.to(device), batch_y.to(device)
+                batch_x, batch_y, batch_sub = batch_x.to(device), batch_y.to(device), batch_sub.to(device)
                 out, aux_preds, _ = model(batch_x, adj_matrix_torch, batch_sub)
                 
                 loss_main = F.cross_entropy(out, batch_y)
@@ -538,7 +552,7 @@ def train_gat_kan_fold(model, train_loader, val_loader, adj_matrix_torch, device
         val_loss /= total_val
         val_acc = correct_val / total_val
         
-        scheduler.step(val_loss)
+        scheduler.step(val_acc)
         
         # Update dynamic auxiliary weights based on band-wise validation accuracy
         for b in range(5):
@@ -551,28 +565,34 @@ def train_gat_kan_fold(model, train_loader, val_loader, adj_matrix_torch, device
         val_history['loss'].append(val_loss)
         val_history['acc'].append(val_acc)
         
-        # Early stopping verification
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
+        # Print progress for every epoch
+        print(f"      Epoch {epoch+1:03d}/{epochs:03d} | Train Loss: {train_loss:.4f} | Train Acc: {train_acc:.2%} | Val Loss: {val_loss:.4f} | Val Acc: {val_acc:.2%}", flush=True)
+        
+        # Early stopping verification based on validation accuracy
+        if val_acc > best_val_acc:
+            best_val_acc = val_acc
+            best_epoch = epoch + 1
             patience_counter = 0
             best_weights = {k: v.cpu().clone() for k, v in model.state_dict().items()}
         else:
             patience_counter += 1
             if patience_counter >= patience:
+                print(f"      [EARLY STOPPING] Triggered at epoch {epoch+1} (Best Epoch: {best_epoch} with Val Acc: {best_val_acc:.2%})", flush=True)
                 break
                 
     if best_weights is not None:
+        print(f"      [RESTORE BEST CHECKPOINT] Restoring weights from Epoch {best_epoch} (Val Acc: {best_val_acc:.2%})", flush=True)
         model.load_state_dict(best_weights)
         
     return train_history, val_history
 
-def train_per_subject_finetune(model, train_loader, adj_matrix_torch, device):
-    """Applies a 5-epoch per-subject fine-tuning pass using subject-specific training indices."""
+def train_per_subject_finetune(model, train_loader, adj_matrix_torch, device, epochs=5, lr=1e-4):
+    """Applies a per-subject fine-tuning pass using subject-specific training indices."""
     model.train()
-    optimizer = torch.optim.Adam(model.parameters(), lr=1e-4, weight_decay=1e-5)
-    for _ in range(5):
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr, weight_decay=1e-5)
+    for _ in range(epochs):
         for batch_x, batch_y, batch_sub in train_loader:
-            batch_x, batch_y = batch_x.to(device), batch_y.to(device)
+            batch_x, batch_y, batch_sub = batch_x.to(device), batch_y.to(device), batch_sub.to(device)
             optimizer.zero_grad()
             out, aux_preds, _ = model(batch_x, adj_matrix_torch, batch_sub)
             loss = F.cross_entropy(out, batch_y)
@@ -594,17 +614,41 @@ def run_experiment(features, labels, subject_ids, session_nums, trial_ids,
     print(f"Running GAT-KAN v2 | {protocol_name} | {version_name}", flush=True)
     print("=" * 80, flush=True)
     
-    device = torch.device("cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    print(f"Using device: {device} ({torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU'})", flush=True)
     num_samples = len(labels)
     
-    # 1. Determine unique trials to split at trial level
+    # 1. Determine fold splits
     trial_keys = subject_ids * 1000 + session_nums * 100 + trial_ids
     unique_trial_keys, trial_indices_map = np.unique(trial_keys, return_index=True)
     num_trials = len(unique_trial_keys)
     
-    # Create fold indices
-    from sklearn.model_selection import KFold
-    kf = KFold(n_splits=5, shuffle=True, random_state=42)
+    if protocol_name == "cross-subject":
+        # 5-fold Leave-3-Subjects-Out CV
+        subject_folds = [
+            [1, 2, 3],
+            [4, 5, 6],
+            [7, 8, 9],
+            [10, 11, 12],
+            [13, 14, 15]
+        ]
+        fold_splits = []
+        for test_subs in subject_folds:
+            train_subs = [s for s in range(1, 16) if s not in test_subs]
+            tr_idx = [idx for idx in range(num_samples) if subject_ids[idx] in train_subs]
+            te_idx = [idx for idx in range(num_samples) if subject_ids[idx] in test_subs]
+            fold_splits.append((tr_idx, te_idx))
+    else:
+        # Subject-dependent: 5-fold trial-level split
+        from sklearn.model_selection import KFold
+        kf = KFold(n_splits=5, shuffle=True, random_state=42)
+        fold_splits = []
+        for train_trial_idx, test_trial_idx in kf.split(np.arange(num_trials)):
+            train_trials_set = set(unique_trial_keys[train_trial_idx])
+            test_trials_set = set(unique_trial_keys[test_trial_idx])
+            tr_idx = [idx for idx in range(num_samples) if trial_keys[idx] in train_trials_set]
+            te_idx = [idx for idx in range(num_samples) if trial_keys[idx] in test_trials_set]
+            fold_splits.append((tr_idx, te_idx))
     
     y_true_all = []
     y_pred_all = []
@@ -616,15 +660,28 @@ def run_experiment(features, labels, subject_ids, session_nums, trial_ids,
     # Physical graph structure construction (k=14)
     A_kNN = build_knn_adjacency(x_coords, y_coords, k=14)
     
-    for fold, (train_trial_idx, test_trial_idx) in enumerate(kf.split(np.arange(num_trials))):
+    for fold, (train_indices, test_indices) in enumerate(fold_splits):
         print(f"\n--- Fold {fold+1}/5 ---", flush=True)
         
-        # Resolve window-level indices belonging to the selected trials
-        train_trials_set = set(unique_trial_keys[train_trial_idx])
-        test_trials_set = set(unique_trial_keys[test_trial_idx])
+        checkpoint_dir = "checkpoints"
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        weights_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_weights.pt")
+        preds_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_predictions.npz")
+        metrics_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_metrics.json")
         
-        train_indices = [idx for idx in range(num_samples) if trial_keys[idx] in train_trials_set]
-        test_indices = [idx for idx in range(num_samples) if trial_keys[idx] in test_trials_set]
+        if os.path.exists(weights_file) and os.path.exists(preds_file) and os.path.exists(metrics_file):
+            print(f"  [CHECKPOINT FOUND] Loading existing completed fold {fold+1}/5 from '{checkpoint_dir}'...", flush=True)
+            preds_data = np.load(preds_file)
+            y_true_fold = list(preds_data['y_true'])
+            y_pred_fold = list(preds_data['y_pred'])
+            y_prob_fold = list(preds_data['y_prob'])
+            with open(metrics_file, 'r') as f:
+                f_m = json.load(f)
+            print(f"  [FOLD COMPLETE - FROM CHECKPOINT] {protocol_name} | {version_name} | Fold {fold+1}/5 | Test Acc: {f_m['accuracy']:.4f} | Test F1: {f_m['f1']:.4f}", flush=True)
+            y_true_all.extend(y_true_fold)
+            y_pred_all.extend(y_pred_fold)
+            y_prob_all.extend(y_prob_fold)
+            continue
         
         # In cross-subject protocol, verify no subject overlaps
         if protocol_name == "cross-subject":
@@ -634,8 +691,16 @@ def run_experiment(features, labels, subject_ids, session_nums, trial_ids,
             if overlap:
                 raise ValueError(f"Subject overlap detected in cross-subject protocol: {overlap}")
                 
-        # Compute Granger Causality on training set only to prevent leakage
-        A_GC = compute_fold_granger_adjacency(features, labels, subject_ids, session_nums, trial_ids, train_indices)
+        # Compute Granger Causality on training set only to prevent leakage (using cache if available)
+        cache_dir = "granger_cache"
+        os.makedirs(cache_dir, exist_ok=True)
+        cache_file = os.path.join(cache_dir, f"granger_cache_{protocol_name}_fold{fold+1}.npy")
+        if os.path.exists(cache_file):
+            print(f"  [CACHE] Loading cached Granger-Causality adjacency from '{cache_file}'...", flush=True)
+            A_GC = np.load(cache_file)
+        else:
+            A_GC = compute_fold_granger_adjacency(features, labels, subject_ids, session_nums, trial_ids, train_indices)
+            np.save(cache_file, A_GC)
         
         # Blend graphs (50% k-NN, 50% Granger)
         A_blended = 0.5 * A_kNN + 0.5 * A_GC
@@ -659,44 +724,141 @@ def run_experiment(features, labels, subject_ids, session_nums, trial_ids,
         # Model construction
         model = GATKANv2(num_subjects=15, use_subject_embedding=use_emb).to(device)
         
-        # Train fold
+        # Train fold with val_acc early stopping
         t_hist, v_hist = train_gat_kan_fold(model, train_loader, test_loader, adj_matrix_torch, device, augment=augment)
         fold_train_histories.append(t_hist)
         fold_val_histories.append(v_hist)
         
-        # Booster: Per-subject fine-tuning on train indices only
+        # Booster: Per-subject fine-tuning with independent subject model clones (train-only, fold-local)
         if use_ft:
-            print("  [BOOSTER] Applying per-subject fine-tuning pass on training data only...", flush=True)
+            print("  [BOOSTER] Applying per-subject fine-tuning with independent subject model clones...", flush=True)
+            base_weights = {k: v.cpu().clone() for k, v in model.state_dict().items()}
+            
+            y_true_fold_arr = labels[test_indices]
+            y_pred_fold_arr = np.zeros(len(test_indices), dtype=int)
+            y_prob_fold_arr = np.zeros((len(test_indices), 4), dtype=float)
+            y_attn_fold_arr = np.zeros((len(test_indices), 5, 4, 62, 62), dtype=np.float32)
+            
             for sub in range(1, 16):
-                # Extract train index mask for this subject
                 sub_train_mask = [idx for idx in train_indices if subject_ids[idx] == sub]
-                if len(sub_train_mask) > 0:
-                    sub_dataset = EEGDataset(features_norm[sub_train_mask], labels[sub_train_mask], subject_ids[sub_train_mask], augment=augment)
-                    sub_loader = DataLoader(sub_dataset, batch_size=64, shuffle=True)
-                    train_per_subject_finetune(model, sub_loader, adj_matrix_torch, device)
+                sub_test_pos = [i for i, idx in enumerate(test_indices) if subject_ids[idx] == sub]
+                
+                if len(sub_test_pos) == 0:
+                    continue
                     
-        # Final test evaluation for this fold
-        model.eval()
-        y_true_fold = []
-        y_pred_fold = []
-        y_prob_fold = []
+                # Clone model from post-training base weights for this subject
+                sub_model = GATKANv2(num_subjects=15, use_subject_embedding=use_emb).to(device)
+                sub_model.load_state_dict(base_weights)
+                
+                # Fine-tune clone only on this subject's training samples
+                if len(sub_train_mask) > 0:
+                    sub_train_dataset = EEGDataset(features_norm[sub_train_mask], labels[sub_train_mask], subject_ids[sub_train_mask], augment=augment)
+                    sub_train_loader = DataLoader(sub_train_dataset, batch_size=64, shuffle=True)
+                    train_per_subject_finetune(sub_model, sub_train_loader, adj_matrix_torch, device, epochs=5, lr=1e-4)
+                
+                # Evaluate this subject's test samples using ONLY their own fine-tuned clone
+                sub_model.eval()
+                sub_test_dataset = EEGDataset(
+                    features_norm[[test_indices[p] for p in sub_test_pos]],
+                    labels[[test_indices[p] for p in sub_test_pos]],
+                    subject_ids[[test_indices[p] for p in sub_test_pos]],
+                    augment=False
+                )
+                sub_test_loader = DataLoader(sub_test_dataset, batch_size=256, shuffle=False)
+                
+                sub_preds, sub_probs, sub_attns = [], [], []
+                with torch.no_grad():
+                    for batch_x, batch_y, batch_sub in sub_test_loader:
+                        batch_x, batch_sub = batch_x.to(device), batch_sub.to(device)
+                        out, _, spatial_attns = sub_model(batch_x, adj_matrix_torch, batch_sub)
+                        batch_attn = torch.stack(spatial_attns, dim=1)
+                        sub_attns.append(batch_attn.cpu().numpy())
+                        sub_probs.append(F.softmax(out, dim=-1).cpu().numpy())
+                        sub_preds.append(out.argmax(dim=-1).cpu().numpy())
+                        
+                if len(sub_preds) > 0:
+                    y_pred_fold_arr[sub_test_pos] = np.concatenate(sub_preds, axis=0)
+                    y_prob_fold_arr[sub_test_pos] = np.concatenate(sub_probs, axis=0)
+                    y_attn_fold_arr[sub_test_pos] = np.concatenate(sub_attns, axis=0)
+                    
+                # Discard clone and start next subject from same pre-fine-tune base weights
+                del sub_model
+                
+            val_attentions_all = y_attn_fold_arr
+        else:
+            # Standard evaluation without per-subject fine-tuning (e.g. Cross-Subject protocol)
+            model.eval()
+            y_true_fold = []
+            y_pred_fold = []
+            y_prob_fold = []
+            y_attn_fold = []
+            
+            with torch.no_grad():
+                for batch_x, batch_y, batch_sub in test_loader:
+                    batch_x, batch_sub = batch_x.to(device), batch_sub.to(device)
+                    out, _, spatial_attns = model(batch_x, adj_matrix_torch, batch_sub)
+                    
+                    # spatial_attns is a list of 5 tensors, each (batch_size, 4, 62, 62)
+                    # Stack them to shape (batch_size, 5, 4, 62, 62)
+                    batch_attn = torch.stack(spatial_attns, dim=1)
+                    y_attn_fold.append(batch_attn.cpu().numpy())
+                    
+                    probs = F.softmax(out, dim=-1)
+                    preds = out.argmax(dim=-1)
+                    
+                    y_true_fold.extend(batch_y.numpy())
+                    y_pred_fold.extend(preds.cpu().numpy())
+                    y_prob_fold.extend(probs.cpu().numpy())
+                    
+            # Concatenate fold attentions
+            val_attentions_all = np.concatenate(y_attn_fold, axis=0) # (N_val, 5, 4, 62, 62)
+            y_true_fold_arr = np.array(y_true_fold)
+            y_pred_fold_arr = np.array(y_pred_fold)
+            y_prob_fold_arr = np.array(y_prob_fold)
         
-        with torch.no_grad():
-            for batch_x, batch_y, batch_sub in test_loader:
-                batch_x = batch_x.to(device)
-                out, _, spatial_attns = model(batch_x, adj_matrix_torch, batch_sub)
-                
-                probs = F.softmax(out, dim=-1)
-                preds = out.argmax(dim=-1)
-                
-                y_true_fold.extend(batch_y.numpy())
-                y_pred_fold.extend(preds.cpu().numpy())
-                y_prob_fold.extend(probs.cpu().numpy())
-                
-        # Print progress
-        fold_acc = np.mean(np.array(y_true_fold) == np.array(y_pred_fold))
-        print(f"  Fold {fold+1} Test Accuracy: {fold_acc:.2%}", flush=True)
+        fold_acc = np.mean(y_true_fold_arr == y_pred_fold_arr)
+        fold_prec, fold_rec, fold_f1, _ = precision_recall_fscore_support(
+            y_true_fold_arr, y_pred_fold_arr, average='macro', zero_division=0
+        )
+        try:
+            fold_auc = roc_auc_score(y_true_fold_arr, y_prob_fold_arr, average='macro', multi_class='ovr')
+        except Exception:
+            fold_auc = 0.5
+            
+        print(f"  [FOLD COMPLETE] {protocol_name} | {version_name} | Fold {fold+1}/5 | Test Acc: {fold_acc:.4f} | Test F1: {fold_f1:.4f}", flush=True)
         
+        # Save per-fold checkpoints to checkpoints/ folder
+        checkpoint_dir = "checkpoints"
+        os.makedirs(checkpoint_dir, exist_ok=True)
+        
+        # 1. Weights
+        weights_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_weights.pt")
+        torch.save(model.state_dict(), weights_file)
+        
+        # 2. Predictions
+        preds_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_predictions.npz")
+        np.savez(preds_file, y_true=y_true_fold_arr, y_pred=y_pred_fold_arr, y_prob=y_prob_fold_arr)
+        
+        # 3. Attentions
+        attn_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_attentions.npy")
+        np.save(attn_file, val_attentions_all)
+        
+        # 4. Blended Adjacency
+        adj_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_blended_adj.npy")
+        np.save(adj_file, A_blended)
+        
+        # 5. Metrics
+        metrics_file = os.path.join(checkpoint_dir, f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_metrics.json")
+        fold_metrics = {
+            "accuracy": float(fold_acc),
+            "precision": float(fold_prec),
+            "recall": float(fold_rec),
+            "f1": float(fold_f1),
+            "auc": float(fold_auc)
+        }
+        with open(metrics_file, "w") as f:
+            json.dump(fold_metrics, f, indent=4)
+            
         y_true_all.extend(y_true_fold)
         y_pred_all.extend(y_pred_fold)
         y_prob_all.extend(y_prob_fold)
@@ -726,28 +888,29 @@ def run_experiment(features, labels, subject_ids, session_nums, trial_ids,
     prefix = f"gatkanv2_{version_name}_{protocol_name}"
     save_evaluation_plots(y_true_all, y_pred_all, y_prob_all, prefix, figures_dir)
     
-    # Plot loss / accuracy curves over folds
-    plt.figure(figsize=(10, 4.5))
-    plt.subplot(1, 2, 1)
-    for f in range(5):
-        plt.plot(fold_train_histories[f]['loss'], label=f'F{f+1} Train', alpha=0.5)
-        plt.plot(fold_val_histories[f]['loss'], label=f'F{f+1} Val', linestyle='dashed', alpha=0.5)
-    plt.title('Training and Validation Loss')
-    plt.xlabel('Epoch')
-    plt.ylabel('Loss')
-    plt.grid(linestyle='--', alpha=0.5)
-    
-    plt.subplot(1, 2, 2)
-    for f in range(5):
-        plt.plot(fold_train_histories[f]['acc'], label=f'F{f+1} Train', alpha=0.5)
-        plt.plot(fold_val_histories[f]['acc'], label=f'F{f+1} Val', linestyle='dashed', alpha=0.5)
-    plt.title('Training and Validation Accuracy')
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.grid(linestyle='--', alpha=0.5)
-    plt.tight_layout()
-    plt.savefig(os.path.join(figures_dir, f"{prefix}_training_curves.png"), dpi=300)
-    plt.close()
+    # Plot loss / accuracy curves over folds if full training histories are available
+    if len(fold_train_histories) == 5:
+        plt.figure(figsize=(10, 4.5))
+        plt.subplot(1, 2, 1)
+        for f in range(5):
+            plt.plot(fold_train_histories[f]['loss'], label=f'F{f+1} Train', alpha=0.5)
+            plt.plot(fold_val_histories[f]['loss'], label=f'F{f+1} Val', linestyle='dashed', alpha=0.5)
+        plt.title('Training and Validation Loss')
+        plt.xlabel('Epoch')
+        plt.ylabel('Loss')
+        plt.grid(linestyle='--', alpha=0.5)
+        
+        plt.subplot(1, 2, 2)
+        for f in range(5):
+            plt.plot(fold_train_histories[f]['acc'], label=f'F{f+1} Train', alpha=0.5)
+            plt.plot(fold_val_histories[f]['acc'], label=f'F{f+1} Val', linestyle='dashed', alpha=0.5)
+        plt.title('Training and Validation Accuracy')
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.grid(linestyle='--', alpha=0.5)
+        plt.tight_layout()
+        plt.savefig(os.path.join(figures_dir, f"{prefix}_training_curves.png"), dpi=300)
+        plt.close()
     
     # Save metrics to JSON/CSV for explainability mapping
     metrics_data = {
@@ -765,6 +928,9 @@ def run_experiment(features, labels, subject_ids, session_nums, trial_ids,
         "auc_ci": ci_auc
     }
     
+    # Print one-line configuration summary
+    print(f"\n>>> [CONFIGURATION COMPLETE] {protocol_name.upper()} | {version_name.upper()} => Overall Acc: {acc:.4f} (95% CI: [{ci_acc[0]:.4f}, {ci_acc[1]:.4f}]), Overall Macro F1: {f1:.4f} (95% CI: [{ci_f1[0]:.4f}, {ci_f1[1]:.4f}])\n", flush=True)
+
     # Return metrics
     return metrics_data
 
@@ -837,6 +1003,49 @@ def main():
     # Save all raw metric values to JSON file
     with open("gatkanv2_metrics_results.json", "w") as f:
         json.dump(results, f, indent=4)
+        
+    print("\n" + "=" * 70, flush=True)
+    print("FINAL SUMMARY TABLE (4 CONFIGURATIONS x 5 FOLDS)", flush=True)
+    print("=" * 70, flush=True)
+    print(f"{'Configuration':<45} | {'Fold 1':<8} | {'Fold 2':<8} | {'Fold 3':<8} | {'Fold 4':<8} | {'Fold 5':<8} | {'Mean ± Std':<15}", flush=True)
+    print("-" * 115, flush=True)
+    
+    configs_keys = [
+        ("subject-dependent", "versionA", "Subj-Dep (Clean, Version A)"),
+        ("subject-dependent", "versionB", "Subj-Dep (Aug, Version B)"),
+        ("cross-subject", "versionA", "Cross-Subj (Clean, Version A)"),
+        ("cross-subject", "versionB", "Cross-Subj (Aug, Version B)"),
+    ]
+    
+    for protocol_name, version_name, display_name in configs_keys:
+        accs = []
+        f1s = []
+        fold_acc_strs = []
+        for fold in range(5):
+            metrics_file = os.path.join("checkpoints", f"gatkanv2_{version_name}_{protocol_name}_fold{fold+1}_metrics.json")
+            if os.path.exists(metrics_file):
+                with open(metrics_file, "r") as f:
+                    m = json.load(f)
+                accs.append(m["accuracy"])
+                f1s.append(m["f1"])
+                fold_acc_strs.append(f"{m['accuracy']:.4f}")
+            else:
+                fold_acc_strs.append("N/A")
+                
+        if len(accs) == 5:
+            mean_acc = np.mean(accs)
+            std_acc = np.std(accs)
+            mean_f1 = np.mean(f1s)
+            std_f1 = np.std(f1s)
+            summary_str = f"{mean_acc:.4f} ± {std_acc:.4f}"
+            f1_summary_str = f"F1: {mean_f1:.4f} ± {std_f1:.4f}"
+        else:
+            summary_str = "N/A"
+            f1_summary_str = "N/A"
+            
+        print(f"{display_name:<45} | {' | '.join(fold_acc_strs)} | {summary_str}", flush=True)
+        print(f"{'  (Macro F1)':<45} | " + " | ".join([f"{f:.4f}" if isinstance(f, float) else "N/A" for f in f1s]) + f" | {f1_summary_str}", flush=True)
+        print("-" * 115, flush=True)
         
     print("\n" + "=" * 70, flush=True)
     print("GAT-KAN v2 Model Training Run Checkpoints & Sanity Gate", flush=True)

@@ -1,6 +1,23 @@
+# Python bytecode & cache
 __pycache__/
-venv/
 *.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Editor / IDE
 .vscode/
-*.npz
+.idea/
+
+# Temporary / Scratch scripts
+scratch/
+
+# Raw dataset files & huge intermediate evaluation tensors (>100MB)
 eeg_feature_smooth/
+*_attentions.npy
+seed_iv_processed.npz
+
