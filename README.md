@@ -18,8 +18,8 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 
 | Model Architecture | Model Family / Mechanism | Subject-Dependent Accuracy (95% CI) | Cross-Subject Accuracy (95% CI) | Subject-Dependent Macro-F1 (95% CI) | Cross-Subject Macro-F1 (95% CI) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| **Spatial-Temporal 2D-CNN-BiGRU** | 2D Spatial Grid + Bi-GRU ($T=8$) | **48.78%** [47.29%, 50.26%] | — | **0.4659** [0.4517, 0.4798] | — |
-| **Spatial-Temporal CDAN (5-Fold CV)** | 2D Spatial + Bi-GRU + CDAN ($512\text{D}$) | — | **36.07%** [35.33%, 36.82%] | — | **0.3554** [0.3480, 0.3629] |
+| **Spatial-Temporal 2D-CNN-BiGRU** | 2D Spatial Grid + Bi-GRU (Stratified 4-Fold CV) | **51.41%** [50.90%, 51.92%] | — | **0.5104** [0.5050, 0.5154] | — |
+| **Spatial-Temporal CDAN (5-Fold CV)** | 2D Spatial + Bi-GRU + CDAN (10-ep Warmup) | — | **35.17%** [34.68%, 35.68%] | — | **0.3479** [0.3431, 0.3530] |
 | **Calibrated Inductive DANN** ($w_{\text{dom}}=0.1$) | Adversarial MLP / 130.7K | **65.53%** [65.04%, 65.99%] | **38.41%** [37.93%, 38.89%] | **0.6538** [0.6488, 0.6585] | **0.3825** [0.3776, 0.3874] |
 | **LightGBM** | GBDT / Tabular Ensembling | **61.30%** [60.79%, 61.81%] | **38.23%** [37.74%, 38.72%] | **0.6105** [0.6055, 0.6156] | **0.3811** [0.3763, 0.3860] |
 | **Compact EEGNet** | CNN / 1.5K params | **58.24%** [57.75%, 58.73%] | **34.68%** [34.23%, 35.14%] | **0.5793** [0.5746, 0.5840] | **0.3456** [0.3409, 0.3503] |
@@ -30,13 +30,14 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 | **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **66.58%** [66.09%, 67.07%] | **40.52%** [40.03%, 40.99%] | **0.6625** [0.6578, 0.6677] | **0.4061** [0.4012, 0.4107] |
 | **3-Model Weighted Synergy** | Tuned Optimal Weights | **68.09%** [67.61%, 68.54%] | **41.09%** [40.60%, 41.58%] | **0.6780** [0.6732, 0.6826] | **0.4126** [0.4078, 0.4175] |
 
-> **Top Intra-Session Performances (Spatial-Temporal 2D-CNN-BiGRU)**:
-> - Subject 15 Session 2: **97.39%** Accuracy ($N_{\text{test}}=115$)
-> - Subject 14 Session 3: **87.74%** Accuracy ($N_{\text{test}}=106$)
-> - Subject 03 Session 2: **86.96%** Accuracy ($N_{\text{test}}=115$)
-> - Subject 02 Session 2: **84.35%** Accuracy ($N_{\text{test}}=115$)
-> - Subject 05 Session 2: **84.35%** Accuracy ($N_{\text{test}}=115$)
-> - Subject 10 Session 2: **80.00%** Accuracy ($N_{\text{test}}=115$)
+> **Top Intra-Session Performances (Spatial-Temporal 2D-CNN-BiGRU, Stratified 4-Fold CV)**:
+> - Subject 07 Session 3: **77.73%** Accuracy, **0.7716** Macro-F1 ($N=750$)
+> - Subject 15 Session 2: **76.45%** Accuracy, **0.7551** Macro-F1 ($N=760$)
+> - Subject 15 Session 3: **74.67%** Accuracy, **0.7162** Macro-F1 ($N=750$)
+> - Subject 14 Session 3: **74.00%** Accuracy, **0.7252** Macro-F1 ($N=750$)
+> - Subject 06 Session 2: **70.13%** Accuracy, **0.6986** Macro-F1 ($N=760$)
+> - Subject 01 Session 3: **67.73%** Accuracy, **0.6641** Macro-F1 ($N=750$)
+> - Subject 06 Session 3: **66.80%** Accuracy, **0.6856** Macro-F1 ($N=750$)
 
 > **3-Model Synergy Optimal Weights**:
 > - *Subject-Dependent*: $\alpha_{\text{DANN}}=0.44, \alpha_{\text{LGB}}=0.34, \alpha_{\text{EEGNet}}=0.22 \implies \mathbf{68.09\%}$ Accuracy ($+2.56\%$ over standalone DANN).

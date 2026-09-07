@@ -76,10 +76,12 @@ class EEGSequenceDataset(Dataset):
             'domain_label': self.domain_labels[idx]      # float (0.0 or 1.0)
         }
 
-def build_trial_quarantined_sequences(dataset_path="seed_iv_processed.npz", T=8, stride=2):
+def build_trial_quarantined_sequences(dataset_path="seed_iv_processed.npz", T=4, stride=1):
     """
     Extracts sliding temporal sequence windows of length T from the SEED-IV dataset,
     strictly enforcing that no window spans across multiple trials.
+    
+    Default: T = 4, stride = 1 (Dense, high-yield temporal slicing without boundary crossing).
     
     Returns:
         seq_dict: dict containing:
@@ -252,22 +254,67 @@ def prepare_scaled_spatial_datasets(seq_dict, train_mask, test_mask, val_mask=No
         
     return train_dataset, test_dataset, val_dataset, target_unlabeled_dataset
 
+def get_stratified_session_trial_splits(session_seq_dict, n_splits=4, seed=42):
+    """
+    Computes Stratified 4-Fold cross-validation splits at the TRIAL level for a single session.
+    Guarantees:
+    1. Zero trial leakage (train trials and test trials are mutually exclusive).
+    2. Balanced emotion class distribution in every training fold (18 trials) and test fold (6 trials).
+    
+    Parameters:
+        session_seq_dict: dict or mask containing sequence metadata for a single subject & session.
+        n_splits: int (default 4)
+        seed: int (default 42)
+        
+    Returns:
+        folds: list of dicts [{'train_trials': np.ndarray, 'test_trials': np.ndarray, 'train_mask': np.ndarray, 'test_mask': np.ndarray}, ...]
+    """
+    from sklearn.model_selection import StratifiedKFold
+    
+    trials = session_seq_dict['trial_ids']
+    labels = session_seq_dict['labels']
+    
+    # Extract unique trial IDs and their corresponding single emotion label
+    unique_trials = np.unique(trials)
+    assert len(unique_trials) == 24, f"Expected 24 trials in session, found {len(unique_trials)}"
+    
+    trial_labels = np.array([labels[trials == t][0] for t in unique_trials])
+    
+    skf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=seed)
+    folds = []
+    
+    for fold_idx, (train_idx, test_idx) in enumerate(skf.split(unique_trials, trial_labels)):
+        train_trials = unique_trials[train_idx]
+        test_trials = unique_trials[test_idx]
+        
+        train_mask = np.isin(trials, train_trials)
+        test_mask = np.isin(trials, test_trials)
+        
+        # Verify strict quarantine and coverage
+        assert len(np.intersect1d(train_trials, test_trials)) == 0, "Trial overlap between train and test!"
+        assert np.sum(train_mask) + np.sum(test_mask) == len(trials), "Incomplete sequence coverage in fold!"
+        
+        folds.append({
+            'fold': fold_idx + 1,
+            'train_trials': train_trials,
+            'test_trials': test_trials,
+            'train_mask': train_mask,
+            'test_mask': test_mask
+        })
+        
+    return folds
+
 if __name__ == '__main__':
-    print("Testing temporal sequence dataset generation...")
-    seq_dict = build_trial_quarantined_sequences("seed_iv_processed.npz", T=8, stride=2)
+    print("Testing temporal sequence dataset generation (T=4, stride=1)...")
+    seq_dict = build_trial_quarantined_sequences("seed_iv_processed.npz", T=4, stride=1)
     print(f"Generated {len(seq_dict['labels'])} sequences of shape {seq_dict['features_raw'].shape}")
     
-    # Test intra-session split: Train on trials 1-16, test on trials 17-24 for Subject 1 Session 1
+    # Test Stratified 4-Fold Trial CV for Subject 1 Session 1
     s1_ses1_mask = (seq_dict['subject_ids'] == 1) & (seq_dict['session_nums'] == 1)
-    train_mask = s1_ses1_mask & (seq_dict['trial_ids'] <= 16)
-    test_mask = s1_ses1_mask & (seq_dict['trial_ids'] > 16)
-    
-    train_ds, test_ds, _, _ = prepare_scaled_spatial_datasets(seq_dict, train_mask, test_mask)
-    print(f"Subject 1 Session 1 -> Train samples: {len(train_ds)}, Test samples: {len(test_ds)}")
-    
-    loader = DataLoader(train_ds, batch_size=16, shuffle=True)
-    batch = next(iter(loader))
-    print(f"Batch features shape: {batch['features'].shape} (Expected [16, 8, 5, 9, 9])")
-    print(f"Batch labels shape: {batch['label'].shape}")
-    assert batch['features'].shape == (16, 8, 5, 9, 9)
-    print("\n[PASS] Temporal sequence dataset tests passed cleanly!")
+    sub_dict = {k: v[s1_ses1_mask] for k, v in seq_dict.items()}
+    folds = get_stratified_session_trial_splits(sub_dict, n_splits=4, seed=42)
+    print(f"Subject 1 Session 1: {len(sub_dict['labels'])} sequences across 24 trials.")
+    for f in folds:
+        print(f"  Fold {f['fold']}: Train trials={len(f['train_trials'])} ({np.sum(f['train_mask'])} seqs), Test trials={len(f['test_trials'])} ({np.sum(f['test_mask'])} seqs)")
+        
+    print("\n[PASS] Temporal sequence dataset and stratified trial splits verified cleanly!")

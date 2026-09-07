@@ -1,397 +1,356 @@
 {
-  "accuracy": 0.4877742946708464,
-  "precision": 0.47540043521353215,
-  "recall": 0.48417959118746523,
-  "f1": 0.46585040398964683,
-  "auc": 0.7270299989464688,
-  "kappa": 0.31271755870129325,
+  "accuracy": 0.5141400902868792,
+  "precision": 0.5104218573132467,
+  "recall": 0.5110207619259477,
+  "f1": 0.510416237508003,
+  "auc": 0.7451168135709334,
+  "kappa": 0.3503501516078269,
   "accuracy_ci": [
-    0.47292580982236154,
-    0.5026123301985371
+    0.5089544196883646,
+    0.5191786806465706
   ],
   "precision_ci": [
-    0.46166394062340105,
-    0.4896887794109433
+    0.5050120179258314,
+    0.5154204377225174
   ],
   "recall_ci": [
-    0.4697400599583377,
-    0.499058343143993
+    0.5055478467303994,
+    0.5160007159823999
   ],
   "f1_ci": [
-    0.451693015799781,
-    0.479767593768166
+    0.5050083092559519,
+    0.5153935349622646
   ],
   "auc_ci": [
-    0.7173393850677524,
-    0.7372390323442259
+    0.7413231678471255,
+    0.7486771951637768
   ],
   "kappa_ci": [
-    0.29343389563593003,
-    0.33158907297194723
+    0.3433000131578057,
+    0.35704637195264516
   ],
-  "total_runs": 45,
-  "total_test_samples": 4785,
-  "elapsed_seconds": 329.2445020675659,
+  "total_sessions": 45,
+  "total_test_samples": 34335,
+  "elapsed_seconds": 2095.3920543193817,
   "session_breakdown": [
     {
       "subject": 1,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.25510204081632654,
-      "macro_f1": 0.25
+      "n_samples": 779,
+      "accuracy": 0.55198973042362,
+      "macro_f1": 0.5417705430252525
     },
     {
       "subject": 1,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.6086956521739131,
-      "macro_f1": 0.46282289139432
+      "n_samples": 760,
+      "accuracy": 0.506578947368421,
+      "macro_f1": 0.5081461360527615
     },
     {
       "subject": 1,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.6037735849056604,
-      "macro_f1": 0.5107334525939178
+      "n_samples": 750,
+      "accuracy": 0.6773333333333333,
+      "macro_f1": 0.6640868680176102
     },
     {
       "subject": 2,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.4387755102040816,
-      "macro_f1": 0.40090422133765785
+      "n_samples": 779,
+      "accuracy": 0.6290115532734275,
+      "macro_f1": 0.5480318240639859
     },
     {
       "subject": 2,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.8434782608695652,
-      "macro_f1": 0.6776619545479898
+      "n_samples": 760,
+      "accuracy": 0.5789473684210527,
+      "macro_f1": 0.5742176049264387
     },
     {
       "subject": 2,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.42452830188679247,
-      "macro_f1": 0.4560810810810811
+      "n_samples": 750,
+      "accuracy": 0.516,
+      "macro_f1": 0.5429808636280196
     },
     {
       "subject": 3,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.17346938775510204,
-      "macro_f1": 0.1697674418604651
+      "n_samples": 779,
+      "accuracy": 0.3363286264441592,
+      "macro_f1": 0.33233429362118705
     },
     {
       "subject": 3,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.8695652173913043,
-      "macro_f1": 0.8616212871287128
+      "n_samples": 760,
+      "accuracy": 0.6131578947368421,
+      "macro_f1": 0.600890568836633
     },
     {
       "subject": 3,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.4528301886792453,
-      "macro_f1": 0.2952699474438605
+      "n_samples": 750,
+      "accuracy": 0.42,
+      "macro_f1": 0.4062762559876993
     },
     {
       "subject": 4,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.3673469387755102,
-      "macro_f1": 0.26344086021505375
+      "n_samples": 779,
+      "accuracy": 0.5930680359435173,
+      "macro_f1": 0.5441124783040363
     },
     {
       "subject": 4,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.3130434782608696,
-      "macro_f1": 0.29083245521601686
+      "n_samples": 760,
+      "accuracy": 0.4605263157894737,
+      "macro_f1": 0.4520146081427871
     },
     {
       "subject": 4,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.7358490566037735,
-      "macro_f1": 0.5825174825174825
+      "n_samples": 750,
+      "accuracy": 0.5613333333333334,
+      "macro_f1": 0.5421493916834943
     },
     {
       "subject": 5,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.061224489795918366,
-      "macro_f1": 0.0967741935483871
+      "n_samples": 779,
+      "accuracy": 0.5648267008985879,
+      "macro_f1": 0.5611316372154366
     },
     {
       "subject": 5,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.8434782608695652,
-      "macro_f1": 0.8270408163265306
+      "n_samples": 760,
+      "accuracy": 0.4986842105263158,
+      "macro_f1": 0.5112419694077878
     },
     {
       "subject": 5,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.3490566037735849,
-      "macro_f1": 0.36536524591979397
+      "n_samples": 750,
+      "accuracy": 0.5293333333333333,
+      "macro_f1": 0.5239532656322134
     },
     {
       "subject": 6,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.061224489795918366,
-      "macro_f1": 0.0375
+      "n_samples": 779,
+      "accuracy": 0.32734274711168165,
+      "macro_f1": 0.3171949523373614
     },
     {
       "subject": 6,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
+      "n_samples": 760,
+      "accuracy": 0.7013157894736842,
+      "macro_f1": 0.6986133193231456
+    },
+    {
+      "subject": 6,
+      "session": 3,
+      "n_samples": 750,
+      "accuracy": 0.668,
+      "macro_f1": 0.6856429247466668
+    },
+    {
+      "subject": 7,
+      "session": 1,
+      "n_samples": 779,
+      "accuracy": 0.39666238767650835,
+      "macro_f1": 0.3753475243285235
+    },
+    {
+      "subject": 7,
+      "session": 2,
+      "n_samples": 760,
+      "accuracy": 0.5039473684210526,
+      "macro_f1": 0.5102399155843417
+    },
+    {
+      "subject": 7,
+      "session": 3,
+      "n_samples": 750,
+      "accuracy": 0.7773333333333333,
+      "macro_f1": 0.7716489499611097
+    },
+    {
+      "subject": 8,
+      "session": 1,
+      "n_samples": 779,
+      "accuracy": 0.5545571245186136,
+      "macro_f1": 0.4945670059790443
+    },
+    {
+      "subject": 8,
+      "session": 2,
+      "n_samples": 760,
+      "accuracy": 0.625,
+      "macro_f1": 0.6257252579799175
+    },
+    {
+      "subject": 8,
+      "session": 3,
+      "n_samples": 750,
       "accuracy": 0.6,
-      "macro_f1": 0.6127984084880637
-    },
-    {
-      "subject": 6,
-      "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.7358490566037735,
-      "macro_f1": 0.42701754385964913
-    },
-    {
-      "subject": 7,
-      "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.4489795918367347,
-      "macro_f1": 0.3282861531709458
-    },
-    {
-      "subject": 7,
-      "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.5565217391304348,
-      "macro_f1": 0.5026115189158668
-    },
-    {
-      "subject": 7,
-      "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.6320754716981132,
-      "macro_f1": 0.3087662337662338
-    },
-    {
-      "subject": 8,
-      "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.40816326530612246,
-      "macro_f1": 0.3137025012025012
-    },
-    {
-      "subject": 8,
-      "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.5478260869565217,
-      "macro_f1": 0.4194945054945055
-    },
-    {
-      "subject": 8,
-      "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.5754716981132075,
-      "macro_f1": 0.4296846011131725
+      "macro_f1": 0.5945719989529982
     },
     {
       "subject": 9,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.5306122448979592,
-      "macro_f1": 0.5197395618023977
+      "n_samples": 779,
+      "accuracy": 0.5198973042362003,
+      "macro_f1": 0.524698400273773
     },
     {
       "subject": 9,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.391304347826087,
-      "macro_f1": 0.317911032382155
+      "n_samples": 760,
+      "accuracy": 0.5513157894736842,
+      "macro_f1": 0.5160856030739673
     },
     {
       "subject": 9,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.5188679245283019,
-      "macro_f1": 0.41532388011601673
+      "n_samples": 750,
+      "accuracy": 0.5613333333333334,
+      "macro_f1": 0.5554890285931351
     },
     {
       "subject": 10,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.24489795918367346,
-      "macro_f1": 0.17632978723404255
+      "n_samples": 779,
+      "accuracy": 0.5596919127086007,
+      "macro_f1": 0.5578115352637882
     },
     {
       "subject": 10,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.8,
-      "macro_f1": 0.6263736263736264
+      "n_samples": 760,
+      "accuracy": 0.5105263157894737,
+      "macro_f1": 0.46205875880663017
     },
     {
       "subject": 10,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.6320754716981132,
-      "macro_f1": 0.3213054187192118
+      "n_samples": 750,
+      "accuracy": 0.44133333333333336,
+      "macro_f1": 0.42679225108707197
     },
     {
       "subject": 11,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.2857142857142857,
-      "macro_f1": 0.24126984126984125
+      "n_samples": 779,
+      "accuracy": 0.46598202824133506,
+      "macro_f1": 0.4413767406922819
     },
     {
       "subject": 11,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.391304347826087,
-      "macro_f1": 0.28810541310541316
+      "n_samples": 760,
+      "accuracy": 0.22105263157894736,
+      "macro_f1": 0.22180884175401333
     },
     {
       "subject": 11,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.5188679245283019,
-      "macro_f1": 0.45835495588998443
+      "n_samples": 750,
+      "accuracy": 0.38,
+      "macro_f1": 0.33952164396225903
     },
     {
       "subject": 12,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.7244897959183674,
-      "macro_f1": 0.635593220338983
+      "n_samples": 779,
+      "accuracy": 0.5237483953786907,
+      "macro_f1": 0.49082156979439706
     },
     {
       "subject": 12,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.17391304347826086,
-      "macro_f1": 0.13157894736842105
+      "n_samples": 760,
+      "accuracy": 0.11710526315789474,
+      "macro_f1": 0.10980807266023862
     },
     {
       "subject": 12,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.0,
-      "macro_f1": 0.0
+      "n_samples": 750,
+      "accuracy": 0.22266666666666668,
+      "macro_f1": 0.1868892142444713
     },
     {
       "subject": 13,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.30612244897959184,
-      "macro_f1": 0.2487190748060313
+      "n_samples": 779,
+      "accuracy": 0.38767650834403083,
+      "macro_f1": 0.39587288312140867
     },
     {
       "subject": 13,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.23478260869565218,
-      "macro_f1": 0.16140350877192983
+      "n_samples": 760,
+      "accuracy": 0.30657894736842106,
+      "macro_f1": 0.2263315699198273
     },
     {
       "subject": 13,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.25471698113207547,
-      "macro_f1": 0.22650602409638554
+      "n_samples": 750,
+      "accuracy": 0.5226666666666666,
+      "macro_f1": 0.4958353491097074
     },
     {
       "subject": 14,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.25510204081632654,
-      "macro_f1": 0.20161290322580644
+      "n_samples": 779,
+      "accuracy": 0.38382541720154045,
+      "macro_f1": 0.38612359270719576
     },
     {
       "subject": 14,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.6086956521739131,
-      "macro_f1": 0.4376657824933687
+      "n_samples": 760,
+      "accuracy": 0.6355263157894737,
+      "macro_f1": 0.5913494074282395
     },
     {
       "subject": 14,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.8773584905660378,
-      "macro_f1": 0.8859395594050085
+      "n_samples": 750,
+      "accuracy": 0.74,
+      "macro_f1": 0.7252194205867211
     },
     {
       "subject": 15,
       "session": 1,
-      "n_train": 259,
-      "n_test": 98,
-      "accuracy": 0.41836734693877553,
-      "macro_f1": 0.39723415844580284
+      "n_samples": 779,
+      "accuracy": 0.40436456996148906,
+      "macro_f1": 0.40514191930833565
     },
     {
       "subject": 15,
       "session": 2,
-      "n_train": 234,
-      "n_test": 115,
-      "accuracy": 0.9739130434782609,
-      "macro_f1": 0.9600630452391704
+      "n_samples": 760,
+      "accuracy": 0.7644736842105263,
+      "macro_f1": 0.7551279507928896
     },
     {
       "subject": 15,
       "session": 3,
-      "n_train": 239,
-      "n_test": 106,
-      "accuracy": 0.6037735849056604,
-      "macro_f1": 0.5685736677115988
+      "n_samples": 750,
+      "accuracy": 0.7466666666666667,
+      "macro_f1": 0.716157433563396
     }
-  ]
+  ],
+  "mean_session_acc": 0.5146157752103836,
+  "std_session_acc": 0.14443983853015516,
+  "mean_session_f1": 0.49904914098849334,
+  "std_session_f1": 0.1465972482794602
 }
