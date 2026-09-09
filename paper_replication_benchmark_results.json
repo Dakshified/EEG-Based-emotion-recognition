@@ -1,0 +1,323 @@
+{
+  "protocol": "Sample-Level Shuffled Stratified 80/20 Train/Test Split (Standard Literature Benchmark)",
+  "dataset": "SEED-IV (62 Channels x 5 Frequency Bands = 310 DE Features, 4 Classes)",
+  "total_samples": 37575,
+  "total_test_samples": 7515,
+  "elapsed_seconds": 281.602112531662,
+  "lightgbm": {
+    "accuracy": 0.9998669328010645,
+    "precision": 0.9998428661219358,
+    "recall": 0.9998644986449865,
+    "f1": 0.9998536393190491,
+    "auc": 1.0,
+    "kappa": 0.9998220044431386,
+    "accuracy_ci": [
+      0.9996007984031936,
+      1.0
+    ],
+    "precision_ci": [
+      0.9995161055737432,
+      1.0
+    ],
+    "recall_ci": [
+      0.9995862578840817,
+      1.0
+    ],
+    "f1_ci": [
+      0.9995538195616336,
+      1.0
+    ],
+    "auc_ci": [
+      1.0,
+      1.0
+    ],
+    "kappa_ci": [
+      0.9994654254974528,
+      1.0
+    ],
+    "mean_subject_acc": 0.9998669328010644,
+    "std_subject_acc": 0.0004978918678342037,
+    "mean_subject_f1": 0.9998537255277697,
+    "std_subject_f1": 0.0005473089595166057,
+    "per_subject_breakdown": [
+      {
+        "subject": 1,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 2,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 3,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 4,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 5,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 0.998003992015968,
+        "macro_f1": 0.9978058829165469,
+        "kappa": 0.9973302923889353
+      },
+      {
+        "subject": 6,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 7,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 8,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 9,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 10,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 11,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 12,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 13,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 14,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 15,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      }
+    ]
+  },
+  "shallow_mlp": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0,
+    "auc": 1.0,
+    "kappa": 1.0,
+    "accuracy_ci": [
+      1.0,
+      1.0
+    ],
+    "precision_ci": [
+      1.0,
+      1.0
+    ],
+    "recall_ci": [
+      1.0,
+      1.0
+    ],
+    "f1_ci": [
+      1.0,
+      1.0
+    ],
+    "auc_ci": [
+      1.0,
+      1.0
+    ],
+    "kappa_ci": [
+      1.0,
+      1.0
+    ],
+    "mean_subject_acc": 1.0,
+    "std_subject_acc": 0.0,
+    "mean_subject_f1": 1.0,
+    "std_subject_f1": 0.0,
+    "per_subject_breakdown": [
+      {
+        "subject": 1,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 2,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 3,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 4,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 5,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 6,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 7,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 8,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 9,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 10,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 11,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 12,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 13,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 14,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      },
+      {
+        "subject": 15,
+        "n_train": 2004,
+        "n_test": 501,
+        "accuracy": 1.0,
+        "macro_f1": 1.0,
+        "kappa": 1.0
+      }
+    ]
+  }
+}

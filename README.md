@@ -43,6 +43,17 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 > - *Subject-Dependent*: $\alpha_{\text{DANN}}=0.44, \alpha_{\text{LGB}}=0.34, \alpha_{\text{EEGNet}}=0.22 \implies \mathbf{68.09\%}$ Accuracy ($+2.56\%$ over standalone DANN).
 > - *Cross-Subject*: $\alpha_{\text{DANN}}=0.04, \alpha_{\text{LGB}}=0.54, \alpha_{\text{EEGNet}}=0.42 \implies \mathbf{41.09\%}$ Accuracy ($+2.68\%$ over standalone DANN).
 
+### Literature Paper Replication Benchmark (Sample-Level Shuffled Split)
+
+To investigate why many SEED-IV publications report **95%+ accuracy**, we implemented the exact protocol commonly found in literature (random 80/20 sample shuffling per subject across all sessions):
+
+| Model Architecture | Partitioning Protocol | Accuracy (95% CI) | Macro-F1 (95% CI) | Macro ROC-AUC (95% CI) | Cohen's $\kappa$ (95% CI) | Status / Generalization Target |
+| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
+| **LightGBM** | Sample-Level Shuffled 80/20 | **99.99%** [99.96%, 100.00%] | **0.9999** [0.9996, 1.0000] | **1.0000** [1.0000, 1.0000] | **0.9998** [0.9995, 1.0000] | Frame Interpolation / Trial Memorization |
+| **Shallow MLP** | Sample-Level Shuffled 80/20 | **100.00%** [100.00%, 100.00%] | **1.0000** [1.0000, 1.0000] | **1.0000** [1.0000, 1.0000] | **1.0000** [1.0000, 1.0000] | Frame Interpolation / Trial Memorization |
+
+> **Scientific Insight**: In SEED-IV, DE features undergo moving-average temporal smoothing across consecutive 1-second frames within each continuous trial ($\rho > 0.99$). When samples are randomly shuffled, adjacent seconds of the *same* trial are split into train and test sets, enabling classifiers to achieve near-100% accuracy via temporal interpolation. Under rigorous **trial-quarantined** evaluation (where test trials and subjects are strictly out-of-sample), true state-of-the-art performance is **68.09%** (Subject-Dependent) and **41.09%** (Cross-Subject).
+
 > **Notice on Few-Shot Calibration**: The Few-Shot Calibration experiment (`evaluate_few_shot_calibration.py`) is INCOMPLETE -- a confirmed statistical inconsistency in the confidence interval computation was found and the experiment was halted pending investigation. Results are not yet valid and are excluded pending a fix.
 
 ---
@@ -107,11 +118,12 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ```
 ├── checkpoints/                 # Saved PyTorch model checkpoints (.pt)
 │   └── dann_final/              # 10 verified Calibrated DANN fold models
-├── figures/                     # 151 publication-quality 300 DPI evaluation figures
+├── figures/                     # 154 publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
+│   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
 │   └── responsible_ai/          # ECE reliability diagrams & selective abstention curves
 ├── granger_cache/               # Causal functional connectivity matrices
 ├── reference reseach papers/    # Reviewed academic literature
@@ -119,6 +131,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
 ├── train_upgraded_benchmarks.py # Dual-regime unified benchmark trainer & bootstrap CI evaluator
+├── evaluate_paper_replication_benchmark.py # Literature replication benchmark (sample-level 80/20)
 ├── train_final_dann.py          # Primary DANN model training pipeline (10 folds)
 ├── train_gat_kan_v2.py          # Proposed GAT-KAN v2 architecture
 ├── baseline_*.py                # 6 comparative baseline implementations
@@ -131,6 +144,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Literature Paper Replication Benchmark (95%+ Comparison Protocol)**:
+  ```bash
+  python evaluate_paper_replication_benchmark.py
+  ```
 * **Run Upgraded Spatial-Temporal 2D-CNN-BiGRU & CDAN Benchmarks**:
   ```bash
   # Run full dual-regime benchmarks (Regime A Intra-Session + Regime B CDAN Cross-Subject):
@@ -167,8 +184,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ## 5. Key Documentation & Artifacts
 
-* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, and ensemble synergies.
+* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, and literature replication analyses.
 * **Structured Results**:
+  * `paper_replication_benchmark_results.json` / `paper_replication_benchmark_results.csv`
   * `dann_final_results.json` / `dann_final_results.csv`
   * `three_model_ensemble_results.json` / `three_model_ensemble_results.csv`
   * `hybrid_ensemble_results.json` / `hybrid_ensemble_results.csv`
