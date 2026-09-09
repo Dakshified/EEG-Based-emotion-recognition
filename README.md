@@ -241,12 +241,14 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
 │   ├── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
 │   ├── st_gode/                 # ST-GODE per-subject accuracy, 1,080-trial CM & ROC curves
+│   ├── topk_consensus/          # TopK-Quadratic-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   └── trial_consensus/         # Trial vs sample accuracy, log-odds dynamics, and consensus CM
 ├── granger_cache/               # Causal functional connectivity matrices
 ├── reference reseach papers/    # Reviewed academic literature
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_topk_quadratic_sota.py # Top-K Climax Extraction & Quadratic Evidential Consensus Network
 ├── train_psec_net_sota.py       # Peak-Decisive Super-Evidential Consensus Network (PSEC-Net)
 ├── train_csec_refined_sota.py   # Refined Climax-Sharpened Evidential Consensus Network (CSEC-Refined)
 ├── train_csec_net_sota.py       # Climax-Sharpened Evidential Consensus Network (CSEC-Net)
@@ -276,6 +278,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Top-K Climax Extraction & Quadratic Evidential Consensus Network (TopK-Quadratic-Net)**:
+  ```bash
+  python -u train_topk_quadratic_sota.py --device cuda
+  ```
 * **Run Peak-Decisive Super-Evidential Consensus Network (PSEC-Net)**:
   ```bash
   python -u train_psec_net_sota.py --device cuda
@@ -378,6 +384,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `topk_consensus_results.json` / `topk_consensus_results.csv`
   * `psec_net_results.json` / `psec_net_results.csv`
   * `csec_refined_results.json` / `csec_refined_results.csv`
   * `csec_net_results.json` / `csec_net_results.csv`
