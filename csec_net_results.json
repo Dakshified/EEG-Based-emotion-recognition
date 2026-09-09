@@ -1,0 +1,671 @@
+{
+  "responsive_cohort": {
+    "num_subjects": 6,
+    "num_sessions": 18,
+    "num_trials": 432,
+    "num_frames": 15030,
+    "trial_metrics": {
+      "accuracy": 0.7060185185185185,
+      "precision": 0.7101560788608982,
+      "recall": 0.7060185185185185,
+      "f1": 0.7027844341522351,
+      "auc": 0.8651906149977137,
+      "kappa": 0.6080246913580247,
+      "accuracy_ci": [
+        0.6597222222222222,
+        0.75
+      ],
+      "precision_ci": [
+        0.6629819153475438,
+        0.7531134189691642
+      ],
+      "recall_ci": [
+        0.6622267063255509,
+        0.7476376790114471
+      ],
+      "f1_ci": [
+        0.6561696863056401,
+        0.7440256017074334
+      ],
+      "auc_ci": [
+        0.8387374524152995,
+        0.8907738944711923
+      ],
+      "kappa_ci": [
+        0.5469708164471154,
+        0.6655023482813038
+      ]
+    },
+    "frame_metrics": {
+      "accuracy": 0.7296074517631403,
+      "precision": 0.7282185399578294,
+      "recall": 0.7237438782497518,
+      "f1": 0.7246328820933016,
+      "auc": 0.8827152165841528,
+      "kappa": 0.6374471038418572,
+      "accuracy_ci": [
+        0.722684630738523,
+        0.7358632734530939
+      ],
+      "precision_ci": [
+        0.7207268341149512,
+        0.7345403075022121
+      ],
+      "recall_ci": [
+        0.7165703360612172,
+        0.7299979570607694
+      ],
+      "f1_ci": [
+        0.7174808961328494,
+        0.7307484413967958
+      ],
+      "auc_ci": [
+        0.8785168990819638,
+        0.8867187080997688
+      ],
+      "kappa_ci": [
+        0.6281454615032727,
+        0.645804136241357
+      ]
+    },
+    "mean_gamma": 0.9086298013312949
+  },
+  "full_population": {
+    "num_subjects": 15,
+    "num_sessions": 45,
+    "num_trials": 1080,
+    "num_frames": 37575,
+    "trial_metrics": {
+      "accuracy": 0.6111111111111112,
+      "precision": 0.6086104910414551,
+      "recall": 0.6111111111111112,
+      "f1": 0.6072743174823259,
+      "auc": 0.8010350937357109,
+      "kappa": 0.4814814814814815,
+      "accuracy_ci": [
+        0.5824074074074074,
+        0.6388888888888888
+      ],
+      "precision_ci": [
+        0.5801052669549142,
+        0.6367670711301169
+      ],
+      "recall_ci": [
+        0.5839070281836762,
+        0.6388589050163223
+      ],
+      "f1_ci": [
+        0.5788620855520444,
+        0.6346674500068393
+      ],
+      "auc_ci": [
+        0.7820783369330079,
+        0.8202825845701759
+      ],
+      "kappa_ci": [
+        0.4433239065620292,
+        0.5180288615018078
+      ]
+    },
+    "frame_metrics": {
+      "accuracy": 0.6340918163672654,
+      "precision": 0.62869671635686,
+      "recall": 0.629692859211311,
+      "f1": 0.6281356233076862,
+      "auc": 0.823858952049016,
+      "kappa": 0.5099836231747514,
+      "accuracy_ci": [
+        0.629459747172322,
+        0.6390964737192282
+      ],
+      "precision_ci": [
+        0.6241868387659549,
+        0.6337361807752933
+      ],
+      "recall_ci": [
+        0.625096290926373,
+        0.6347437591699268
+      ],
+      "f1_ci": [
+        0.6235881139914521,
+        0.6330933247055307
+      ],
+      "auc_ci": [
+        0.8207456964730186,
+        0.8273673782451456
+      ],
+      "kappa_ci": [
+        0.5037530588985561,
+        0.5165983743373979
+      ]
+    },
+    "mean_gamma": 0.8911535151302814
+  },
+  "per_subject": {
+    "Subject_01": {
+      "subject_id": 1,
+      "is_responsive": false,
+      "trial_accuracy": 0.6944444444444444,
+      "trial_f1": 0.6930708930708931,
+      "trial_auc": 0.854295267489712,
+      "trial_kappa": 0.5925925925925926,
+      "mean_gamma": 0.8843189999461174,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.6169212690951822,
+          "trial_accuracy": 0.625,
+          "trial_f1": 0.6050061050061051,
+          "trial_auc": 0.8217592592592593,
+          "mean_gamma": 0.9994886070489883
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.7692307692307693,
+          "trial_accuracy": 0.7083333333333334,
+          "trial_f1": 0.7106643356643356,
+          "trial_auc": 0.8784722222222223,
+          "mean_gamma": 0.9007169008255005
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.7384428223844283,
+          "trial_accuracy": 0.75,
+          "trial_f1": 0.7529137529137528,
+          "trial_auc": 0.8564814814814814,
+          "mean_gamma": 0.7527514919638634
+        }
+      ]
+    },
+    "Subject_02": {
+      "subject_id": 2,
+      "is_responsive": true,
+      "trial_accuracy": 0.7777777777777778,
+      "trial_f1": 0.7706111328776862,
+      "trial_auc": 0.9216820987654321,
+      "trial_kappa": 0.7037037037037037,
+      "mean_gamma": 0.922562172015508,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.827262044653349,
+          "trial_accuracy": 0.7916666666666666,
+          "trial_f1": 0.7952380952380953,
+          "trial_auc": 0.9444444444444444,
+          "mean_gamma": 0.980005607008934
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.8401442307692307,
+          "trial_accuracy": 0.7916666666666666,
+          "trial_f1": 0.7677045177045176,
+          "trial_auc": 0.931712962962963,
+          "mean_gamma": 0.8588164001703262
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.7141119221411192,
+          "trial_accuracy": 0.75,
+          "trial_f1": 0.7392857142857143,
+          "trial_auc": 0.8807870370370371,
+          "mean_gamma": 0.9288645088672638
+        }
+      ]
+    },
+    "Subject_03": {
+      "subject_id": 3,
+      "is_responsive": false,
+      "trial_accuracy": 0.6388888888888888,
+      "trial_f1": 0.636297852474323,
+      "trial_auc": 0.8208590534979424,
+      "trial_kappa": 0.5185185185185186,
+      "mean_gamma": 0.9445814738670985,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.5875440658049353,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.5711538461538461,
+          "trial_auc": 0.7407407407407407,
+          "mean_gamma": 0.9765805900096893
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.84375,
+          "trial_accuracy": 0.75,
+          "trial_f1": 0.7408008658008658,
+          "trial_auc": 0.9270833333333333,
+          "mean_gamma": 0.858496218919754
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.6180048661800487,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.5775641025641026,
+          "trial_auc": 0.8067129629629629,
+          "mean_gamma": 0.9986676126718521
+        }
+      ]
+    },
+    "Subject_04": {
+      "subject_id": 4,
+      "is_responsive": true,
+      "trial_accuracy": 0.6111111111111112,
+      "trial_f1": 0.6076150787525999,
+      "trial_auc": 0.7842078189300412,
+      "trial_kappa": 0.4814814814814815,
+      "mean_gamma": 0.852555975317955,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.6921269095182139,
+          "trial_accuracy": 0.7083333333333334,
+          "trial_f1": 0.6897435897435897,
+          "trial_auc": 0.8252314814814814,
+          "mean_gamma": 0.9542170464992523
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.4987980769230769,
+          "trial_accuracy": 0.5,
+          "trial_f1": 0.5011904761904762,
+          "trial_auc": 0.7280092592592593,
+          "mean_gamma": 0.651454821228981
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.6508515815085159,
+          "trial_accuracy": 0.625,
+          "trial_f1": 0.6135975135975137,
+          "trial_auc": 0.8125,
+          "mean_gamma": 0.9519960582256317
+        }
+      ]
+    },
+    "Subject_05": {
+      "subject_id": 5,
+      "is_responsive": false,
+      "trial_accuracy": 0.625,
+      "trial_f1": 0.618041118041118,
+      "trial_auc": 0.8161008230452675,
+      "trial_kappa": 0.5,
+      "mean_gamma": 0.8739522894223531,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.6145710928319624,
+          "trial_accuracy": 0.6666666666666666,
+          "trial_f1": 0.65999000999001,
+          "trial_auc": 0.7534722222222221,
+          "mean_gamma": 0.8417974263429642
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.6670673076923077,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.5715284715284715,
+          "trial_auc": 0.8668981481481481,
+          "mean_gamma": 0.9869795739650726
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.6374695863746959,
+          "trial_accuracy": 0.625,
+          "trial_f1": 0.6267482517482518,
+          "trial_auc": 0.8356481481481481,
+          "mean_gamma": 0.7930798679590225
+        }
+      ]
+    },
+    "Subject_06": {
+      "subject_id": 6,
+      "is_responsive": false,
+      "trial_accuracy": 0.5555555555555556,
+      "trial_f1": 0.5465104527604527,
+      "trial_auc": 0.7492283950617284,
+      "trial_kappa": 0.40740740740740744,
+      "mean_gamma": 0.8758092224597931,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.45240893066980026,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.45833333333333326,
+          "trial_auc": 0.6192129629629629,
+          "mean_gamma": 0.8583643287420273
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.6358173076923077,
+          "trial_accuracy": 0.625,
+          "trial_f1": 0.558974358974359,
+          "trial_auc": 0.8668981481481481,
+          "mean_gamma": 0.9271510988473892
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.6253041362530414,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.5833333333333334,
+          "trial_auc": 0.7916666666666667,
+          "mean_gamma": 0.8419122397899628
+        }
+      ]
+    },
+    "Subject_07": {
+      "subject_id": 7,
+      "is_responsive": true,
+      "trial_accuracy": 0.7083333333333334,
+      "trial_f1": 0.6994984040127679,
+      "trial_auc": 0.8820730452674898,
+      "trial_kappa": 0.6111111111111112,
+      "mean_gamma": 0.9165631781021754,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.7332549941245593,
+          "trial_accuracy": 0.6666666666666666,
+          "trial_f1": 0.6530303030303031,
+          "trial_auc": 0.8402777777777778,
+          "mean_gamma": 0.9069596230983734
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.7776442307692307,
+          "trial_accuracy": 0.75,
+          "trial_f1": 0.7401515151515152,
+          "trial_auc": 0.9293981481481481,
+          "mean_gamma": 0.8434776812791824
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.754257907542579,
+          "trial_accuracy": 0.7083333333333334,
+          "trial_f1": 0.7004662004662005,
+          "trial_auc": 0.8842592592592593,
+          "mean_gamma": 0.9992522299289703
+        }
+      ]
+    },
+    "Subject_08": {
+      "subject_id": 8,
+      "is_responsive": true,
+      "trial_accuracy": 0.6527777777777778,
+      "trial_f1": 0.6510665076841547,
+      "trial_auc": 0.8473508230452674,
+      "trial_kappa": 0.537037037037037,
+      "mean_gamma": 0.8357769238452116,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.72737955346651,
+          "trial_accuracy": 0.7083333333333334,
+          "trial_f1": 0.7151515151515152,
+          "trial_auc": 0.8645833333333334,
+          "mean_gamma": 0.7915649190545082
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.5721153846153846,
+          "trial_accuracy": 0.5416666666666666,
+          "trial_f1": 0.5387667887667887,
+          "trial_auc": 0.8333333333333333,
+          "mean_gamma": 0.9876524806022644
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.7311435523114356,
+          "trial_accuracy": 0.7083333333333334,
+          "trial_f1": 0.7004662004662005,
+          "trial_auc": 0.8680555555555556,
+          "mean_gamma": 0.7281133718788624
+        }
+      ]
+    },
+    "Subject_09": {
+      "subject_id": 9,
+      "is_responsive": false,
+      "trial_accuracy": 0.5416666666666666,
+      "trial_f1": 0.529467897848835,
+      "trial_auc": 0.7669753086419754,
+      "trial_kappa": 0.38888888888888884,
+      "mean_gamma": 0.8696455210447311,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.6415981198589894,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.5596153846153846,
+          "trial_auc": 0.8495370370370371,
+          "mean_gamma": 0.998611256480217
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.6598557692307693,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.5742424242424242,
+          "trial_auc": 0.7835648148148149,
+          "mean_gamma": 0.8171324878931046
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.4927007299270073,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.4538461538461538,
+          "trial_auc": 0.6817129629629629,
+          "mean_gamma": 0.7931928187608719
+        }
+      ]
+    },
+    "Subject_10": {
+      "subject_id": 10,
+      "is_responsive": false,
+      "trial_accuracy": 0.5416666666666666,
+      "trial_f1": 0.530201171377642,
+      "trial_auc": 0.7579732510288065,
+      "trial_kappa": 0.38888888888888884,
+      "mean_gamma": 0.8409171203772227,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.5041128084606346,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.44429181929181927,
+          "trial_auc": 0.6956018518518519,
+          "mean_gamma": 0.8531827181577682
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.6850961538461539,
+          "trial_accuracy": 0.7083333333333334,
+          "trial_f1": 0.6884115884115883,
+          "trial_auc": 0.8680555555555556,
+          "mean_gamma": 0.8652959764003754
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.4464720194647202,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.4318181818181818,
+          "trial_auc": 0.6944444444444444,
+          "mean_gamma": 0.8042726665735245
+        }
+      ]
+    },
+    "Subject_11": {
+      "subject_id": 11,
+      "is_responsive": false,
+      "trial_accuracy": 0.5,
+      "trial_f1": 0.4949494949494949,
+      "trial_auc": 0.7116769547325104,
+      "trial_kappa": 0.33333333333333337,
+      "mean_gamma": 0.8867070178190867,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.5687426556991775,
+          "trial_accuracy": 0.5416666666666666,
+          "trial_f1": 0.512973137973138,
+          "trial_auc": 0.7974537037037037,
+          "mean_gamma": 0.8378846049308777
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.49278846153846156,
+          "trial_accuracy": 0.5,
+          "trial_f1": 0.497960372960373,
+          "trial_auc": 0.6979166666666667,
+          "mean_gamma": 0.8654403239488602
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.42944038929440387,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.4530885780885781,
+          "trial_auc": 0.6493055555555556,
+          "mean_gamma": 0.9567961245775223
+        }
+      ]
+    },
+    "Subject_12": {
+      "subject_id": 12,
+      "is_responsive": false,
+      "trial_accuracy": 0.3055555555555556,
+      "trial_f1": 0.29599038732165667,
+      "trial_auc": 0.5815329218106995,
+      "trial_kappa": 0.07407407407407407,
+      "mean_gamma": 0.8639035820960999,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.45475910693301996,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.44365634365634365,
+          "trial_auc": 0.6724537037037037,
+          "mean_gamma": 0.7941678613424301
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.2848557692307692,
+          "trial_accuracy": 0.20833333333333334,
+          "trial_f1": 0.20238095238095238,
+          "trial_auc": 0.537037037037037,
+          "mean_gamma": 0.9366327822208405
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.30656934306569344,
+          "trial_accuracy": 0.25,
+          "trial_f1": 0.25833333333333336,
+          "trial_auc": 0.5115740740740741,
+          "mean_gamma": 0.860910102725029
+        }
+      ]
+    },
+    "Subject_13": {
+      "subject_id": 13,
+      "is_responsive": false,
+      "trial_accuracy": 0.5277777777777778,
+      "trial_f1": 0.5260223292731032,
+      "trial_auc": 0.7294238683127572,
+      "trial_kappa": 0.37037037037037035,
+      "mean_gamma": 0.8756886919339498,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.581668625146886,
+          "trial_accuracy": 0.5833333333333334,
+          "trial_f1": 0.586038961038961,
+          "trial_auc": 0.7592592592592593,
+          "mean_gamma": 0.9504969716072083
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.4483173076923077,
+          "trial_accuracy": 0.4583333333333333,
+          "trial_f1": 0.4442307692307692,
+          "trial_auc": 0.6342592592592593,
+          "mean_gamma": 0.8817282319068909
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.597323600973236,
+          "trial_accuracy": 0.5416666666666666,
+          "trial_f1": 0.5187812187812187,
+          "trial_auc": 0.8101851851851852,
+          "mean_gamma": 0.7948408722877502
+        }
+      ]
+    },
+    "Subject_14": {
+      "subject_id": 14,
+      "is_responsive": true,
+      "trial_accuracy": 0.6666666666666666,
+      "trial_f1": 0.6621794871794872,
+      "trial_auc": 0.8141718106995885,
+      "trial_kappa": 0.5555555555555556,
+      "mean_gamma": 0.959095890323321,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.4770857814336075,
+          "trial_accuracy": 0.5,
+          "trial_f1": 0.4821178821178821,
+          "trial_auc": 0.638888888888889,
+          "mean_gamma": 0.8909563422203064
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.7103365384615384,
+          "trial_accuracy": 0.6666666666666666,
+          "trial_f1": 0.6519036519036518,
+          "trial_auc": 0.8287037037037036,
+          "mean_gamma": 0.9870493412017822
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.8880778588807786,
+          "trial_accuracy": 0.8333333333333334,
+          "trial_f1": 0.8321678321678323,
+          "trial_auc": 0.9606481481481481,
+          "mean_gamma": 0.9992819875478745
+        }
+      ]
+    },
+    "Subject_15": {
+      "subject_id": 15,
+      "is_responsive": true,
+      "trial_accuracy": 0.8194444444444444,
+      "trial_f1": 0.8171492912871804,
+      "trial_auc": 0.9344135802469136,
+      "trial_kappa": 0.7592592592592593,
+      "mean_gamma": 0.9652246683835983,
+      "sessions": [
+        {
+          "session_id": 1,
+          "frame_accuracy": 0.7779083431257344,
+          "trial_accuracy": 0.75,
+          "trial_f1": 0.7309523809523809,
+          "trial_auc": 0.8668981481481481,
+          "mean_gamma": 0.9418891966342926
+        },
+        {
+          "session_id": 2,
+          "frame_accuracy": 0.9302884615384616,
+          "trial_accuracy": 0.875,
+          "trial_f1": 0.8730769230769231,
+          "trial_auc": 0.9803240740740742,
+          "mean_gamma": 0.9545546621084213
+        },
+        {
+          "session_id": 3,
+          "frame_accuracy": 0.8357664233576643,
+          "trial_accuracy": 0.8333333333333334,
+          "trial_f1": 0.8324592074592074,
+          "trial_auc": 0.9467592592592593,
+          "mean_gamma": 0.999230146408081
+        }
+      ]
+    }
+  }
+}
