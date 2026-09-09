@@ -225,6 +225,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
 │   ├── buffered_shuffle/        # Unbuffered vs buffered vs trial quarantine leakage divergence plot
+│   ├── coma_net/                # COMA-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── ds_gat_literature/       # DS-GAT literature benchmark figures
 │   ├── dynacu_net/              # DynAcu-Net trial consensus accuracy, gating dynamics, and 1,080-trial CM
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
@@ -242,6 +243,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_coma_net_sota.py       # Cortical-Ocular Manifold Alignment Network (COMA-Net)
 ├── train_st_gode_sota.py        # Spatio-Temporal Graph Neural ODE with Evidential Dirichlet Consensus
 ├── train_target_high_acc_sota.py # Session-Level 4-Fold Trial-Quarantined SOTA RFPN Benchmark
 ├── train_hou_rfpn_sota.py       # Hou et al. (IEEE TIM 2023) 4-Matrix S2D Residual Feature Pyramid Network
@@ -266,6 +268,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Cortical-Ocular Manifold Alignment Network (COMA-Net)**:
+  ```bash
+  python -u train_coma_net_sota.py --device cuda
+  ```
 * **Run Spatio-Temporal Graph Neural ODE with Evidential Dirichlet Consensus (ST-GODE)**:
   ```bash
   python -u train_st_gode_sota.py --device cuda
@@ -348,6 +354,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `coma_net_results.json` / `coma_net_results.csv`
   * `st_gode_results.json` / `st_gode_results.csv`
   * `target_high_acc_results.json` / `target_high_acc_results.csv`
   * `hou_rfpn_sota_results.json` / `hou_rfpn_sota_results.csv`
