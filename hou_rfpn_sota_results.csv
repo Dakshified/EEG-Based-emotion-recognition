@@ -1,0 +1,4 @@
+Subject_ID,Train_Trials,Test_Trials,Test_Frames,Frame_Accuracy,Frame_Macro_F1,Frame_Cohen_Kappa,Frame_Macro_AUC,Trial_Accuracy,Trial_Macro_F1,Trial_Cohen_Kappa,Trial_Macro_AUC
+Subject_01,50,22,849,67.14%,0.6466,0.5540,0.8859,68.18%,0.6667,0.5698,0.8741
+Subject_02,50,22,849,83.27%,0.8278,0.7777,0.9545,81.82%,0.8167,0.7582,0.9621
+POPULATION_POOLED,100,44,1698,75.21%,0.7390,0.6671,0.9185,75.00%,0.7405,0.6648,0.9198

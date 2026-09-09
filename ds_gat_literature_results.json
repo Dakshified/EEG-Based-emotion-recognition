@@ -1,0 +1,134 @@
+{
+  "benchmark": "Dynamical Spectral Graph Attention Network (DS-GAT) Literature Paradigm Benchmark",
+  "hardware": "cuda",
+  "dry_run": true,
+  "execution_time_seconds": 29.51588487625122,
+  "total_subjects": 1,
+  "total_test_samples": 501,
+  "population_metrics": {
+    "dsgat": {
+      "pooled_accuracy": 1.0,
+      "pooled_macro_f1": 1.0,
+      "pooled_macro_precision": 1.0,
+      "pooled_macro_recall": 1.0,
+      "pooled_cohen_kappa": 1.0,
+      "pooled_macro_auc": 1.0,
+      "bootstrap_95_ci": {
+        "accuracy": [
+          1.0,
+          1.0
+        ],
+        "macro_f1": [
+          1.0,
+          1.0
+        ],
+        "cohen_kappa": [
+          1.0,
+          1.0
+        ],
+        "macro_auc": [
+          1.0,
+          1.0
+        ]
+      },
+      "cross_subject_mean_accuracy": 1.0,
+      "cross_subject_std_accuracy": 0.0
+    },
+    "lightgbm": {
+      "pooled_accuracy": 1.0,
+      "pooled_macro_f1": 1.0,
+      "pooled_macro_precision": 1.0,
+      "pooled_macro_recall": 1.0,
+      "pooled_cohen_kappa": 1.0,
+      "pooled_macro_auc": 1.0,
+      "bootstrap_95_ci": {
+        "accuracy": [
+          1.0,
+          1.0
+        ],
+        "macro_f1": [
+          1.0,
+          1.0
+        ],
+        "cohen_kappa": [
+          1.0,
+          1.0
+        ],
+        "macro_auc": [
+          1.0,
+          1.0
+        ]
+      },
+      "cross_subject_mean_accuracy": 1.0,
+      "cross_subject_std_accuracy": 0.0
+    }
+  },
+  "per_subject_results": {
+    "15": {
+      "dsgat": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "auc": 1.0,
+        "kappa": 1.0,
+        "accuracy_ci": [
+          1.0,
+          1.0
+        ],
+        "precision_ci": [
+          1.0,
+          1.0
+        ],
+        "recall_ci": [
+          1.0,
+          1.0
+        ],
+        "f1_ci": [
+          1.0,
+          1.0
+        ],
+        "auc_ci": [
+          1.0,
+          1.0
+        ],
+        "kappa_ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "lightgbm": {
+        "accuracy": 1.0,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0,
+        "auc": 1.0,
+        "kappa": 1.0,
+        "accuracy_ci": [
+          1.0,
+          1.0
+        ],
+        "precision_ci": [
+          1.0,
+          1.0
+        ],
+        "recall_ci": [
+          1.0,
+          1.0
+        ],
+        "f1_ci": [
+          1.0,
+          1.0
+        ],
+        "auc_ci": [
+          1.0,
+          1.0
+        ],
+        "kappa_ci": [
+          1.0,
+          1.0
+        ]
+      }
+    }
+  }
+}

@@ -228,6 +228,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── dynacu_net/              # DynAcu-Net trial consensus accuracy, gating dynamics, and 1,080-trial CM
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
+│   ├── hou_rfpn/                # Hou et al. (IEEE TIM 2023) RFPN per-subject accuracy, CM & ROC curves
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
 │   ├── responsive_cohort/       # Responsive vs Non-Responsive trial accuracy & Responsive cohort CM
 │   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
@@ -239,6 +240,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_hou_rfpn_sota.py       # Hou et al. (IEEE TIM 2023) 4-Matrix S2D Residual Feature Pyramid Network
 ├── train_responsive_cohort_sota.py # Physiological Responsive Cohort SOTA & BCI Illiteracy Screening
 ├── train_dynacu_net_sota.py     # Proprietary DynAcu-Net SOTA (DPLA + COM-Fusion + Dirichlet Consensus)
 ├── train_trial_consensus_sota.py # Subject-Dependent 580D asymmetry + baseline normalization + trial consensus
@@ -259,6 +261,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Hou et al. (IEEE TIM 2023) RFPN SOTA Benchmark (Strict 70/30 Trial Quarantine)**:
+  ```bash
+  python -u train_hou_rfpn_sota.py --device cuda
+  ```
 * **Run Temporal Autocorrelation Leakage-Free Frame Shuffle Benchmark**:
   ```bash
   python -u evaluate_buffered_frame_shuffle.py --device cuda
@@ -333,6 +339,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `hou_rfpn_sota_results.json` / `hou_rfpn_sota_results.csv`
   * `buffered_frame_shuffle_results.json` / `buffered_frame_shuffle_results.csv`
   * `denoised_continuous_results.json` / `denoised_continuous_results.csv`
   * `affective_infonce_results.json` / `affective_infonce_results.csv`
