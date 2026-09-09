@@ -118,19 +118,21 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ```
 ├── checkpoints/                 # Saved PyTorch model checkpoints (.pt)
 │   └── dann_final/              # 10 verified Calibrated DANN fold models
-├── figures/                     # 157 publication-quality 300 DPI evaluation figures
+├── figures/                     # 159 publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
 │   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
-│   └── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
+│   ├── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
+│   └── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
 ├── granger_cache/               # Causal functional connectivity matrices
 ├── reference reseach papers/    # Reviewed academic literature
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_sota_hou_pipeline.py   # SOTA Hou et al. (2023) 15-ch spatial asymmetry + Space-to-Depth pipeline
 ├── train_upgraded_benchmarks.py # Dual-regime unified benchmark trainer & bootstrap CI evaluator
 ├── evaluate_salient_windows_benchmark.py # Intra-trial salience extraction & transition filtering benchmark
 ├── evaluate_paper_replication_benchmark.py # Literature replication benchmark (sample-level 80/20)
@@ -146,6 +148,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run SOTA Asymmetry Spatial Tensor & Baseline Calibration Pipeline (Hou et al. 2023)**:
+  ```bash
+  python train_sota_hou_pipeline.py
+  ```
 * **Run Affective Salience Window Extraction Benchmark**:
   ```bash
   python evaluate_salient_windows_benchmark.py
@@ -190,8 +196,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ## 5. Key Documentation & Artifacts
 
-* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, and affective salience window extraction.
+* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, and SOTA asymmetry spatial modeling.
 * **Structured Results**:
+  * `sota_hou_pipeline_results.json` / `sota_hou_pipeline_results.csv`
   * `salient_window_benchmark_results.json` / `salient_window_benchmark_results.csv`
   * `paper_replication_benchmark_results.json` / `paper_replication_benchmark_results.csv`
   * `dann_final_results.json` / `dann_final_results.csv`

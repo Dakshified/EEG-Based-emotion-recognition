@@ -1,0 +1,509 @@
+{
+  "protocol": "Stratified 4-Fold Trial Cross-Validation per Session (Zero-Leakage Trial Quarantine)",
+  "architecture": "Hou et al. (2023) 15-Channel Asymmetry Spatial Tensor + Space-to-Depth 2D-CNN + Causal Smoothing",
+  "dataset": "SEED-IV (37,575 frames, 45 sessions, 15 subjects)",
+  "dry_run": false,
+  "pooled_raw_accuracy": 0.5741583499667332,
+  "pooled_smoothed_accuracy": 0.5743180306054557,
+  "pooled_macro_precision": 0.5672578727576238,
+  "pooled_macro_recall": 0.5690369365748614,
+  "pooled_macro_f1": 0.566721937550343,
+  "pooled_auc": 0.7955747979224752,
+  "pooled_kappa": 0.42979784198681137,
+  "accuracy_ci": [
+    0.5688609447771125,
+    0.5795083166999334
+  ],
+  "precision_ci": [
+    0.5621722845893962,
+    0.5726164163286035
+  ],
+  "recall_ci": [
+    0.5639887790177126,
+    0.5741862914489214
+  ],
+  "f1_ci": [
+    0.561688380715985,
+    0.5719827131906323
+  ],
+  "auc_ci": [
+    0.7923083286277363,
+    0.7989081588356038
+  ],
+  "kappa_ci": [
+    0.42266576859742605,
+    0.43663144959986094
+  ],
+  "mean_subject_accuracy": 0.5747331287388016,
+  "std_subject_accuracy": 0.10150107422243225,
+  "per_subject_mean_accuracies": {
+    "1": 0.6336175775689026,
+    "2": 0.7257164099932268,
+    "3": 0.5656858201486891,
+    "4": 0.5812655648868359,
+    "5": 0.5801158993349964,
+    "6": 0.5536155953087086,
+    "7": 0.5820357737507055,
+    "8": 0.6376232971063978,
+    "9": 0.5949552483787648,
+    "10": 0.5810989172074938,
+    "11": 0.3948081586975986,
+    "12": 0.3552353142116313,
+    "13": 0.4719062498190156,
+    "14": 0.6137448704441325,
+    "15": 0.7495722342249239
+  },
+  "session_breakdowns": [
+    {
+      "subject_id": 1,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.5616921269095182,
+      "smoothed_accuracy": 0.564042303172738,
+      "macro_f1": 0.5560569959565368,
+      "auc": 0.7893872151675319,
+      "kappa": 0.41958570330797607
+    },
+    {
+      "subject_id": 1,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6153846153846154,
+      "smoothed_accuracy": 0.6141826923076923,
+      "macro_f1": 0.6109754458936701,
+      "auc": 0.8283696176798252,
+      "kappa": 0.48102662956456854
+    },
+    {
+      "subject_id": 1,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.7226277372262774,
+      "smoothed_accuracy": 0.7226277372262774,
+      "macro_f1": 0.7189671508040145,
+      "auc": 0.8961096837431801,
+      "kappa": 0.6285857538926796
+    },
+    {
+      "subject_id": 2,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.6874265569917744,
+      "smoothed_accuracy": 0.6897767332549941,
+      "macro_f1": 0.6715154431251824,
+      "auc": 0.8797020657824182,
+      "kappa": 0.5810242772582997
+    },
+    {
+      "subject_id": 2,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.7379807692307693,
+      "smoothed_accuracy": 0.7379807692307693,
+      "macro_f1": 0.7141405243504002,
+      "auc": 0.875864225736728,
+      "kappa": 0.6442142843131485
+    },
+    {
+      "subject_id": 2,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.7493917274939172,
+      "smoothed_accuracy": 0.7493917274939172,
+      "macro_f1": 0.7496649938409858,
+      "auc": 0.8848207290073022,
+      "kappa": 0.6636581044468987
+    },
+    {
+      "subject_id": 3,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.42538190364277323,
+      "smoothed_accuracy": 0.42538190364277323,
+      "macro_f1": 0.42974382055149407,
+      "auc": 0.7105212515220619,
+      "kappa": 0.2185006986072926
+    },
+    {
+      "subject_id": 3,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6682692307692307,
+      "smoothed_accuracy": 0.6682692307692307,
+      "macro_f1": 0.6509333958605944,
+      "auc": 0.8179816082644789,
+      "kappa": 0.5519200749297535
+    },
+    {
+      "subject_id": 3,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.6009732360097324,
+      "smoothed_accuracy": 0.6034063260340633,
+      "macro_f1": 0.5505905076951061,
+      "auc": 0.8504482127961807,
+      "kappa": 0.465640909063717
+    },
+    {
+      "subject_id": 4,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.681551116333725,
+      "smoothed_accuracy": 0.681551116333725,
+      "macro_f1": 0.6510557745177882,
+      "auc": 0.8478391524562547,
+      "kappa": 0.5741668759324638
+    },
+    {
+      "subject_id": 4,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.38461538461538464,
+      "smoothed_accuracy": 0.38341346153846156,
+      "macro_f1": 0.37534699318887166,
+      "auc": 0.6647250222434953,
+      "kappa": 0.17555659433419224
+    },
+    {
+      "subject_id": 4,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.6788321167883211,
+      "smoothed_accuracy": 0.6788321167883211,
+      "macro_f1": 0.6553565440790049,
+      "auc": 0.8518302172927299,
+      "kappa": 0.569742727532278
+    },
+    {
+      "subject_id": 5,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.4618096357226792,
+      "smoothed_accuracy": 0.46415981198589895,
+      "macro_f1": 0.4451782641038416,
+      "auc": 0.7703135200598807,
+      "kappa": 0.27847430493448644
+    },
+    {
+      "subject_id": 5,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6009615384615384,
+      "smoothed_accuracy": 0.5973557692307693,
+      "macro_f1": 0.5479230890121979,
+      "auc": 0.8212735868924004,
+      "kappa": 0.4492983849616097
+    },
+    {
+      "subject_id": 5,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.6763990267639902,
+      "smoothed_accuracy": 0.6788321167883211,
+      "macro_f1": 0.6642812808090439,
+      "auc": 0.8449925129193132,
+      "kappa": 0.5691045448859361
+    },
+    {
+      "subject_id": 6,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.3219741480611046,
+      "smoothed_accuracy": 0.3207990599294947,
+      "macro_f1": 0.307749980627644,
+      "auc": 0.4991133816385515,
+      "kappa": 0.08651306870308395
+    },
+    {
+      "subject_id": 6,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.5480769230769231,
+      "smoothed_accuracy": 0.5480769230769231,
+      "macro_f1": 0.5308381309083977,
+      "auc": 0.7968935491693626,
+      "kappa": 0.3886656765418588
+    },
+    {
+      "subject_id": 6,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.791970802919708,
+      "smoothed_accuracy": 0.791970802919708,
+      "macro_f1": 0.796221223053917,
+      "auc": 0.9074055131179368,
+      "kappa": 0.7200690656422328
+    },
+    {
+      "subject_id": 7,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.3795534665099882,
+      "smoothed_accuracy": 0.3807285546415981,
+      "macro_f1": 0.33148429460059003,
+      "auc": 0.7318839994681898,
+      "kappa": 0.15872494803898773
+    },
+    {
+      "subject_id": 7,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6658653846153846,
+      "smoothed_accuracy": 0.6658653846153846,
+      "macro_f1": 0.6603473009677414,
+      "auc": 0.8216844037420682,
+      "kappa": 0.5477323655590187
+    },
+    {
+      "subject_id": 7,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.6995133819951338,
+      "smoothed_accuracy": 0.6995133819951338,
+      "macro_f1": 0.6889699775331243,
+      "auc": 0.8967895483684181,
+      "kappa": 0.5994302207894441
+    },
+    {
+      "subject_id": 8,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.5499412455934195,
+      "smoothed_accuracy": 0.5487661574618097,
+      "macro_f1": 0.523824006664359,
+      "auc": 0.7858983797216996,
+      "kappa": 0.3838414501929832
+    },
+    {
+      "subject_id": 8,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6694711538461539,
+      "smoothed_accuracy": 0.6706730769230769,
+      "macro_f1": 0.6478319987302522,
+      "auc": 0.8256317844750288,
+      "kappa": 0.5586377804882771
+    },
+    {
+      "subject_id": 8,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.6934306569343066,
+      "smoothed_accuracy": 0.6934306569343066,
+      "macro_f1": 0.6764859648801242,
+      "auc": 0.8884363605903485,
+      "kappa": 0.5879904130160214
+    },
+    {
+      "subject_id": 9,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.6603995299647474,
+      "smoothed_accuracy": 0.663924794359577,
+      "macro_f1": 0.6177904147113428,
+      "auc": 0.8055120156725094,
+      "kappa": 0.5496696338866265
+    },
+    {
+      "subject_id": 9,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6574519230769231,
+      "smoothed_accuracy": 0.6586538461538461,
+      "macro_f1": 0.610267240821124,
+      "auc": 0.7601063171614447,
+      "kappa": 0.535626690145274
+    },
+    {
+      "subject_id": 9,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.4635036496350365,
+      "smoothed_accuracy": 0.46228710462287104,
+      "macro_f1": 0.4262786716621413,
+      "auc": 0.6861320570061934,
+      "kappa": 0.2806348527507513
+    },
+    {
+      "subject_id": 10,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.5969447708578144,
+      "smoothed_accuracy": 0.5945945945945946,
+      "macro_f1": 0.6090720706330677,
+      "auc": 0.7882916490653986,
+      "kappa": 0.464238790064161
+    },
+    {
+      "subject_id": 10,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.6802884615384616,
+      "smoothed_accuracy": 0.6766826923076923,
+      "macro_f1": 0.6381552593570416,
+      "auc": 0.8646044712229177,
+      "kappa": 0.564314803423063
+    },
+    {
+      "subject_id": 10,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.4732360097323601,
+      "smoothed_accuracy": 0.4720194647201946,
+      "macro_f1": 0.45028418291527783,
+      "auc": 0.6509522506283729,
+      "kappa": 0.291570686450506
+    },
+    {
+      "subject_id": 11,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.4700352526439483,
+      "smoothed_accuracy": 0.4712103407755582,
+      "macro_f1": 0.4658378920109779,
+      "auc": 0.7097820363324219,
+      "kappa": 0.2877058343206932
+    },
+    {
+      "subject_id": 11,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.3701923076923077,
+      "smoothed_accuracy": 0.3737980769230769,
+      "macro_f1": 0.36157217185974905,
+      "auc": 0.6655216236439688,
+      "kappa": 0.1558152216249904
+    },
+    {
+      "subject_id": 11,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.3418491484184915,
+      "smoothed_accuracy": 0.33941605839416056,
+      "macro_f1": 0.28591033841473207,
+      "auc": 0.605109675182335,
+      "kappa": 0.10494326009316601
+    },
+    {
+      "subject_id": 12,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.5793184488836662,
+      "smoothed_accuracy": 0.5781433607520564,
+      "macro_f1": 0.5571269554488102,
+      "auc": 0.7888410692849321,
+      "kappa": 0.4320327793879519
+    },
+    {
+      "subject_id": 12,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.22235576923076922,
+      "smoothed_accuracy": 0.22235576923076922,
+      "macro_f1": 0.22449947183989738,
+      "auc": 0.46446375911157617,
+      "kappa": -0.03179112087372871
+    },
+    {
+      "subject_id": 12,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.26763990267639903,
+      "smoothed_accuracy": 0.26520681265206814,
+      "macro_f1": 0.21470758559185987,
+      "auc": 0.5670774269668079,
+      "kappa": 0.008505293092120447
+    },
+    {
+      "subject_id": 13,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.5276145710928319,
+      "smoothed_accuracy": 0.5276145710928319,
+      "macro_f1": 0.5208670609539465,
+      "auc": 0.8197625915862659,
+      "kappa": 0.37348775368927667
+    },
+    {
+      "subject_id": 13,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.39903846153846156,
+      "smoothed_accuracy": 0.39783653846153844,
+      "macro_f1": 0.3498933708590577,
+      "auc": 0.7198898370624807,
+      "kappa": 0.18336128395216533
+    },
+    {
+      "subject_id": 13,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.4902676399026764,
+      "smoothed_accuracy": 0.4902676399026764,
+      "macro_f1": 0.477081008289739,
+      "auc": 0.7583185079784507,
+      "kappa": 0.3130243301140513
+    },
+    {
+      "subject_id": 14,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.5287896592244419,
+      "smoothed_accuracy": 0.5276145710928319,
+      "macro_f1": 0.5255046853447399,
+      "auc": 0.7612591969201532,
+      "kappa": 0.36550135486276114
+    },
+    {
+      "subject_id": 14,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.5204326923076923,
+      "smoothed_accuracy": 0.5204326923076923,
+      "macro_f1": 0.4442956594912096,
+      "auc": 0.697253808509359,
+      "kappa": 0.35380590507038745
+    },
+    {
+      "subject_id": 14,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.7883211678832117,
+      "smoothed_accuracy": 0.7931873479318735,
+      "macro_f1": 0.7813373523049771,
+      "auc": 0.9340107918068872,
+      "kappa": 0.7217991674281652
+    },
+    {
+      "subject_id": 15,
+      "session_num": 1,
+      "n_samples": 851,
+      "raw_accuracy": 0.6509988249118684,
+      "smoothed_accuracy": 0.6521739130434783,
+      "macro_f1": 0.6421076855905136,
+      "auc": 0.8643784801762995,
+      "kappa": 0.5340022791516821
+    },
+    {
+      "subject_id": 15,
+      "session_num": 2,
+      "n_samples": 832,
+      "raw_accuracy": 0.8617788461538461,
+      "smoothed_accuracy": 0.8641826923076923,
+      "macro_f1": 0.846901004339863,
+      "auc": 0.9658240348679719,
+      "kappa": 0.8155051355414003
+    },
+    {
+      "subject_id": 15,
+      "session_num": 3,
+      "n_samples": 822,
+      "raw_accuracy": 0.732360097323601,
+      "smoothed_accuracy": 0.732360097323601,
+      "macro_f1": 0.731623524487009,
+      "auc": 0.8925332306411133,
+      "kappa": 0.6424157697730198
+    }
+  ],
+  "total_elapsed_seconds": 865.5969092845917
+}

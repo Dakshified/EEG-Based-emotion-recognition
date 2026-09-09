@@ -271,4 +271,109 @@ Evaluated under Stratified 4-Fold Trial Cross-Validation across all 45 sessions 
 ![Salient Confusion Matrix](C:/Users/Daksh's pc/.gemini/antigravity/brain/e5c12706-2777-497e-b3d6-0e26e7492dba/figures/salient_windows/salient_confusion_matrix.png)
 ````
 
+---
+
+## 8. SOTA Asymmetry Spatial Tensor & Baseline Calibration Pipeline (Hou et al., 2023 & Cheng et al., 2021)
+
+### A. Neurocomputational Architecture & Methodological Formulation
+
+To capture both local spatial topography and inter-hemispheric affective asymmetry under strict, zero-leakage trial quarantine, we implemented the architectural formulations of **Hou et al. (IEEE TIM 2023)** and **Cheng et al. (IEEE JBHI 2021)** in `train_sota_hou_pipeline.py`:
+
+```mermaid
+flowchart TD
+    subgraph S1["1. Hemispheric Decomposition & Asymmetry Construction"]
+        A["62 Standard Channels"] --> B["8 Midline Sagittal Channels<br/>(Fpz, Fz, FCz, Cz, CPz, Pz, POz, Oz)"]
+        A --> C["27 Homologous Left-Right Pairs<br/>(Fp1-Fp2, AF3-AF4, F7-F8, ..., O1-O2)"]
+        
+        C --> D1["Raw Scaled DE (5, 9, 9)<br/>Channels 0..4"]
+        C --> D2["Differential Asymmetry SDM (5, 9, 9)<br/>DE_left - DE_right<br/>Channels 5..9"]
+        C --> D3["Rational Asymmetry SQM (5, 9, 9)<br/>Bounded tanh(DE_left - DE_right)<br/>Channels 10..14"]
+        
+        D1 --> E["15-Channel Spatial Tensor<br/>(Batch, 15, 9, 9)"]
+        D2 --> E
+        D3 --> E
+    end
+
+    subgraph S2["2. Zero-Leakage Pre-Trial Baseline Calibration"]
+        F["Session Reference Neutral Baseline<br/>Subtracts slow tonic drift without erasing intra-trial emotion variance"] --> E
+    end
+
+    subgraph S3["3. Space-to-Depth 2D-CNN Backbone"]
+        E --> G["Conv2D (15 -> 64, 3x3) + BN + SiLU"]
+        G --> H["Space-to-Depth Downsampling (r=2)<br/>(256 Channels, 5x5 Spatial Resolution)"]
+        H --> I["Conv2D (256 -> 128, 3x3) + BN + SiLU + AdaptiveAvgPool(3, 3)"]
+        I --> J["Regularized MLP Classifier Head<br/>Dense(1152 -> 128) -> SiLU -> Dropout(0.3) -> Dense(128 -> 64) -> Dense(4)"]
+    end
+
+    subgraph S4["4. Causal Test-Time Smoothing"]
+        J --> K["Causal 3-Second Rolling Window Average<br/>(Strictly intra-trial, zero temporal bleeding)"]
+    end
+```
+
+---
+
+### B. Quantitative Benchmark Results ($N = 37,575$ Frames across 45 Sessions)
+
+Evaluated under Stratified 4-Fold Trial Cross-Validation across all 45 sessions ($15 \text{ subjects} \times 3 \text{ sessions} = 180 \text{ folds total}$):
+
+| Metric | Point Estimate | 95% Non-Parametric Bootstrap CI | Evaluation Protocol / Setting |
+| :--- | :---: | :---: | :--- |
+| **Pooled Smoothed Accuracy** | **57.43%** | **[56.89%, 57.95%]** | Stratified 4-Fold Trial CV ($N = 37,575$) |
+| **Pooled Raw Accuracy** | **57.42%** | **[56.91%, 57.93%]** | Frame-level instantaneous predictions |
+| **Pooled Macro-F1** | **0.5667** | **[0.5617, 0.5720]** | Macro-averaged across Neutral, Sad, Fear, Happy |
+| **Pooled Macro ROC-AUC** | **0.7956** | **[0.7923, 0.7989]** | One-vs-Rest Macro Area Under the Curve |
+| **Pooled Cohen's $\kappa$** | **0.4298** | **[0.4227, 0.4366]** | Inter-rater agreement above chance |
+| **Subject Mean Accuracy** | **57.47% $\pm$ 10.15%** | — | Unweighted mean across 15 subjects |
+
+---
+
+### C. Top Performing Individual Sessions & Subject Accuracies
+
+Individual session modeling under the 15-channel spatial asymmetry pipeline demonstrated strong affective recognition reaching up to **86.42%**:
+
+- **Subject 15 Session 2**: **86.42%** Accuracy, Macro-F1 = **0.8469**, Cohen's $\kappa$ = **0.8155** ($N = 832$)
+- **Subject 14 Session 3**: **79.32%** Accuracy, Macro-F1 = **0.7813**, Cohen's $\kappa$ = **0.7218** ($N = 822$)
+- **Subject 06 Session 3**: **79.20%** Accuracy, Macro-F1 = **0.7962**, Cohen's $\kappa$ = **0.7201** ($N = 822$)
+- **Subject 02 Session 3**: **74.94%** Accuracy, Macro-F1 = **0.7497**, Cohen's $\kappa$ = **0.6637** ($N = 822$)
+- **Subject 02 Session 2**: **73.80%** Accuracy, Macro-F1 = **0.7141**, Cohen's $\kappa$ = **0.6442** ($N = 832$)
+- **Subject 15 Session 3**: **73.24%** Accuracy, Macro-F1 = **0.7316**, Cohen's $\kappa$ = **0.6424** ($N = 822$)
+- **Subject 01 Session 3**: **72.26%** Accuracy, Macro-F1 = **0.7190**, Cohen's $\kappa$ = **0.6286** ($N = 822$)
+- **Subject 07 Session 3**: **69.95%** Accuracy, Macro-F1 = **0.6890**, Cohen's $\kappa$ = **0.5994** ($N = 822$)
+- **Subject 08 Session 3**: **69.34%** Accuracy, Macro-F1 = **0.6765**, Cohen's $\kappa$ = **0.5880** ($N = 822$)
+- **Subject 02 Session 1**: **68.98%** Accuracy, Macro-F1 = **0.6715**, Cohen's $\kappa$ = **0.5810** ($N = 851$)
+- **Subject 04 Session 1**: **68.16%** Accuracy, Macro-F1 = **0.6511**, Cohen's $\kappa$ = **0.5742** ($N = 851$)
+- **Subject 04 Session 3**: **67.88%** Accuracy, Macro-F1 = **0.6554**, Cohen's $\kappa$ = **0.5697** ($N = 822$)
+- **Subject 05 Session 3**: **67.88%** Accuracy, Macro-F1 = **0.6643**, Cohen's $\kappa$ = **0.5691** ($N = 822$)
+- **Subject 10 Session 2**: **67.67%** Accuracy, Macro-F1 = **0.6382**, Cohen's $\kappa$ = **0.5643** ($N = 832$)
+- **Subject 08 Session 2**: **67.07%** Accuracy, Macro-F1 = **0.6478**, Cohen's $\kappa$ = **0.5586** ($N = 832$)
+- **Subject 03 Session 2**: **66.83%** Accuracy, Macro-F1 = **0.6509**, Cohen's $\kappa$ = **0.5519** ($N = 832$)
+
+#### Subject-Level Mean Accuracy Ranking:
+1. **Subject 15**: **74.96%**
+2. **Subject 02**: **72.57%**
+3. **Subject 08**: **63.76%**
+4. **Subject 01**: **63.36%**
+5. **Subject 14**: **61.37%**
+6. **Subject 09**: **59.50%**
+7. **Subject 07**: **58.20%**
+8. **Subject 04**: **58.13%**
+9. **Subject 10**: **58.11%**
+10. **Subject 05**: **58.01%**
+11. **Subject 03**: **56.57%**
+12. **Subject 06**: **55.36%**
+13. **Subject 13**: **47.19%**
+14. **Subject 11**: **39.48%**
+15. **Subject 12**: **35.52%**
+
+---
+
+### D. SOTA Pipeline Visualizations (300 DPI)
+
+````carousel
+![45-Session Accuracy Bar Chart](C:/Users/Daksh's pc/.gemini/antigravity/brain/e5c12706-2777-497e-b3d6-0e26e7492dba/figures/sota_pipeline/per_session_accuracy_chart.png)
+<!-- slide -->
+![Pooled Quarantined Confusion Matrix](C:/Users/Daksh's pc/.gemini/antigravity/brain/e5c12706-2777-497e-b3d6-0e26e7492dba/figures/sota_pipeline/pooled_quarantined_confusion_matrix.png)
+````
+
+
 
