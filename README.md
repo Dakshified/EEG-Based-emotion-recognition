@@ -138,7 +138,24 @@ To investigate why many SEED-IV publications report **95%+ accuracy**, we implem
 | **LightGBM** | Sample-Level Shuffled 80/20 | **99.99%** [99.96%, 100.00%] | **0.9999** [0.9996, 1.0000] | **1.0000** [1.0000, 1.0000] | **0.9998** [0.9995, 1.0000] | Frame Interpolation / Trial Memorization |
 | **Shallow MLP** | Sample-Level Shuffled 80/20 | **100.00%** [100.00%, 100.00%] | **1.0000** [1.0000, 1.0000] | **1.0000** [1.0000, 1.0000] | **1.0000** [1.0000, 1.0000] | Frame Interpolation / Trial Memorization |
 
-> **Scientific Insight**: In SEED-IV, DE features undergo moving-average temporal smoothing across consecutive 1-second frames within each continuous trial ($\rho > 0.99$). When samples are randomly shuffled, adjacent seconds of the *same* trial are split into train and test sets, enabling classifiers to achieve near-100% accuracy via temporal interpolation. Under rigorous **trial-quarantined** evaluation (where test trials and subjects are strictly out-of-sample), true state-of-the-art performance is **68.09%** (Subject-Dependent) and **41.09%** (Cross-Subject).
+### Temporal Autocorrelation Leakage-Free Frame Shuffling Benchmark ($\pm 8$s Exclusion Buffer)
+
+To mathematically dissect the source of this near-100% classification accuracy, we evaluated intra-trial frame-level classification under a **quarantined $\pm 8$-second temporal exclusion buffer** ($\min |t_{\text{train}} - t_{\text{test}}| \ge 8.0\text{ s}$ within every continuous trial). This guarantees $0.00\%$ moving-average smoothing overlap ($\text{supp}(w_t) \cap \text{supp}(w_{\text{test}}) = \emptyset$).
+
+Evaluated across all 15 subjects ($N = 37,575$ frames, 5-fold temporal block CV, 580D Cortical Asymmetry space):
+
+| Partitioning Protocol | Model Architecture | Frame Accuracy (95% CI) | Macro-F1 Score (95% CI) | Cohen's $\kappa$ (95% CI) | Primary Error / Generalization Mechanism |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| **Unbuffered Shuffled ($0\text{s}$ Buffer)** | **Shallow MLP** | **100.00%** [100.00%, 100.00%] | **1.0000** [1.0000, 1.0000] | **1.0000** [1.0000, 1.0000] | Moving-Average Filter Autocorrelation ($\rho > 0.95$) |
+| **Unbuffered Shuffled ($0\text{s}$ Buffer)** | **Regularized LightGBM** | **100.00%** [100.00%, 100.00%] | **1.0000** [1.0000, 1.0000] | **1.0000** [1.0000, 1.0000] | Moving-Average Filter Autocorrelation ($\rho > 0.95$) |
+| **Buffered Leak-Free Split ($\pm 8\text{s}$ Buffer)** | **Shallow MLP** | **99.46%** [99.38%, 99.53%] | **0.9943** [0.9934, 0.9951] | **0.9927** [0.9917, 0.9937] | **Stimulus Identity Memorization (Movie Clip Snooping)** |
+| **Buffered Leak-Free Split ($\pm 8\text{s}$ Buffer)** | **Regularized LightGBM** | **99.10%** [99.01%, 99.19%] | **0.9906** [0.9896, 0.9915] | **0.9880** [0.9867, 0.9891] | **Stimulus Identity Memorization (Movie Clip Snooping)** |
+| **Strict Whole-Trial Quarantine** | **Calibrated Deep MLP** | **65.14%** [64.71%, 65.64%] | **0.6426** [0.6382, 0.6476] | **0.5099** (Trial: **63.24%**) | **True Affective Generalization to Unseen Stimuli** |
+
+> **Crucial Scientific Insight (Two-Stage Data Leakage Proof)**:
+> 1. **Stage 1 (Moving-Average Autocorrelation)**: Unbuffered random shuffling allows models to interpolate between adjacent frames sharing moving-average kernel support. Enforcing $|t_{\text{train}} - t_{\text{test}}| \ge 8.0\text{ s}$ eliminates this correlation entirely.
+> 2. **Stage 2 (Stimulus Identity Memorization)**: Even when temporal autocorrelation is eliminated ($99.46\%$), models achieve near-perfect classification because frames within the *same* continuous movie trial share identical tonic neural fingerprints (audio-visual sensory processing, narrative arc, luminance). The model memorizes *which movie was playing* rather than emotional valence.
+> 3. **Conclusion**: Any intra-trial splitting (random or buffered) produces invalid affective BCI benchmarks. Only **Strict Whole-Trial Quarantine** (where entire trials are held out) evaluates true emotional generalizability.
 
 > **Notice on Few-Shot Calibration**: The Few-Shot Calibration experiment (`evaluate_few_shot_calibration.py`) is INCOMPLETE -- a confirmed statistical inconsistency in the confidence interval computation was found and the experiment was halted pending investigation. Results are not yet valid and are excluded pending a fix.
 
@@ -204,9 +221,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ```
 ├── checkpoints/                 # Saved PyTorch model checkpoints (.pt)
 │   └── dann_final/              # 10 verified Calibrated DANN fold models
-├── figures/                     # 164 publication-quality 300 DPI evaluation figures
+├── figures/                     # Publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
+│   ├── buffered_shuffle/        # Unbuffered vs buffered vs trial quarantine leakage divergence plot
 │   ├── dynacu_net/              # DynAcu-Net trial consensus accuracy, gating dynamics, and 1,080-trial CM
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
@@ -226,6 +244,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── train_trial_consensus_sota.py # Subject-Dependent 580D asymmetry + baseline normalization + trial consensus
 ├── train_sota_hou_pipeline.py   # SOTA Hou et al. (2023) 15-ch spatial asymmetry + Space-to-Depth pipeline
 ├── train_upgraded_benchmarks.py # Dual-regime unified benchmark trainer & bootstrap CI evaluator
+├── evaluate_buffered_frame_shuffle.py # Temporal autocorrelation leakage-free frame shuffle benchmark
 ├── evaluate_salient_windows_benchmark.py # Intra-trial salience extraction & transition filtering benchmark
 ├── evaluate_paper_replication_benchmark.py # Literature replication benchmark (sample-level 80/20)
 ├── train_final_dann.py          # Primary DANN model training pipeline (10 folds)
@@ -240,6 +259,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Temporal Autocorrelation Leakage-Free Frame Shuffle Benchmark**:
+  ```bash
+  python -u evaluate_buffered_frame_shuffle.py --device cuda
+  ```
 * **Run Targeted Denoising & Continuous Affective Manifold Benchmark**:
   ```bash
   python -u train_denoised_continuous_sota.py --device cuda
@@ -310,6 +333,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `buffered_frame_shuffle_results.json` / `buffered_frame_shuffle_results.csv`
   * `denoised_continuous_results.json` / `denoised_continuous_results.csv`
   * `affective_infonce_results.json` / `affective_infonce_results.csv`
   * `responsive_cohort_results.json` / `responsive_cohort_results.csv`
