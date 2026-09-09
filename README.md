@@ -235,6 +235,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── final_model/             # Calibrated DANN diagnostic figures
 │   ├── hou_rfpn/                # Hou et al. (IEEE TIM 2023) RFPN per-subject accuracy, CM & ROC curves
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
+│   ├── psec_net/                # PSEC-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── responsive_cohort/       # Responsive vs Non-Responsive trial accuracy & Responsive cohort CM
 │   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
 │   ├── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
@@ -246,6 +247,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_psec_net_sota.py       # Peak-Decisive Super-Evidential Consensus Network (PSEC-Net)
 ├── train_csec_refined_sota.py   # Refined Climax-Sharpened Evidential Consensus Network (CSEC-Refined)
 ├── train_csec_net_sota.py       # Climax-Sharpened Evidential Consensus Network (CSEC-Net)
 ├── train_adtc_net_sota.py       # Adaptive Dynamic Temperature-Calibrated Evidential Network (ADTC-Net)
@@ -274,6 +276,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Peak-Decisive Super-Evidential Consensus Network (PSEC-Net)**:
+  ```bash
+  python -u train_psec_net_sota.py --device cuda
+  ```
 * **Run Refined Climax-Sharpened Evidential Consensus Network (CSEC-Refined)**:
   ```bash
   python -u train_csec_refined_sota.py --device cuda
@@ -372,6 +378,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `psec_net_results.json` / `psec_net_results.csv`
   * `csec_refined_results.json` / `csec_refined_results.csv`
   * `csec_net_results.json` / `csec_net_results.csv`
   * `adtc_net_results.json` / `adtc_net_results.csv`
