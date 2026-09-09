@@ -228,6 +228,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── buffered_shuffle/        # Unbuffered vs buffered vs trial quarantine leakage divergence plot
 │   ├── coma_net/                # COMA-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── csec_net/                # CSEC-Net per-subject accuracy, 1,080-trial CM & ROC curves
+│   ├── csec_refined/            # CSEC-Refined per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── ds_gat_literature/       # DS-GAT literature benchmark figures
 │   ├── dynacu_net/              # DynAcu-Net trial consensus accuracy, gating dynamics, and 1,080-trial CM
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
@@ -245,6 +246,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_csec_refined_sota.py   # Refined Climax-Sharpened Evidential Consensus Network (CSEC-Refined)
 ├── train_csec_net_sota.py       # Climax-Sharpened Evidential Consensus Network (CSEC-Net)
 ├── train_adtc_net_sota.py       # Adaptive Dynamic Temperature-Calibrated Evidential Network (ADTC-Net)
 ├── train_coma_net_sota.py       # Cortical-Ocular Manifold Alignment Network (COMA-Net)
@@ -272,6 +274,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Refined Climax-Sharpened Evidential Consensus Network (CSEC-Refined)**:
+  ```bash
+  python -u train_csec_refined_sota.py --device cuda
+  ```
 * **Run Climax-Sharpened Evidential Consensus Network (CSEC-Net)**:
   ```bash
   python -u train_csec_net_sota.py --device cuda
@@ -366,6 +372,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `csec_refined_results.json` / `csec_refined_results.csv`
   * `csec_net_results.json` / `csec_net_results.csv`
   * `adtc_net_results.json` / `adtc_net_results.csv`
   * `coma_net_results.json` / `coma_net_results.csv`
