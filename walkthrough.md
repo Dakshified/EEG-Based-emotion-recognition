@@ -200,3 +200,75 @@ In SEED-IV, Differential Entropy (DE) features are extracted from 1-second EEG w
 > 1. Achieving 95%–100% on SEED-IV is trivial when sample-level shuffling is used, because temporal smoothing introduces severe auto-correlation leakage across frames of the same trial.
 > 2. Rigorous EEG affective computing must enforce **trial-level and subject-level quarantine**. Under true out-of-sample trial evaluation, the state of the art on 4-class SEED-IV is **68.09%** (Subject-Dependent) and **41.09%** (Cross-Subject).
 
+---
+
+## 7. Affective Salience Window Extraction Benchmark (Zero-Leakage Trial Quarantine)
+
+### A. Neurobiological Rationale & Methodological Design
+
+In continuous naturalistic emotion elicitation experiments (such as the 15–45 second video clips of SEED-IV), affective intensity is non-stationary:
+1. **Stimulus Onset Latency (0–3 seconds)**: Early frames are dominated by orienting reflexes, visual-auditory sensory accommodation, and baseline cognitive evaluation rather than genuine affective arousal.
+2. **Affective Climax Plateau (Core Trial Duration)**: Emotional engagement reaches its physiological peak, characterized by sustained synchronization across high-frequency fronto-parietal circuits.
+3. **Offset Habituation & Cooldown (Final 2 seconds)**: Emotional responses undergo post-peak adaptation and habituation as the movie clip concludes.
+
+Treating all 1-second frames within a trial as identically emotional introduces **ground-truth label noise** in supervised classification. To eliminate non-emotional transition frames while preserving **strict zero-leakage trial quarantine**, three modular filtering mechanisms were designed and evaluated inside `evaluate_salient_windows_benchmark.py`:
+
+- **Strategy 1 (Temporal Climax Crop)**: Drops the first 3s (onset) and last 2s (offset) per trial ($N = 32,175$ frames retained, $85.63\%$).
+- **Strategy 2 (High-Frequency Spectral Activation)**: Computes mean high-frequency power $E(t) = \frac{1}{62} \sum_{c=1}^{62} [\text{DE}_{c, \text{beta}}(t) + \text{DE}_{c, \text{gamma}}(t)]$ across Beta (14–30 Hz) and Gamma (31–50 Hz) bands; retains the top 60% highest-energy frames per trial ($N = 22,470$ frames retained, $59.80\%$).
+- **Strategy 3 (Hybrid Salience Filtering)**: Slices off the 3s stimulus onset first, then ranks the remaining frames by high-frequency Beta+Gamma power, retaining the top 60% most salient frames per trial ($N = 20,610$ frames retained, $54.85\%$).
+
+---
+
+### B. Quantitative Benchmark Comparison (180 Folds per Model $\times$ Strategy)
+
+Evaluated under Stratified 4-Fold Trial Cross-Validation across all 45 sessions ($15 \text{ subjects} \times 3 \text{ sessions}$):
+
+| Filtering Strategy | Retained Frames ($N$) | Retention (%) | Shallow MLP Pooled Acc (95% CI) | Shallow MLP Macro-F1 (95% CI) | Shallow MLP Cohen's $\kappa$ | LightGBM Pooled Acc (95% CI) | LightGBM Macro-F1 (95% CI) | LightGBM Cohen's $\kappa$ |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Raw Baseline (Full-Trial)** | 37,575 | 100.00% | **62.93%** [62.48%, 63.43%] | **0.6216** [0.6170, 0.6264] | 0.5036 | **52.43%** [51.93%, 52.94%] | **0.5195** [0.5144, 0.5244] | 0.3640 |
+| **Strategy 1: Temporal Climax Crop** | 32,175 | 85.63% | **62.79%** [62.26%, 63.32%] | **0.6197** [0.6144, 0.6252] | 0.5012 | **53.11%** [52.57%, 53.64%] | **0.5263** [0.5207, 0.5318] | 0.3723 |
+| **Strategy 2: Spectral Activation** | 22,470 | 59.80% | **62.96%** [62.33%, 63.59%] | **0.6212** [0.6148, 0.6274] | 0.5036 | **52.64%** [52.03%, 53.26%] | **0.5232** [0.5169, 0.5297] | 0.3664 |
+| **Strategy 3: Hybrid Salience** | **20,610** | **54.85%** | **63.81%** [63.18%, 64.48%] | **0.6304** [0.6240, 0.6372] | **0.5151** | **51.98%** [51.33%, 52.65%] | **0.5152** [0.5087, 0.5219] | 0.3580 |
+
+> [!NOTE]
+> **Key Empirical Findings**:
+> 1. **Neural Representation Gain**: Calibrated Shallow MLP achieves its highest performance under **Strategy 3 (Hybrid Salience)** at **63.81% accuracy** (+0.88% lift over raw baseline) and **0.6304 Macro-F1**, while discarding **45.15%** of noisy transition frames.
+> 2. **Subject-Level Peak Accuracies**: Under Hybrid Salience, individual subject intra-session accuracies reach **80.19%** (Subject 15), **77.11%** (Subject 02), **75.64%** (Subject 08), **72.35%** (Subject 07), and **68.79%** (Subject 14).
+> 3. **Tree-Based vs Neural Dynamics**: LightGBM shows slight accuracy improvements under temporal cropping (+0.68%) but suffers when data volume is aggressively halved, whereas the Shallow MLP leverages the higher signal-to-noise ratio in the feature space.
+
+---
+
+### C. Per-Subject Performance Breakdown (Hybrid Salience vs. Raw Baseline)
+
+| Subject ID | Raw Shallow MLP (%) | Hybrid Salience Shallow MLP (%) | Accuracy Delta | Raw LightGBM (%) | Strat 1 LightGBM (%) | Accuracy Delta |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Sub 01** | 64.11% | 62.82% | -1.29% | 53.21% | 58.19% | **+4.98%** |
+| **Sub 02** | 76.63% | **77.11%** | +0.48% | 68.77% | 68.35% | -0.42% |
+| **Sub 03** | 66.88% | **67.91%** | +1.03% | 51.55% | 47.97% | -3.58% |
+| **Sub 04** | 57.05% | **62.87%** | **+5.82%** | 60.13% | 59.16% | -0.97% |
+| **Sub 05** | 64.88% | 63.77% | -1.11% | 54.55% | 56.28% | **+1.73%** |
+| **Sub 06** | 59.94% | **62.32%** | **+2.38%** | 42.83% | 48.83% | **+6.00%** |
+| **Sub 07** | 70.88% | **72.35%** | +1.47% | 54.74% | 53.78% | -0.96% |
+| **Sub 08** | 75.32% | **75.64%** | +0.32% | 53.60% | 53.83% | +0.23% |
+| **Sub 09** | 63.11% | 62.13% | -0.98% | 50.99% | 48.58% | -2.41% |
+| **Sub 10** | 57.78% | **60.13%** | **+2.35%** | 55.57% | 51.64% | -3.93% |
+| **Sub 11** | 46.25% | 44.21% | -2.04% | 41.53% | 42.68% | **+1.15%** |
+| **Sub 12** | 39.49% | 34.88% | -4.61% | 27.25% | 30.60% | **+3.35%** |
+| **Sub 13** | 59.67% | **62.77%** | **+3.10%** | 55.62% | 55.25% | -0.37% |
+| **Sub 14** | 65.38% | **68.79%** | **+3.41%** | 48.80% | 51.96% | **+3.16%** |
+| **Sub 15** | 77.37% | **80.19%** | **+2.82%** | 68.20% | 70.72% | **+2.52%** |
+| **Mean $\pm$ Std** | **62.98% $\pm$ 10.16%** | **63.86% $\pm$ 11.38%** | **+0.88%** | **52.49% $\pm$ 9.89%** | **53.19% $\pm$ 9.33%** | **+0.70%** |
+
+---
+
+### D. Salience Window Visualizations (300 DPI)
+
+````carousel
+![Salience Energy Profile](C:/Users/Daksh's pc/.gemini/antigravity/brain/e5c12706-2777-497e-b3d6-0e26e7492dba/figures/salient_windows/spectral_salience_energy_profile.png)
+<!-- slide -->
+![Raw vs Salient Accuracy Comparison](C:/Users/Daksh's pc/.gemini/antigravity/brain/e5c12706-2777-497e-b3d6-0e26e7492dba/figures/salient_windows/raw_vs_salient_accuracy_comparison.png)
+<!-- slide -->
+![Salient Confusion Matrix](C:/Users/Daksh's pc/.gemini/antigravity/brain/e5c12706-2777-497e-b3d6-0e26e7492dba/figures/salient_windows/salient_confusion_matrix.png)
+````
+
+

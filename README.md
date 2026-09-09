@@ -118,19 +118,21 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ```
 ├── checkpoints/                 # Saved PyTorch model checkpoints (.pt)
 │   └── dann_final/              # 10 verified Calibrated DANN fold models
-├── figures/                     # 154 publication-quality 300 DPI evaluation figures
+├── figures/                     # 157 publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
-│   └── responsible_ai/          # ECE reliability diagrams & selective abstention curves
+│   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
+│   └── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
 ├── granger_cache/               # Causal functional connectivity matrices
 ├── reference reseach papers/    # Reviewed academic literature
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
 ├── train_upgraded_benchmarks.py # Dual-regime unified benchmark trainer & bootstrap CI evaluator
+├── evaluate_salient_windows_benchmark.py # Intra-trial salience extraction & transition filtering benchmark
 ├── evaluate_paper_replication_benchmark.py # Literature replication benchmark (sample-level 80/20)
 ├── train_final_dann.py          # Primary DANN model training pipeline (10 folds)
 ├── train_gat_kan_v2.py          # Proposed GAT-KAN v2 architecture
@@ -144,6 +146,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Affective Salience Window Extraction Benchmark**:
+  ```bash
+  python evaluate_salient_windows_benchmark.py
+  ```
 * **Run Literature Paper Replication Benchmark (95%+ Comparison Protocol)**:
   ```bash
   python evaluate_paper_replication_benchmark.py
@@ -184,8 +190,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ## 5. Key Documentation & Artifacts
 
-* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, and literature replication analyses.
+* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, and affective salience window extraction.
 * **Structured Results**:
+  * `salient_window_benchmark_results.json` / `salient_window_benchmark_results.csv`
   * `paper_replication_benchmark_results.json` / `paper_replication_benchmark_results.csv`
   * `dann_final_results.json` / `dann_final_results.csv`
   * `three_model_ensemble_results.json` / `three_model_ensemble_results.csv`
