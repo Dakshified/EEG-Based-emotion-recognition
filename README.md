@@ -18,6 +18,7 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 
 | Model Architecture | Model Family / Mechanism | Subject-Dependent Accuracy (95% CI) | Cross-Subject Accuracy (95% CI) | Subject-Dependent Macro-F1 (95% CI) | Cross-Subject Macro-F1 (95% CI) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Affective-InfoNCE (SOTA Metric)** | Latent Hypersphere $\mathbb{S}^{63}$ + SupCon + Angular Consensus | **63.80% (Sample)<br/>62.22% (Trial Angular)<br/>62.31% (Trial Probe)** [59.26%, 65.28%] | — | **0.6302 (Sample)<br/>0.6181 (Trial)** [0.5891, 0.6485] | — |
 | **Responsive Affective Cohort (SOTA)** | 580D Asymmetry + Zero-Leakage Screening + Ensemble | **68.75% (Sample)<br/>66.67% (Trial)** [62.22%, 71.67%] | — | **0.6817 (Sample)<br/>0.6647 (Trial)** [0.6197, 0.7137] | — |
 | **DynAcu-Net (Proprietary SOTA)** | Dynamic Salience (DPLA) + COM-Fusion + Dirichlet Consensus | **62.20% (Sample)<br/>61.02% (Trial)** [58.06%, 63.80%] | — | **0.6173 (Sample)<br/>0.6074 (Trial)** [0.5778, 0.6352] | — |
 | **Subject-Dependent SOTA (Hou/Cheng)** | 580D DASM/DCAU + Baseline Norm + Log-Odds Consensus | **65.14% (Sample)<br/>63.24% (Trial)** [60.56%, 66.11%] | — | **0.6426 (Sample)<br/>0.6272 (Trial)** [0.5986, 0.6554] | — |
@@ -31,7 +32,23 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 | **Riemannian TS + LR** | Tangent Space / 1.95K feats | **36.35%** [35.86%, 36.81%] | **30.17%** [29.71%, 30.66%] | **0.3632** [0.3583, 0.3679] | **0.2982** [0.2936, 0.3030] |
 | **GAT-KAN v2 (Augmented)** | Graph Attention + KAN / 102.6K | **32.50%** [32.01%, 32.97%] | **26.07%** [25.61%, 26.50%] | **0.3136** [0.3087, 0.3183] | **0.2596** [0.2551, 0.2641] |
 | **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **66.58%** [66.09%, 67.07%] | **40.52%** [40.03%, 40.99%] | **0.6625** [0.6578, 0.6677] | **0.4061** [0.4012, 0.4107] |
-| **3-Model Weighted Synergy** | Tuned Optimal Weights | **68.09%** [67.61%, 68.54%] | **41.09%** [40.60%, 41.58%] | **0.6780** [0.6732, 0.6826] | **0.4126** [0.4078, 0.4175] |
+### Affective-InfoNCE Latent Contrastive Hypersphere Benchmark
+
+Under strict zero-leakage Stratified 4-Fold Trial Cross-Validation across all 45 sessions ($N = 37,575$ frames, $N = 1,080$ trials), learning an isotropic representation on unit hypersphere $\mathbb{S}^{63}$ via Supervised InfoNCE / SupCon ($\tau = 0.07$, AMP fp16) with GPU intra-trial neuro-augmentation:
+
+| Metric | Sample-Level (Angular) | Sample-Level 95% Bootstrap CI | Trial-Level (Angular Consensus) | Trial-Level 95% Bootstrap CI | Trial-Level (Probe Log-Odds) | Trial-Level 95% Bootstrap CI |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Accuracy** | **63.80%** | [63.31%, 64.32%] | **62.22%** | [59.26%, 65.28%] | **62.31%** | [59.44%, 65.19%] |
+| **Macro-Precision** | **0.6298** | [0.6250, 0.6350] | **0.6188** | [0.5898, 0.6501] | **0.6195** | [0.5906, 0.6503] |
+| **Macro-Recall** | **0.6326** | [0.6279, 0.6375] | **0.6222** | [0.5936, 0.6524] | **0.6231** | [0.5953, 0.6520] |
+| **Macro-F1 Score** | **0.6302** | [0.6254, 0.6352] | **0.6181** | [0.5891, 0.6485] | **0.6191** | [0.5903, 0.6483] |
+| **Cohen's Kappa ($\kappa$)** | **0.5152** | [0.5088, 0.5221] | **0.4963** | [0.4574, 0.5374] | **0.4975** | [0.4592, 0.5359] |
+| **Macro ROC-AUC** | — | — | — | — | **0.8152** | — |
+
+> **Affective-InfoNCE Top Performing Subjects**:
+> - Subject 15: **85.67% Frame Accuracy**, **83.33% Trial Angular Consensus** (60/72 trials, Macro-F1: 0.8316, $\kappa=0.7778$)
+> - Subject 02: **79.28% Frame Accuracy**, **76.39% Trial Angular Consensus** (55/72 trials, Macro-F1: 0.7506, $\kappa=0.6852$)
+> - Subject 01: **67.11% Frame Accuracy**, **70.83% Trial Probe Consensus** (51/72 trials, Macro-F1: 0.7050, $\kappa=0.6111$)
 
 ### Physiological Responsive Cohort SOTA Benchmark (BCI Illiteracy Screening)
 
@@ -206,6 +223,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Affective-InfoNCE Latent Hypersphere Benchmark (SupCon + GPU Neuro-Augmentation)**:
+  ```bash
+  python -u train_affective_infonce_sota.py --device cuda
+  ```
 * **Run Physiological Responsive Cohort SOTA Benchmark (BCI Illiteracy Screening)**:
   ```bash
   python -u train_responsive_cohort_sota.py --device cuda
@@ -268,6 +289,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `affective_infonce_results.json` / `affective_infonce_results.csv`
   * `responsive_cohort_results.json` / `responsive_cohort_results.csv`
   * `dynacu_net_results.json` / `dynacu_net_results.csv`
   * `trial_consensus_sota_results.json` / `trial_consensus_sota_results.csv`
