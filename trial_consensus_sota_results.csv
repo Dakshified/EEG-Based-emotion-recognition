@@ -1,0 +1,4 @@
+Model,Sample_Accuracy,Sample_Acc_CI_Low,Sample_Acc_CI_High,Sample_Macro_F1,Sample_Macro_F1_CI_Low,Sample_Macro_F1_CI_High,Trial_Consensus_Accuracy,Trial_Acc_CI_Low,Trial_Acc_CI_High,Trial_Consensus_Macro_F1,Trial_Macro_F1_CI_Low,Trial_Macro_F1_CI_High,Trial_Kappa,Trial_ROC_AUC
+LightGBM,54.33%,53.85%,54.88%,0.5364,0.5316,0.5420,52.22%,49.35%,55.37%,0.5195,0.4908,0.5506,0.3630,0.7285
+Calibrated_MLP,65.14%,64.71%,65.64%,0.6426,0.6382,0.6476,63.24%,60.56%,66.11%,0.6272,0.5986,0.6554,0.5099,0.8156
+Hybrid_Ensemble,61.54%,61.09%,62.10%,0.6065,0.6018,0.6119,60.83%,58.15%,63.70%,0.6036,0.5767,0.6310,0.4778,0.8199

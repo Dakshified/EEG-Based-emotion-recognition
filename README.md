@@ -30,6 +30,23 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 | **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **66.58%** [66.09%, 67.07%] | **40.52%** [40.03%, 40.99%] | **0.6625** [0.6578, 0.6677] | **0.4061** [0.4012, 0.4107] |
 | **3-Model Weighted Synergy** | Tuned Optimal Weights | **68.09%** [67.61%, 68.54%] | **41.09%** [40.60%, 41.58%] | **0.6780** [0.6732, 0.6826] | **0.4126** [0.4078, 0.4175] |
 
+### Subject-Dependent Trial Consensus SOTA Benchmark (Hou et al. 2023 & Cheng et al. 2021)
+
+Under strict zero-leakage Stratified 4-Fold Trial Cross-Validation across all 45 sessions ($N = 37,575$ frames, $N = 1,080$ trials), combining **580D Differential Asymmetry (DASM) & Caudality (DCAU)** with **Session Neutral Baseline Reference Normalization ($\mu_{\text{neutral}}$)** and **Log-Odds Consensus Aggregation**:
+
+| Model Architecture | Sample-Level Accuracy (95% CI) | Sample Macro-F1 (95% CI) | Trial-Consensus Accuracy (95% CI) | Trial Macro-F1 (95% CI) | Trial Cohen's $\kappa$ | Trial Macro ROC-AUC |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Calibrated Deep MLP** | **65.14%** [64.71%, 65.64%] | **0.6426** [0.6382, 0.6476] | **63.24%** [60.56%, 66.11%] | **0.6272** [0.5986, 0.6554] | **0.5099** | **0.8156** |
+| **Hybrid Ensemble (LGB+MLP)** | **61.54%** [61.09%, 62.10%] | **0.6065** [0.6018, 0.6119] | **60.83%** [58.15%, 63.70%] | **0.6036** [0.5767, 0.6310] | 0.4778 | **0.8199** |
+| **LightGBM Classifier** | **54.33%** [53.85%, 54.88%] | **0.5364** [0.5316, 0.5420] | **52.22%** [49.35%, 55.37%] | **0.5195** [0.4908, 0.5506] | 0.3630 | 0.7285 |
+
+> **Peak Responding Subjects & Sessions**:
+> - Subject 14 Session 3: **95.13% Sample Accuracy**, **91.67% Trial Consensus** (22/24 trials)
+> - Subject 15 Session 2: **94.47% Sample Accuracy**, **87.50% Trial Consensus** (21/24 trials)
+> - Subject 02 Session 2: **89.30% Sample Accuracy**, **83.33% Trial Consensus** (20/24 trials)
+> - Subject 15 Overall Mean: **86.63% Sample Accuracy**, **84.72% Trial Consensus** (61/72 trials)
+> - Subject 02 Overall Mean: **75.49% Sample Accuracy**, **72.22% Trial Consensus** (52/72 trials)
+
 > **Top Intra-Session Performances (Spatial-Temporal 2D-CNN-BiGRU, Stratified 4-Fold CV)**:
 > - Subject 07 Session 3: **77.73%** Accuracy, **0.7716** Macro-F1 ($N=750$)
 > - Subject 15 Session 2: **76.45%** Accuracy, **0.7551** Macro-F1 ($N=760$)
@@ -126,12 +143,14 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
 │   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
 │   ├── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
-│   └── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
+│   ├── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
+│   └── trial_consensus/         # Trial vs sample accuracy, log-odds dynamics, and consensus CM
 ├── granger_cache/               # Causal functional connectivity matrices
 ├── reference reseach papers/    # Reviewed academic literature
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_trial_consensus_sota.py # Subject-Dependent 580D asymmetry + baseline normalization + trial consensus
 ├── train_sota_hou_pipeline.py   # SOTA Hou et al. (2023) 15-ch spatial asymmetry + Space-to-Depth pipeline
 ├── train_upgraded_benchmarks.py # Dual-regime unified benchmark trainer & bootstrap CI evaluator
 ├── evaluate_salient_windows_benchmark.py # Intra-trial salience extraction & transition filtering benchmark
@@ -148,6 +167,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Subject-Dependent Trial Consensus SOTA Benchmark (Hou et al. 2023 & Cheng et al. 2021)**:
+  ```bash
+  python train_trial_consensus_sota.py
+  ```
 * **Run SOTA Asymmetry Spatial Tensor & Baseline Calibration Pipeline (Hou et al. 2023)**:
   ```bash
   python train_sota_hou_pipeline.py
@@ -198,6 +221,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, and SOTA asymmetry spatial modeling.
 * **Structured Results**:
+  * `trial_consensus_sota_results.json` / `trial_consensus_sota_results.csv`
   * `sota_hou_pipeline_results.json` / `sota_hou_pipeline_results.csv`
   * `salient_window_benchmark_results.json` / `salient_window_benchmark_results.csv`
   * `paper_replication_benchmark_results.json` / `paper_replication_benchmark_results.csv`
