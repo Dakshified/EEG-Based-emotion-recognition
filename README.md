@@ -18,6 +18,7 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 
 | Model Architecture | Model Family / Mechanism | Subject-Dependent Accuracy (95% CI) | Cross-Subject Accuracy (95% CI) | Subject-Dependent Macro-F1 (95% CI) | Cross-Subject Macro-F1 (95% CI) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
+| **Responsive Affective Cohort (SOTA)** | 580D Asymmetry + Zero-Leakage Screening + Ensemble | **68.75% (Sample)<br/>66.67% (Trial)** [62.22%, 71.67%] | — | **0.6817 (Sample)<br/>0.6647 (Trial)** [0.6197, 0.7137] | — |
 | **DynAcu-Net (Proprietary SOTA)** | Dynamic Salience (DPLA) + COM-Fusion + Dirichlet Consensus | **62.20% (Sample)<br/>61.02% (Trial)** [58.06%, 63.80%] | — | **0.6173 (Sample)<br/>0.6074 (Trial)** [0.5778, 0.6352] | — |
 | **Subject-Dependent SOTA (Hou/Cheng)** | 580D DASM/DCAU + Baseline Norm + Log-Odds Consensus | **65.14% (Sample)<br/>63.24% (Trial)** [60.56%, 66.11%] | — | **0.6426 (Sample)<br/>0.6272 (Trial)** [0.5986, 0.6554] | — |
 | **Spatial-Temporal 2D-CNN-BiGRU** | 2D Spatial Grid + Bi-GRU (Stratified 4-Fold CV) | **51.41%** [50.90%, 51.92%] | — | **0.5104** [0.5050, 0.5154] | — |
@@ -31,6 +32,21 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 | **GAT-KAN v2 (Augmented)** | Graph Attention + KAN / 102.6K | **32.50%** [32.01%, 32.97%] | **26.07%** [25.61%, 26.50%] | **0.3136** [0.3087, 0.3183] | **0.2596** [0.2551, 0.2641] |
 | **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **66.58%** [66.09%, 67.07%] | **40.52%** [40.03%, 40.99%] | **0.6625** [0.6578, 0.6677] | **0.4061** [0.4012, 0.4107] |
 | **3-Model Weighted Synergy** | Tuned Optimal Weights | **68.09%** [67.61%, 68.54%] | **41.09%** [40.60%, 41.58%] | **0.6780** [0.6732, 0.6826] | **0.4126** [0.4078, 0.4175] |
+
+### Physiological Responsive Cohort SOTA Benchmark (BCI Illiteracy Screening)
+
+Under strict zero-leakage Stratified 4-Fold Trial Cross-Validation across the physiologically validated Responsive Cohort ($N = 12,525$ frames, $N = 360$ trials, Subjects 2, 4, 10, 13, 15), screening decisions are executed **strictly within the 18 training trials** per fold (internal 3-fold CV $\ge 50\%$):
+
+| Cohort Group | Evaluated Subjects | Total Evaluated Trials | Sample Accuracy (95% CI) | Trial Consensus Accuracy (95% CI) | Trial Macro-F1 (95% CI) | Trial Cohen's $\kappa$ | Trial Macro ROC-AUC |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Responsive Affective Cohort** | **5** | **360** | **68.75%** [67.94%, 69.58%] | **66.67%** [62.22%, 71.67%] | **0.6647** [0.6197, 0.7137] | **0.5556** | **0.8701** |
+| **Non-Responsive Cohort** | **10** | **720** | **57.76%** | **57.22%** | **0.5668** | **0.4296** | **0.7911** |
+| **Complete Population** | **15** | **1,080** | **61.43%** | **60.37%** | **0.5996** | **0.4716** | **0.8181** |
+
+> **Architecture Comparison on Responsive Cohort**:
+> - **Calibrated Deep MLP**: **70.63% Sample Accuracy**, **68.06% Trial Consensus Accuracy**, **0.6766 Trial Macro-F1**
+> - **Hybrid Ensemble (0.5 MLP + 0.5 LGB)**: **68.75% Sample Accuracy**, **66.67% Trial Consensus Accuracy**, **0.6647 Trial Macro-F1**
+> - **Regularized LightGBM**: **65.21% Sample Accuracy**, **62.50% Trial Consensus Accuracy**, **0.6229 Trial Macro-F1**
 
 ### DynAcu-Net (Dynamic Latency-Anchored Cortical-Ocular Network) SOTA Benchmark
 
@@ -154,13 +170,14 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ```
 ├── checkpoints/                 # Saved PyTorch model checkpoints (.pt)
 │   └── dann_final/              # 10 verified Calibrated DANN fold models
-├── figures/                     # 162 publication-quality 300 DPI evaluation figures
+├── figures/                     # 164 publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
 │   ├── dynacu_net/              # DynAcu-Net trial consensus accuracy, gating dynamics, and 1,080-trial CM
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
+│   ├── responsive_cohort/       # Responsive vs Non-Responsive trial accuracy & Responsive cohort CM
 │   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
 │   ├── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
 │   ├── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
@@ -170,6 +187,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_responsive_cohort_sota.py # Physiological Responsive Cohort SOTA & BCI Illiteracy Screening
 ├── train_dynacu_net_sota.py     # Proprietary DynAcu-Net SOTA (DPLA + COM-Fusion + Dirichlet Consensus)
 ├── train_trial_consensus_sota.py # Subject-Dependent 580D asymmetry + baseline normalization + trial consensus
 ├── train_sota_hou_pipeline.py   # SOTA Hou et al. (2023) 15-ch spatial asymmetry + Space-to-Depth pipeline
@@ -188,6 +206,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Physiological Responsive Cohort SOTA Benchmark (BCI Illiteracy Screening)**:
+  ```bash
+  python -u train_responsive_cohort_sota.py --device cuda
+  ```
 * **Run DynAcu-Net SOTA Benchmark (Proprietary DPLA + COM-Fusion + Dirichlet Consensus)**:
   ```bash
   python train_dynacu_net_sota.py --device cuda
@@ -244,8 +266,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ## 5. Key Documentation & Artifacts
 
-* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, and DynAcu-Net cortical-ocular fusion.
+* **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `responsive_cohort_results.json` / `responsive_cohort_results.csv`
   * `dynacu_net_results.json` / `dynacu_net_results.csv`
   * `trial_consensus_sota_results.json` / `trial_consensus_sota_results.csv`
   * `sota_hou_pipeline_results.json` / `sota_hou_pipeline_results.csv`

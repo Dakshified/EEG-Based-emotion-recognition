@@ -1,0 +1,919 @@
+{
+  "benchmark": "SEED-IV Responsive Affective Cohort SOTA Benchmark",
+  "screening_protocol": "Zero-Leakage Internal 3-Fold Training CV Screening (Threshold >= 50%)",
+  "total_subjects": 15,
+  "responsive_subjects": [
+    2,
+    4,
+    10,
+    13,
+    15
+  ],
+  "non_responsive_subjects": [
+    1,
+    3,
+    5,
+    6,
+    7,
+    8,
+    9,
+    11,
+    12,
+    14
+  ],
+  "execution_time_seconds": 1467.2833604812622,
+  "cohort_benchmarks": {
+    "responsive_cohort": {
+      "total_trials": 360,
+      "total_frames": 12525,
+      "sample_level": {
+        "point_estimates": {
+          "accuracy": 0.6875049900199601,
+          "macro_precision": 0.6819593172378694,
+          "macro_recall": 0.6822702165945661,
+          "macro_f1": 0.6817015280495868,
+          "cohen_kappa": 0.5816556334256832,
+          "macro_roc_auc": 0.8995331023174762
+        },
+        "confidence_intervals_95": {
+          "accuracy": [
+            0.6875684630738523,
+            0.6794351297405189,
+            0.6958083832335329
+          ],
+          "macro_precision": [
+            0.6820359048841599,
+            0.6738223208818577,
+            0.6906591436328289
+          ],
+          "macro_recall": [
+            0.6823427769226658,
+            0.6740726399670534,
+            0.6910430688994428
+          ],
+          "macro_f1": [
+            0.6817354441375281,
+            0.6733717055697526,
+            0.6902672224593276
+          ],
+          "cohen_kappa": [
+            0.58171973836191,
+            0.5708008509405988,
+            0.5927743721865908
+          ]
+        }
+      },
+      "trial_level": {
+        "point_estimates": {
+          "accuracy": 0.6666666666666666,
+          "macro_precision": 0.6663301685807254,
+          "macro_recall": 0.6666666666666667,
+          "macro_f1": 0.6647407494704821,
+          "cohen_kappa": 0.5555555555555556,
+          "macro_roc_auc": 0.8701286008230453
+        },
+        "confidence_intervals_95": {
+          "accuracy": [
+            0.6666,
+            0.6222222222222222,
+            0.7166666666666667
+          ],
+          "macro_precision": [
+            0.6661211472702325,
+            0.6210215140032485,
+            0.7168213193339813
+          ],
+          "macro_recall": [
+            0.6662701134870135,
+            0.6227701306271729,
+            0.7159817298412056
+          ],
+          "macro_f1": [
+            0.6632165492885458,
+            0.6197131755220198,
+            0.713736148744416
+          ],
+          "cohen_kappa": [
+            0.5547798948291678,
+            0.49626128515460954,
+            0.6220490915800199
+          ]
+        },
+        "confusion_matrix": [
+          [
+            75,
+            4,
+            2,
+            9
+          ],
+          [
+            7,
+            56,
+            14,
+            13
+          ],
+          [
+            7,
+            22,
+            56,
+            5
+          ],
+          [
+            12,
+            15,
+            10,
+            53
+          ]
+        ]
+      },
+      "models_comparison": {
+        "Deep_MLP": {
+          "sample_accuracy": 0.7063473053892215,
+          "trial_accuracy": 0.6805555555555556,
+          "trial_macro_f1": 0.6766268555251118
+        },
+        "LightGBM": {
+          "sample_accuracy": 0.6520558882235529,
+          "trial_accuracy": 0.625,
+          "trial_macro_f1": 0.622888851601701
+        },
+        "Hybrid_Ensemble": {
+          "sample_accuracy": 0.6875049900199601,
+          "trial_accuracy": 0.6666666666666666,
+          "trial_macro_f1": 0.6647407494704821
+        }
+      }
+    },
+    "non_responsive_cohort": {
+      "total_trials": 720,
+      "total_frames": 25050,
+      "sample_level": {
+        "point_estimates": {
+          "accuracy": 0.5776447105788424,
+          "macro_precision": 0.5681139622469386,
+          "macro_recall": 0.5702509026412522,
+          "macro_f1": 0.567723958668566,
+          "cohen_kappa": 0.4338437652404865,
+          "macro_roc_auc": 0.8067403952067211
+        },
+        "confidence_intervals_95": {
+          "accuracy": [
+            0.5777092614770459,
+            0.5719740518962076,
+            0.583314371257485
+          ],
+          "macro_precision": [
+            0.5681652945060561,
+            0.5622061213386,
+            0.574048933547932
+          ],
+          "macro_recall": [
+            0.5702949631991561,
+            0.5643894351178936,
+            0.5759827233913485
+          ],
+          "macro_f1": [
+            0.5677622218420432,
+            0.5619561657365956,
+            0.5735662964422178
+          ],
+          "cohen_kappa": [
+            0.43391750286805986,
+            0.4261634547184007,
+            0.44158151611821694
+          ]
+        }
+      },
+      "trial_level": {
+        "point_estimates": {
+          "accuracy": 0.5722222222222222,
+          "macro_precision": 0.569217330775508,
+          "macro_recall": 0.5722222222222222,
+          "macro_f1": 0.5667680041718604,
+          "cohen_kappa": 0.4296296296296296,
+          "macro_roc_auc": 0.7910982510288065
+        },
+        "confidence_intervals_95": {
+          "accuracy": [
+            0.5722875000000001,
+            0.5361111111111111,
+            0.6083680555555555
+          ],
+          "macro_precision": [
+            0.5692255828670277,
+            0.532880636689904,
+            0.6049079883411617
+          ],
+          "macro_recall": [
+            0.5721964601048722,
+            0.5377323611519016,
+            0.6077575766475883
+          ],
+          "macro_f1": [
+            0.5661371432680496,
+            0.5306558457272249,
+            0.6025418005008139
+          ],
+          "cohen_kappa": [
+            0.42935388818473064,
+            0.3823360854856641,
+            0.47865031543626385
+          ]
+        },
+        "confusion_matrix": [
+          [
+            143,
+            13,
+            11,
+            13
+          ],
+          [
+            20,
+            92,
+            44,
+            24
+          ],
+          [
+            24,
+            40,
+            96,
+            20
+          ],
+          [
+            31,
+            41,
+            27,
+            81
+          ]
+        ]
+      },
+      "models_comparison": {
+        "Deep_MLP": {
+          "sample_accuracy": 0.625309381237525,
+          "trial_accuracy": 0.6027777777777777,
+          "trial_macro_f1": 0.5969153903505446
+        },
+        "LightGBM": {
+          "sample_accuracy": 0.49021956087824353,
+          "trial_accuracy": 0.4777777777777778,
+          "trial_macro_f1": 0.4741571945492039
+        },
+        "Hybrid_Ensemble": {
+          "sample_accuracy": 0.5776447105788424,
+          "trial_accuracy": 0.5722222222222222,
+          "trial_macro_f1": 0.5667680041718604
+        }
+      }
+    },
+    "complete_population": {
+      "total_trials": 1080,
+      "total_frames": 37575,
+      "sample_level": {
+        "point_estimates": {
+          "accuracy": 0.6142648037258815,
+          "macro_precision": 0.606129152967973,
+          "macro_recall": 0.6075906739590236,
+          "macro_f1": 0.6058534583353044,
+          "cohen_kappa": 0.4831573205503865,
+          "macro_roc_auc": 0.8393144110087928
+        },
+        "confidence_intervals_95": {
+          "accuracy": [
+            0.614420864936793,
+            0.6094723885562209,
+            0.6195362608117099
+          ],
+          "macro_precision": [
+            0.6062970546084161,
+            0.6014128515822552,
+            0.6114467294577903
+          ],
+          "macro_recall": [
+            0.607729622743933,
+            0.6029743895239932,
+            0.6126301982775606
+          ],
+          "macro_f1": [
+            0.6059903050286332,
+            0.6012088718083578,
+            0.6109420597876908
+          ],
+          "cohen_kappa": [
+            0.4833630598224779,
+            0.47674688583598895,
+            0.49001645237665414
+          ]
+        }
+      },
+      "trial_level": {
+        "point_estimates": {
+          "accuracy": 0.6037037037037037,
+          "macro_precision": 0.6014120153787791,
+          "macro_recall": 0.6037037037037037,
+          "macro_f1": 0.5995662826698025,
+          "cohen_kappa": 0.471604938271605,
+          "macro_roc_auc": 0.8181012802926383
+        },
+        "confidence_intervals_95": {
+          "accuracy": [
+            0.604088888888889,
+            0.5768518518518518,
+            0.6333333333333333
+          ],
+          "macro_precision": [
+            0.601805820548929,
+            0.5742524409724158,
+            0.6311664231900918
+          ],
+          "macro_recall": [
+            0.6040053876359851,
+            0.5772895110809729,
+            0.6323416458999794
+          ],
+          "macro_f1": [
+            0.5994345337046171,
+            0.5724409736312775,
+            0.6284821265857292
+          ],
+          "cohen_kappa": [
+            0.47188581833307364,
+            0.43618676695147307,
+            0.5104909257869784
+          ]
+        },
+        "confusion_matrix": [
+          [
+            218,
+            17,
+            13,
+            22
+          ],
+          [
+            27,
+            148,
+            58,
+            37
+          ],
+          [
+            31,
+            62,
+            152,
+            25
+          ],
+          [
+            43,
+            56,
+            37,
+            134
+          ]
+        ]
+      },
+      "models_comparison": {
+        "Deep_MLP": {
+          "sample_accuracy": 0.6523220226214238,
+          "trial_accuracy": 0.6287037037037037,
+          "trial_macro_f1": 0.6234336895556799
+        },
+        "LightGBM": {
+          "sample_accuracy": 0.5441650033266799,
+          "trial_accuracy": 0.5268518518518519,
+          "trial_macro_f1": 0.5239964561054621
+        },
+        "Hybrid_Ensemble": {
+          "sample_accuracy": 0.6142648037258815,
+          "trial_accuracy": 0.6037037037037037,
+          "trial_macro_f1": 0.5995662826698025
+        }
+      }
+    }
+  },
+  "per_subject": {
+    "1": {
+      "internal_screening_accuracy": 0.42264307060263345,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.6095808383233533,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.6111111111111112,
+        "macro_f1": 0.5996632996632996,
+        "cohen_kappa": 0.4814814814814815,
+        "total_trials": 72
+      }
+    },
+    "2": {
+      "internal_screening_accuracy": 0.5807410967531975,
+      "is_responsive_cohort": true,
+      "sample_level": {
+        "accuracy": 0.7908183632734531,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.7777777777777778,
+        "macro_f1": 0.7790389988919401,
+        "cohen_kappa": 0.7037037037037037,
+        "total_trials": 72
+      }
+    },
+    "3": {
+      "internal_screening_accuracy": 0.40700169450003326,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.6447105788423154,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.6388888888888888,
+        "macro_f1": 0.6385665076841547,
+        "cohen_kappa": 0.5185185185185186,
+        "total_trials": 72
+      }
+    },
+    "4": {
+      "internal_screening_accuracy": 0.6195277222953138,
+      "is_responsive_cohort": true,
+      "sample_level": {
+        "accuracy": 0.6459081836327345,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.6388888888888888,
+        "macro_f1": 0.6337091101796984,
+        "cohen_kappa": 0.5185185185185186,
+        "total_trials": 72
+      }
+    },
+    "5": {
+      "internal_screening_accuracy": 0.4849133698364869,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.5728542914171657,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5694444444444444,
+        "macro_f1": 0.5616814212951734,
+        "cohen_kappa": 0.42592592592592593,
+        "total_trials": 72
+      }
+    },
+    "6": {
+      "internal_screening_accuracy": 0.48852222757931907,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.619560878243513,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5972222222222222,
+        "macro_f1": 0.5944264885441356,
+        "cohen_kappa": 0.4629629629629629,
+        "total_trials": 72
+      }
+    },
+    "7": {
+      "internal_screening_accuracy": 0.4589112510661318,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.6654690618762475,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.6805555555555556,
+        "macro_f1": 0.6781832335912032,
+        "cohen_kappa": 0.5740740740740741,
+        "total_trials": 72
+      }
+    },
+    "8": {
+      "internal_screening_accuracy": 0.4676842833262846,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.6447105788423154,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.6805555555555556,
+        "macro_f1": 0.6802324320416425,
+        "cohen_kappa": 0.5740740740740741,
+        "total_trials": 72
+      }
+    },
+    "9": {
+      "internal_screening_accuracy": 0.46257387008879786,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.5592814371257485,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5277777777777778,
+        "macro_f1": 0.5160875160875161,
+        "cohen_kappa": 0.37037037037037035,
+        "total_trials": 72
+      }
+    },
+    "10": {
+      "internal_screening_accuracy": 0.5418993106893503,
+      "is_responsive_cohort": true,
+      "sample_level": {
+        "accuracy": 0.6231536926147705,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5833333333333334,
+        "macro_f1": 0.5673727824463118,
+        "cohen_kappa": 0.4444444444444444,
+        "total_trials": 72
+      }
+    },
+    "11": {
+      "internal_screening_accuracy": 0.4110788261919253,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.5281437125748503,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5277777777777778,
+        "macro_f1": 0.5133436486884763,
+        "cohen_kappa": 0.37037037037037035,
+        "total_trials": 72
+      }
+    },
+    "12": {
+      "internal_screening_accuracy": 0.39908876085205086,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.3221556886227545,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.3055555555555556,
+        "macro_f1": 0.2987129987129987,
+        "cohen_kappa": 0.07407407407407407,
+        "total_trials": 72
+      }
+    },
+    "13": {
+      "internal_screening_accuracy": 0.5192989949082966,
+      "is_responsive_cohort": true,
+      "sample_level": {
+        "accuracy": 0.6015968063872256,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5694444444444444,
+        "macro_f1": 0.571451355661882,
+        "cohen_kappa": 0.42592592592592593,
+        "total_trials": 72
+      }
+    },
+    "14": {
+      "internal_screening_accuracy": 0.49090692494069366,
+      "is_responsive_cohort": false,
+      "sample_level": {
+        "accuracy": 0.6099800399201597,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.5833333333333334,
+        "macro_f1": 0.5816365007541479,
+        "cohen_kappa": 0.4444444444444444,
+        "total_trials": 72
+      }
+    },
+    "15": {
+      "internal_screening_accuracy": 0.6709301329916162,
+      "is_responsive_cohort": true,
+      "sample_level": {
+        "accuracy": 0.7760479041916167,
+        "total_samples": 2505
+      },
+      "trial_level": {
+        "accuracy": 0.7638888888888888,
+        "macro_f1": 0.7662393162393162,
+        "cohen_kappa": 0.6851851851851851,
+        "total_trials": 72
+      }
+    }
+  },
+  "per_session": [
+    {
+      "subject": 1,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.5910693301997649,
+      "trial_consensus_accuracy_ensemble": 0.6666666666666666,
+      "mean_internal_screening_acc": 0.4042072273331781
+    },
+    {
+      "subject": 1,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.5757211538461539,
+      "trial_consensus_accuracy_ensemble": 0.5416666666666666,
+      "mean_internal_screening_acc": 0.4240236893151005
+    },
+    {
+      "subject": 1,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.6630170316301703,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.4396982951596218
+    },
+    {
+      "subject": 2,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.7555816686251469,
+      "trial_consensus_accuracy_ensemble": 0.75,
+      "mean_internal_screening_acc": 0.5317859862882413
+    },
+    {
+      "subject": 2,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.8509615384615384,
+      "trial_consensus_accuracy_ensemble": 0.7916666666666666,
+      "mean_internal_screening_acc": 0.6013729778653264
+    },
+    {
+      "subject": 2,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.7664233576642335,
+      "trial_consensus_accuracy_ensemble": 0.7916666666666666,
+      "mean_internal_screening_acc": 0.6090643261060251
+    },
+    {
+      "subject": 3,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.5334900117508813,
+      "trial_consensus_accuracy_ensemble": 0.5833333333333334,
+      "mean_internal_screening_acc": 0.36961217772827304
+    },
+    {
+      "subject": 3,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.7512019230769231,
+      "trial_consensus_accuracy_ensemble": 0.7083333333333334,
+      "mean_internal_screening_acc": 0.44586756244427456
+    },
+    {
+      "subject": 3,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.6520681265206812,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.40552534332755247
+    },
+    {
+      "subject": 4,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.6850763807285546,
+      "trial_consensus_accuracy_ensemble": 0.6666666666666666,
+      "mean_internal_screening_acc": 0.6468860298999298
+    },
+    {
+      "subject": 4,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.5961538461538461,
+      "trial_consensus_accuracy_ensemble": 0.5833333333333334,
+      "mean_internal_screening_acc": 0.5026013888285852
+    },
+    {
+      "subject": 4,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.6557177615571776,
+      "trial_consensus_accuracy_ensemble": 0.6666666666666666,
+      "mean_internal_screening_acc": 0.7090957481574264
+    },
+    {
+      "subject": 5,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.48531139835487663,
+      "trial_consensus_accuracy_ensemble": 0.5416666666666666,
+      "mean_internal_screening_acc": 0.5234545663395803
+    },
+    {
+      "subject": 5,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.6598557692307693,
+      "trial_consensus_accuracy_ensemble": 0.5833333333333334,
+      "mean_internal_screening_acc": 0.46996008153843977
+    },
+    {
+      "subject": 5,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.5754257907542579,
+      "trial_consensus_accuracy_ensemble": 0.5833333333333334,
+      "mean_internal_screening_acc": 0.4613254616314407
+    },
+    {
+      "subject": 6,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.4700352526439483,
+      "trial_consensus_accuracy_ensemble": 0.4166666666666667,
+      "mean_internal_screening_acc": 0.39094310181343633
+    },
+    {
+      "subject": 6,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.7283653846153846,
+      "trial_consensus_accuracy_ensemble": 0.7083333333333334,
+      "mean_internal_screening_acc": 0.4626628752773272
+    },
+    {
+      "subject": 6,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.6642335766423357,
+      "trial_consensus_accuracy_ensemble": 0.6666666666666666,
+      "mean_internal_screening_acc": 0.6119607056471934
+    },
+    {
+      "subject": 7,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.5487661574618097,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.452030914203231
+    },
+    {
+      "subject": 7,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.6526442307692307,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.32790870175013537
+    },
+    {
+      "subject": 7,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.7992700729927007,
+      "trial_consensus_accuracy_ensemble": 0.7916666666666666,
+      "mean_internal_screening_acc": 0.596794137245029
+    },
+    {
+      "subject": 8,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.5746180963572268,
+      "trial_consensus_accuracy_ensemble": 0.6666666666666666,
+      "mean_internal_screening_acc": 0.3785795299850715
+    },
+    {
+      "subject": 8,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.6201923076923077,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.5080954433276164
+    },
+    {
+      "subject": 8,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.7420924574209246,
+      "trial_consensus_accuracy_ensemble": 0.75,
+      "mean_internal_screening_acc": 0.5163778766661659
+    },
+    {
+      "subject": 9,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.6028202115158637,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.5571281428866723
+    },
+    {
+      "subject": 9,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.609375,
+      "trial_consensus_accuracy_ensemble": 0.5416666666666666,
+      "mean_internal_screening_acc": 0.4401040163864355
+    },
+    {
+      "subject": 9,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.4635036496350365,
+      "trial_consensus_accuracy_ensemble": 0.4166666666666667,
+      "mean_internal_screening_acc": 0.39048945099328586
+    },
+    {
+      "subject": 10,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.5558166862514688,
+      "trial_consensus_accuracy_ensemble": 0.5,
+      "mean_internal_screening_acc": 0.516583358283317
+    },
+    {
+      "subject": 10,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.6694711538461539,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.5942641813907732
+    },
+    {
+      "subject": 10,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.6459854014598541,
+      "trial_consensus_accuracy_ensemble": 0.625,
+      "mean_internal_screening_acc": 0.5148503923939607
+    },
+    {
+      "subject": 11,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.6216216216216216,
+      "trial_consensus_accuracy_ensemble": 0.5833333333333334,
+      "mean_internal_screening_acc": 0.5122950929349696
+    },
+    {
+      "subject": 11,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.5084134615384616,
+      "trial_consensus_accuracy_ensemble": 0.5416666666666666,
+      "mean_internal_screening_acc": 0.2708930676144178
+    },
+    {
+      "subject": 11,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.451338199513382,
+      "trial_consensus_accuracy_ensemble": 0.4583333333333333,
+      "mean_internal_screening_acc": 0.4500483180263886
+    },
+    {
+      "subject": 12,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.3384253819036428,
+      "trial_consensus_accuracy_ensemble": 0.3333333333333333,
+      "mean_internal_screening_acc": 0.37198653680290067
+    },
+    {
+      "subject": 12,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.25240384615384615,
+      "trial_consensus_accuracy_ensemble": 0.20833333333333334,
+      "mean_internal_screening_acc": 0.428762445045001
+    },
+    {
+      "subject": 12,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.3759124087591241,
+      "trial_consensus_accuracy_ensemble": 0.375,
+      "mean_internal_screening_acc": 0.3965173007082509
+    },
+    {
+      "subject": 13,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.7567567567567568,
+      "trial_consensus_accuracy_ensemble": 0.75,
+      "mean_internal_screening_acc": 0.5291601023757443
+    },
+    {
+      "subject": 13,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.4338942307692308,
+      "trial_consensus_accuracy_ensemble": 0.375,
+      "mean_internal_screening_acc": 0.5393829999032952
+    },
+    {
+      "subject": 13,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.610705596107056,
+      "trial_consensus_accuracy_ensemble": 0.5833333333333334,
+      "mean_internal_screening_acc": 0.48935388244585026
+    },
+    {
+      "subject": 14,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.4982373678025852,
+      "trial_consensus_accuracy_ensemble": 0.5,
+      "mean_internal_screening_acc": 0.4064349978132369
+    },
+    {
+      "subject": 14,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.5625,
+      "trial_consensus_accuracy_ensemble": 0.5,
+      "mean_internal_screening_acc": 0.5158010182586611
+    },
+    {
+      "subject": 14,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.7737226277372263,
+      "trial_consensus_accuracy_ensemble": 0.75,
+      "mean_internal_screening_acc": 0.5504847587501831
+    },
+    {
+      "subject": 15,
+      "session": 1,
+      "frame_accuracy_ensemble": 0.6486486486486487,
+      "trial_consensus_accuracy_ensemble": 0.6666666666666666,
+      "mean_internal_screening_acc": 0.5125375218421766
+    },
+    {
+      "subject": 15,
+      "session": 2,
+      "frame_accuracy_ensemble": 0.9206730769230769,
+      "trial_consensus_accuracy_ensemble": 0.9166666666666666,
+      "mean_internal_screening_acc": 0.7852877524343869
+    },
+    {
+      "subject": 15,
+      "session": 3,
+      "frame_accuracy_ensemble": 0.7615571776155717,
+      "trial_consensus_accuracy_ensemble": 0.7083333333333334,
+      "mean_internal_screening_acc": 0.7149651246982848
+    }
+  ]
+}
