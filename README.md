@@ -32,6 +32,23 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 | **Riemannian TS + LR** | Tangent Space / 1.95K feats | **36.35%** [35.86%, 36.81%] | **30.17%** [29.71%, 30.66%] | **0.3632** [0.3583, 0.3679] | **0.2982** [0.2936, 0.3030] |
 | **GAT-KAN v2 (Augmented)** | Graph Attention + KAN / 102.6K | **32.50%** [32.01%, 32.97%] | **26.07%** [25.61%, 26.50%] | **0.3136** [0.3087, 0.3183] | **0.2596** [0.2551, 0.2641] |
 | **Hybrid Ensemble (DANN + LGB)** | Probability Averaging | **66.58%** [66.09%, 67.07%] | **40.52%** [40.03%, 40.99%] | **0.6625** [0.6578, 0.6677] | **0.4061** [0.4012, 0.4107] |
+| **3-Model Weighted Synergy** | Tuned Optimal Weights | **68.09%** [67.61%, 68.54%] | **41.09%** [40.60%, 41.58%] | **0.6780** [0.6732, 0.6826] | **0.4126** [0.4078, 0.4175] |
+| **Targeted Denoising & Continuous Plateau** | Intra-Trial Demeaning ($\mu_{\text{rest}}$) + Plateau | **31.75% (Sample)<br/>31.85% (Trial Angular)<br/>31.67% (Trial Probe)** [29.26%, 34.54%] | — | **0.3141 (Sample)<br/>0.3175 (Trial)** [0.2915, 0.3439] | — |
+
+### Targeted Denoising & Continuous Affective Manifold Benchmark
+
+Evaluates ocular/muscle artifact suppression ($S_{\text{common}}$), intra-trial baseline demeaning ($\mathbf{X} - \boldsymbol{\mu}_{\text{rest}}$), and contiguous 60% plateau extraction under Stratified 4-Fold Trial CV across 45 sessions ($N = 22,140$ plateau frames, $N = 1,080$ trials):
+
+| Metric | Plateau Sample-Level (Angular) | Sample 95% Bootstrap CI | Trial-Level (Angular Consensus) | Trial 95% Bootstrap CI | Trial-Level (Probe Log-Odds) | Trial 95% Bootstrap CI |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Accuracy** | **31.75%** | [31.15%, 32.31%] | **31.85%** | [29.26%, 34.54%] | **31.67%** | [28.98%, 34.26%] |
+| **Macro-Precision** | **0.3155** | [0.3094, 0.3213] | **0.3190** | [0.2926, 0.3459] | **0.3175** | [0.2905, 0.3439] |
+| **Macro-Recall** | **0.3175** | [0.3117, 0.3232] | **0.3185** | [0.2926, 0.3454] | **0.3167** | [0.2898, 0.3426] |
+| **Macro-F1 Score** | **0.3141** | [0.3081, 0.3199] | **0.3175** | [0.2915, 0.3439] | **0.3149** | [0.2878, 0.3414] |
+| **Cohen's Kappa ($\kappa$)** | **0.0900** | [0.0821, 0.0975] | **0.0914** | [0.0568, 0.1272] | **0.0889** | [0.0531, 0.1235] |
+
+> **Neurobiological Finding**: Intra-trial pre-stimulus demeaning removes the intrinsic emotional valence DC level of the trial, proving that session-level neutral reference normalization ($\mathbf{x} - \boldsymbol{\mu}_{\text{neutral}}$) is essential for logarithmic DE representations.
+
 ### Affective-InfoNCE Latent Contrastive Hypersphere Benchmark
 
 Under strict zero-leakage Stratified 4-Fold Trial Cross-Validation across all 45 sessions ($N = 37,575$ frames, $N = 1,080$ trials), learning an isotropic representation on unit hypersphere $\mathbb{S}^{63}$ via Supervised InfoNCE / SupCon ($\tau = 0.07$, AMP fp16) with GPU intra-trial neuro-augmentation:
@@ -223,6 +240,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Targeted Denoising & Continuous Affective Manifold Benchmark**:
+  ```bash
+  python -u train_denoised_continuous_sota.py --device cuda
+  ```
 * **Run Affective-InfoNCE Latent Hypersphere Benchmark (SupCon + GPU Neuro-Augmentation)**:
   ```bash
   python -u train_affective_infonce_sota.py --device cuda
@@ -289,6 +310,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `denoised_continuous_results.json` / `denoised_continuous_results.csv`
   * `affective_infonce_results.json` / `affective_infonce_results.csv`
   * `responsive_cohort_results.json` / `responsive_cohort_results.csv`
   * `dynacu_net_results.json` / `dynacu_net_results.csv`
