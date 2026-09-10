@@ -18,6 +18,7 @@ All evaluations enforce strict zero-leakage inductive quarantine (source feature
 
 | Model Architecture | Model Family / Mechanism | Subject-Dependent Accuracy (95% CI) | Cross-Subject Accuracy (95% CI) | Subject-Dependent Macro-F1 (95% CI) | Cross-Subject Macro-F1 (95% CI) |
 | :--- | :---: | :---: | :---: | :---: | :---: |
+| **RMAP-Net (Riemannian Manifold Transfer SOTA)** | Tangent Space Projection (55D) + Prototype Manifold Alignment + Cross-Session EDL | **70.81% (Sample)<br/>68.89% (Trial)** [66.11%, 71.57%]<br/>*(Resp Cohort: **79.86%**, Peak: **95.83%**)* | — | **0.6885 (Trial)** [0.6604, 0.7145]<br/>*(Resp Cohort: **0.7981**, Peak: **0.9580**)* | — |
 | **CST-Net (Cross-Session Transfer SOTA)** | Multi-Session Auxiliary Transfer + AVC-Net + Quadratic Consensus | **70.48% (Sample)<br/>68.98% (Trial)** [66.20%, 71.67%]<br/>*(Resp Cohort: **78.47%**, Peak: **95.83%**)* | — | **0.6893 (Trial)** [0.6607, 0.7162]<br/>*(Resp Cohort: **0.7842**, Peak: **0.9580**)* | — |
 | **Affective-InfoNCE (SOTA Metric)** | Latent Hypersphere $\mathbb{S}^{63}$ + SupCon + Angular Consensus | **63.80% (Sample)<br/>62.22% (Trial Angular)<br/>62.31% (Trial Probe)** [59.26%, 65.28%] | — | **0.6302 (Sample)<br/>0.6181 (Trial)** [0.5891, 0.6485] | — |
 | **Responsive Affective Cohort (SOTA)** | 580D Asymmetry + Zero-Leakage Screening + Ensemble | **68.75% (Sample)<br/>66.67% (Trial)** [62.22%, 71.67%] | — | **0.6817 (Sample)<br/>0.6647 (Trial)** [0.6197, 0.7137] | — |
@@ -241,6 +242,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── psec_net/                # PSEC-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── responsive_cohort/       # Responsive vs Non-Responsive trial accuracy & Responsive cohort CM
 │   ├── responsible_ai/          # ECE reliability diagrams & selective abstention curves
+│   ├── rmap_net/                # RMAP-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── salient_windows/         # Salience window energy dynamics, CM & accuracy lift charts
 │   ├── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
 │   ├── st_gode/                 # ST-GODE per-subject accuracy, 1,080-trial CM & ROC curves
@@ -251,6 +253,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_rmap_net_sota.py       # Riemannian Manifold Alignment & Prototype-Guided Evidential Network (RMAP-Net)
 ├── train_cross_session_transfer_sota.py # Cross-Session Transfer Learning Network (CST-Net)
 ├── train_avc_net_sota.py        # Valence-Aware Climax & Margin-Gated Evidential Attention Network
 ├── train_topk_quadratic_sota.py # Top-K Climax Extraction & Quadratic Evidential Consensus Network
@@ -283,6 +286,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Riemannian Manifold Alignment & Prototype Evidential Network (RMAP-Net)**:
+  ```bash
+  python -u train_rmap_net_sota.py --device cuda
+  ```
 * **Run Cross-Session Transfer Learning Network (CST-Net)**:
   ```bash
   python -u train_cross_session_transfer_sota.py --device cuda
