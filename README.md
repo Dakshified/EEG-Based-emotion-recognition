@@ -247,6 +247,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── sota_pipeline/           # 45-session accuracy distribution & pooled confusion matrix
 │   ├── st_gode/                 # ST-GODE per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── topk_consensus/          # TopK-Quadratic-Net per-subject accuracy, 1,080-trial CM & ROC curves
+│   ├── treh_net_replication/    # TREH-Net literature replication per-subject accuracy, CM & ROC curves
 │   └── trial_consensus/         # Trial vs sample accuracy, log-odds dynamics, and consensus CM
 ├── granger_cache/               # Causal functional connectivity matrices
 ├── reference reseach papers/    # Reviewed academic literature
@@ -254,8 +255,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
 ├── random_sampling/
+│   ├── train_treh_net_literature.py # TREH-Net: Topological-Riemannian Evidential Hybrid Network
 │   ├── train_random_sampling_literature.py # Conventional literature random 80/20 frame shuffling benchmark
-│   └── results/                 # literature_replication_results.json
+│   └── results/                 # treh_net_replication_results.json, literature_replication_results.json
 ├── train_rmap_net_sota.py       # Riemannian Manifold Alignment & Prototype-Guided Evidential Network (RMAP-Net)
 ├── train_cross_session_transfer_sota.py # Cross-Session Transfer Learning Network (CST-Net)
 ├── train_avc_net_sota.py        # Valence-Aware Climax & Margin-Gated Evidential Attention Network
@@ -289,6 +291,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run TREH-Net (Topological-Riemannian Evidential Hybrid Network | 95%–97% Window)**:
+  ```bash
+  python -u random_sampling/train_treh_net_literature.py --device cuda
+  ```
 * **Run Conventional Literature Random Sampling Replication Benchmark (95%–97% Window)**:
   ```bash
   python -u random_sampling/train_random_sampling_literature.py --device cuda
