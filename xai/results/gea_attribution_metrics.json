@@ -1,0 +1,132 @@
+{
+  "framework": "Geodesic Evidential Attribution (GEA)",
+  "dataset": "SEED-IV",
+  "quadrature_steps": 25,
+  "elapsed_seconds": 16.673603057861328,
+  "top_salient_electrodes": {
+    "Neutral": [
+      "CPz",
+      "CP6",
+      "TP8",
+      "T7",
+      "CP1"
+    ],
+    "Sad": [
+      "CB2",
+      "O2",
+      "PO6",
+      "CPz",
+      "CP5"
+    ],
+    "Fear": [
+      "FT7",
+      "FC5",
+      "T7",
+      "T8",
+      "TP8"
+    ],
+    "Happy": [
+      "T8",
+      "Fp1",
+      "O2",
+      "T7",
+      "CB2"
+    ]
+  },
+  "band_salience_ranking": {
+    "Neutral": [
+      {
+        "band": "Delta (1-3 Hz)",
+        "importance": 0.0013474212028086185
+      },
+      {
+        "band": "Theta (4-7 Hz)",
+        "importance": 0.0016801259480416775
+      },
+      {
+        "band": "Alpha (8-13 Hz)",
+        "importance": 0.001430606935173273
+      },
+      {
+        "band": "Beta (14-30 Hz)",
+        "importance": 0.0033473195508122444
+      },
+      {
+        "band": "Gamma (31-50 Hz)",
+        "importance": 0.00925410259515047
+      }
+    ],
+    "Sad": [
+      {
+        "band": "Delta (1-3 Hz)",
+        "importance": 0.0504244901239872
+      },
+      {
+        "band": "Theta (4-7 Hz)",
+        "importance": 0.08892393112182617
+      },
+      {
+        "band": "Alpha (8-13 Hz)",
+        "importance": 0.09475253522396088
+      },
+      {
+        "band": "Beta (14-30 Hz)",
+        "importance": 0.17206496000289917
+      },
+      {
+        "band": "Gamma (31-50 Hz)",
+        "importance": 0.3713296353816986
+      }
+    ],
+    "Fear": [
+      {
+        "band": "Delta (1-3 Hz)",
+        "importance": 0.055458202958106995
+      },
+      {
+        "band": "Theta (4-7 Hz)",
+        "importance": 0.03877836838364601
+      },
+      {
+        "band": "Alpha (8-13 Hz)",
+        "importance": 0.1891738623380661
+      },
+      {
+        "band": "Beta (14-30 Hz)",
+        "importance": 0.084937684237957
+      },
+      {
+        "band": "Gamma (31-50 Hz)",
+        "importance": 0.20344237983226776
+      }
+    ],
+    "Happy": [
+      {
+        "band": "Delta (1-3 Hz)",
+        "importance": 0.15727703273296356
+      },
+      {
+        "band": "Theta (4-7 Hz)",
+        "importance": 0.10062391310930252
+      },
+      {
+        "band": "Alpha (8-13 Hz)",
+        "importance": 0.11553250253200531
+      },
+      {
+        "band": "Beta (14-30 Hz)",
+        "importance": 0.05606084316968918
+      },
+      {
+        "band": "Gamma (31-50 Hz)",
+        "importance": 0.10962914675474167
+      }
+    ]
+  },
+  "regional_epistemic_uncertainty_reduction": {
+    "Frontal": 8.345527930941898e-06,
+    "Temporal": 6.53222650726093e-06,
+    "Central": 8.091838026302867e-06,
+    "ParietoOccipital": 5.7403281061851885e-06
+  }
+}

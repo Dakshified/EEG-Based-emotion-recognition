@@ -237,6 +237,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── dynacu_net/              # DynAcu-Net trial consensus accuracy, gating dynamics, and 1,080-trial CM
 │   ├── explainability/          # Integrated Gradients & Occlusion attribution maps
 │   ├── final_model/             # Calibrated DANN diagnostic figures
+│   ├── geodesic_attribution/    # GEA Riemannian topomaps, band heatmaps & uncertainty decomposition
 │   ├── hou_rfpn/                # Hou et al. (IEEE TIM 2023) RFPN per-subject accuracy, CM & ROC curves
 │   ├── paper_replication/       # Literature sample-level replication ROC, CM & bar charts
 │   ├── psec_net/                # PSEC-Net per-subject accuracy, 1,080-trial CM & ROC curves
@@ -258,6 +259,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 │   ├── train_treh_net_literature.py # TREH-Net: Topological-Riemannian Evidential Hybrid Network
 │   ├── train_random_sampling_literature.py # Conventional literature random 80/20 frame shuffling benchmark
 │   └── results/                 # treh_net_replication_results.json, literature_replication_results.json
+├── xai/
+│   ├── geodesic_evidential_attribution.py # Geodesic Evidential Attribution (GEA) Riemannian XAI framework
+│   └── results/                 # gea_attribution_metrics.json
 ├── train_rmap_net_sota.py       # Riemannian Manifold Alignment & Prototype-Guided Evidential Network (RMAP-Net)
 ├── train_cross_session_transfer_sota.py # Cross-Session Transfer Learning Network (CST-Net)
 ├── train_avc_net_sota.py        # Valence-Aware Climax & Margin-Gated Evidential Attention Network
@@ -291,6 +295,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Geodesic Evidential Attribution (GEA) Riemannian XAI Pipeline**:
+  ```bash
+  python -u xai/geodesic_evidential_attribution.py --device cuda
+  ```
 * **Run TREH-Net (Topological-Riemannian Evidential Hybrid Network | 95%–97% Window)**:
   ```bash
   python -u random_sampling/train_treh_net_literature.py --device cuda
