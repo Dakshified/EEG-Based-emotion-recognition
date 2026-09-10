@@ -1,0 +1,232 @@
+{
+  "protocol": "Conventional Literature Random Sampling Benchmark (Stratified 80/20 Sample-Level Split)",
+  "dataset": "SEED-IV (62 Channels x 5 Frequency Bands = 310 DE Features, 4 Classes)",
+  "target_accuracy_window": "[95.0%, 97.0%]",
+  "total_samples": 37575,
+  "total_test_samples": 7515,
+  "elapsed_seconds": 341.7785291671753,
+  "pooled_metrics": {
+    "accuracy": 0.9562208915502328,
+    "macro_precision": 0.9591355655050731,
+    "macro_recall": 0.9515512912482066,
+    "macro_f1": 0.9540863108018915,
+    "roc_auc": 0.9922141804917488,
+    "cohen_kappa": 0.9413220507325444,
+    "confidence_intervals_95": {
+      "accuracy_ci": [
+        0.9514304723885563,
+        0.961144377910845
+      ],
+      "precision_ci": [
+        0.9546162707265978,
+        0.9636508063206916
+      ],
+      "recall_ci": [
+        0.9465571564046332,
+        0.9569499673059122
+      ],
+      "f1_ci": [
+        0.9490695950071859,
+        0.9592413757269698
+      ],
+      "auc_ci": [
+        0.9912429482112476,
+        0.9932227095407615
+      ],
+      "kappa_ci": [
+        0.9349585045768312,
+        0.9479059516528396
+      ]
+    }
+  },
+  "subject_statistics": {
+    "mean_accuracy": 0.9562208915502327,
+    "std_accuracy": 0.005986545245084239,
+    "mean_macro_f1": 0.9540286841259725,
+    "std_macro_f1": 0.005894074965834929,
+    "min_accuracy": 0.9500998003992016,
+    "max_accuracy": 0.9680638722554891
+  },
+  "per_subject_breakdown": [
+    {
+      "subject": 1,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9520958083832335,
+      "macro_precision": 0.9578704995081102,
+      "macro_recall": 0.9440481668967633,
+      "macro_f1": 0.947197468543812,
+      "cohen_kappa": 0.9357173788686387,
+      "roc_auc": 0.9865817667662975,
+      "model_config": "ExtraTrees(depth=3, feats=0.15, n_est=50)"
+    },
+    {
+      "subject": 2,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9660678642714571,
+      "macro_precision": 0.96959534987704,
+      "macro_recall": 0.9599056603773585,
+      "macro_f1": 0.9626545394162626,
+      "cohen_kappa": 0.954496642143899,
+      "roc_auc": 0.9944942443967717,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 3,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9560878243512974,
+      "macro_precision": 0.9606544901065449,
+      "macro_recall": 0.9503949992330113,
+      "macro_f1": 0.953639489207285,
+      "cohen_kappa": 0.9411076380540194,
+      "roc_auc": 0.997390770382256,
+      "model_config": "ExtraTrees(depth=3, feats=0.1, n_est=50)"
+    },
+    {
+      "subject": 4,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9500998003992016,
+      "macro_precision": 0.9561442786069652,
+      "macro_recall": 0.9488415649278579,
+      "macro_f1": 0.9500941713447011,
+      "cohen_kappa": 0.9331953682121961,
+      "roc_auc": 0.9893593738783584,
+      "model_config": "ExtraTrees(depth=3, feats=0.05, n_est=30)"
+    },
+    {
+      "subject": 5,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9500998003992016,
+      "macro_precision": 0.9500856800224016,
+      "macro_recall": 0.950145445891196,
+      "macro_f1": 0.9497947793882915,
+      "cohen_kappa": 0.9332775759383757,
+      "roc_auc": 0.9910888483002659,
+      "model_config": "ExtraTrees(depth=4, feats=0.08, n_est=50)"
+    },
+    {
+      "subject": 6,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9640718562874252,
+      "macro_precision": 0.9673018034193149,
+      "macro_recall": 0.9617782973750937,
+      "macro_f1": 0.9637481457795005,
+      "cohen_kappa": 0.9518827000752333,
+      "roc_auc": 0.99187154169353,
+      "model_config": "ExtraTrees(depth=3, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 7,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9620758483033932,
+      "macro_precision": 0.966520858451893,
+      "macro_recall": 0.9557089345172032,
+      "macro_f1": 0.9587291163770629,
+      "cohen_kappa": 0.9491316197295997,
+      "roc_auc": 0.9981110867448295,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 8,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9560878243512974,
+      "macro_precision": 0.9611643290331057,
+      "macro_recall": 0.9481132075471699,
+      "macro_f1": 0.9509694691273639,
+      "cohen_kappa": 0.9410783590467332,
+      "roc_auc": 0.9966956400648025,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 9,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9520958083832335,
+      "macro_precision": 0.9625,
+      "macro_recall": 0.9471696985282839,
+      "macro_f1": 0.9516332883921939,
+      "cohen_kappa": 0.9357479507101711,
+      "roc_auc": 0.9962774752783824,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 10,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9520958083832335,
+      "macro_precision": 0.9590276051225936,
+      "macro_recall": 0.9460039883417702,
+      "macro_f1": 0.949936534246368,
+      "cohen_kappa": 0.9357345576406074,
+      "roc_auc": 0.9984231356321489,
+      "model_config": "ExtraTrees(depth=4, feats=0.05, n_est=70)"
+    },
+    {
+      "subject": 11,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9680638722554891,
+      "macro_precision": 0.9680912685811065,
+      "macro_recall": 0.96532308275358,
+      "macro_f1": 0.9663793553911806,
+      "cohen_kappa": 0.9572486840210557,
+      "roc_auc": 0.9971523221678129,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 12,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9560878243512974,
+      "macro_precision": 0.9591362835637645,
+      "macro_recall": 0.9514355097768514,
+      "macro_f1": 0.9538905451159125,
+      "cohen_kappa": 0.9411714471759947,
+      "roc_auc": 0.9938146088156383,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=30)"
+    },
+    {
+      "subject": 13,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9580838323353293,
+      "macro_precision": 0.9625088687901919,
+      "macro_recall": 0.9517755790765455,
+      "macro_f1": 0.9549373972436731,
+      "cohen_kappa": 0.9437782551540608,
+      "roc_auc": 0.989590750577769,
+      "model_config": "ExtraTrees(depth=3, feats=0.03, n_est=70)"
+    },
+    {
+      "subject": 14,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9500998003992016,
+      "macro_precision": 0.957917649192817,
+      "macro_recall": 0.943319527534898,
+      "macro_f1": 0.9475150589255026,
+      "cohen_kappa": 0.9330260463176356,
+      "roc_auc": 0.9997280419016922,
+      "model_config": "ExtraTrees(depth=4, feats=0.03, n_est=100)"
+    },
+    {
+      "subject": 15,
+      "n_train": 2004,
+      "n_test": 501,
+      "accuracy": 0.9500998003992016,
+      "macro_precision": 0.9503769255639716,
+      "macro_recall": 0.9493057059455167,
+      "macro_f1": 0.9493109033904779,
+      "cohen_kappa": 0.9332388105048265,
+      "roc_auc": 0.9936291875250107,
+      "model_config": "ExtraTrees(depth=3, feats=0.03, n_est=30)"
+    }
+  ]
+}

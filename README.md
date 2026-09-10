@@ -253,6 +253,9 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── random_sampling/
+│   ├── train_random_sampling_literature.py # Conventional literature random 80/20 frame shuffling benchmark
+│   └── results/                 # literature_replication_results.json
 ├── train_rmap_net_sota.py       # Riemannian Manifold Alignment & Prototype-Guided Evidential Network (RMAP-Net)
 ├── train_cross_session_transfer_sota.py # Cross-Session Transfer Learning Network (CST-Net)
 ├── train_avc_net_sota.py        # Valence-Aware Climax & Margin-Gated Evidential Attention Network
@@ -286,6 +289,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Conventional Literature Random Sampling Replication Benchmark (95%–97% Window)**:
+  ```bash
+  python -u random_sampling/train_random_sampling_literature.py --device cuda
+  ```
 * **Run Riemannian Manifold Alignment & Prototype Evidential Network (RMAP-Net)**:
   ```bash
   python -u train_rmap_net_sota.py --device cuda
