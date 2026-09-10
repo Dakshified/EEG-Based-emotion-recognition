@@ -224,6 +224,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── figures/                     # Publication-quality 300 DPI evaluation figures
 │   ├── ablations/               # DANN loss weight and lambda ablation curves
 │   ├── adtc_net/                # ADTC-Net responsive cohort bar chart, 1,080-trial CM & ROC curves
+│   ├── avc_net/                 # AVC-Net per-subject accuracy, 1,080-trial CM & ROC curves
 │   ├── baselines/               # Baseline ROC, PR, Confusion Matrices, Friedman ranks
 │   ├── buffered_shuffle/        # Unbuffered vs buffered vs trial quarantine leakage divergence plot
 │   ├── coma_net/                # COMA-Net per-subject accuracy, 1,080-trial CM & ROC curves
@@ -248,6 +249,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 ├── spatial_mapping.py           # Canonical 62-channel to 9x9 2D spatial grid transformation
 ├── temporal_dataset.py          # Trial-quarantined sliding sequence generator (T=8, stride=2)
 ├── model_spatial_temporal_cdan.py # Spatial 2D-CNN + Temporal Bi-GRU + 512D CDAN Discriminator
+├── train_avc_net_sota.py        # Valence-Aware Climax & Margin-Gated Evidential Attention Network
 ├── train_topk_quadratic_sota.py # Top-K Climax Extraction & Quadratic Evidential Consensus Network
 ├── train_psec_net_sota.py       # Peak-Decisive Super-Evidential Consensus Network (PSEC-Net)
 ├── train_csec_refined_sota.py   # Refined Climax-Sharpened Evidential Consensus Network (CSEC-Refined)
@@ -278,6 +280,10 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 ### Running Experiments
 
+* **Run Valence-Aware Climax & Margin-Gated Evidential Attention Network (AVC-Net)**:
+  ```bash
+  python -u train_avc_net_sota.py --device cuda
+  ```
 * **Run Top-K Climax Extraction & Quadratic Evidential Consensus Network (TopK-Quadratic-Net)**:
   ```bash
   python -u train_topk_quadratic_sota.py --device cuda
@@ -384,6 +390,7 @@ python -c "import torch; print('CUDA Available:', torch.cuda.is_available(), '| 
 
 * **Technical Project Walkthrough**: `walkthrough.md` — Comprehensive documentation covering theoretical formulations, data quarantine audits, baseline comparisons, ablation studies, explainability axioms, ensemble synergies, literature replication analyses, affective salience extraction, SOTA asymmetry spatial modeling, DynAcu-Net cortical-ocular fusion, and Responsive Cohort BCI illiteracy screening.
 * **Structured Results**:
+  * `avc_net_results.json` / `avc_net_results.csv`
   * `topk_consensus_results.json` / `topk_consensus_results.csv`
   * `psec_net_results.json` / `psec_net_results.csv`
   * `csec_refined_results.json` / `csec_refined_results.csv`
