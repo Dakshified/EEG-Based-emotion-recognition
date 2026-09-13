@@ -9,11 +9,13 @@
 
 An exhaustive, publication-grade deep learning and neurocomputational research framework for 4-class EEG affective state recognition (**Neutral, Sad, Fear, Happy**) on the official **SEED-IV** benchmark ($N = 37,575$ frames, 62 channels, 5 frequency bands, 15 human subjects, 45 sessions, 1,080 continuous movie trials).
 
-This repository documents our **complete end-to-end scientific research journey**:
-1. **Replicating Conventional Literature Performance**: Discovering why published papers report $95\%–97\%$ accuracy on SEED-IV and replicating the conventional sample-level frame-shuffling protocol via **TREH-Net (95.64% pooled accuracy)**.
-2. **Two-Stage Data Leakage Proof**: Mathematically and empirically proving the two distinct data leakage vectors in affective BCI literature: (a) moving-average filter temporal autocorrelation ($ho > 0.95$), and (b) continuous stimulus identity memorization.
-3. **Establishing Strict Zero-Leakage Whole-Trial Quarantine**: Defining 100% mutually isolated trial-level cross-validation and building geometric SOTA architectures (**RMAP-Net**, **CST-Net**, **AVC-Net**) achieving **95.83% peak trial consensus** (23/24 trials correct) and **79.86% responsive cohort accuracy** on unseen stimuli.
-4. **Native Riemannian Explainable AI (GEA)**: Developing **Geodesic Evidential Attribution (GEA)** to compute path integrals along true Riemannian covariance geodesics on $\mathcal{S}_{++}^{10}$ with analytical Dirichlet epistemic uncertainty decomposition.
+This repository bridges our **dual-track research methodology**:
+1. **Conventional Literature Replication Track**: Replicating published methodologies via sample-level random shuffling to reproduce the literature-standard $95\%–97\%$ consensus window using our novel **Topological-Riemannian Evidential Hybrid Network (TREH-Net, 95.64% pooled accuracy)**.
+2. **Two-Stage Data Leakage Investigation**: Mathematically and empirically exposing the two distinct data leakage channels pervasive in affective BCI literature:
+   - *Moving-Average Filter Temporal Autocorrelation* ($\rho > 0.95$ across adjacent 1-second frames).
+   - *Continuous Stimulus Identity Memorization* (intra-trial acoustic/visual soundtrack and luminance fingerprints).
+3. **Rigorous Out-of-Sample Zero-Leakage Track**: Establishing 100% mutually quarantined whole-trial cross-validation and engineering SOTA geometric and transfer networks (**RMAP-Net**, **CST-Net**, **AVC-Net**) achieving **95.83% peak trial consensus** (23/24 trials correct) and **79.86% responsive cohort accuracy** on completely unseen stimuli.
+4. **Native Riemannian Explainable AI (GEA)**: Developing **Geodesic Evidential Attribution (GEA)** to compute path integrals along true Riemannian covariance geodesics on $\mathcal{S}_{++}^{10}$ with closed-form Dirichlet epistemic uncertainty decomposition—interpreting non-Euclidean manifolds post-hoc without altering classification accuracy.
 
 ---
 
@@ -39,7 +41,7 @@ This repository documents our **complete end-to-end scientific research journey*
 |     - AVC-Net Peak Session (Sub 15 Sess 2):                        91.67% Trial Acc (22/24 trials) | 95.82% Frame Acc   |
 |     - AVC-Net Responsive Affective Cohort (6 Subjects, 18 Sess):   71.06% Trial Acc | 0.7066 F1 | 0.8854 AUC | kappa=0.6142 |
 +-------------------------------------------------------------------------------------------------------------------------+
-|  3. NATIVE RIEMANNIAN EXPLAINABLE AI (GEA Framework):                                                                   |
+|  3. NATIVE RIEMANNIAN EXPLAINABLE AI (GEA Framework | Zero Accuracy Distortion):                                         |
 |     - True Manifold Path Integrals along Riemannian Geodesics on S_++^10 (Log-Euclidean Metric)                         |
 |     - Closed-Form Dirichlet Epistemic Uncertainty Decomposition: du/dx = -K / S^2 * sum(de_k/dx)                        |
 |     - Dominant Affective Hubs: Gamma Band (31-50 Hz) in Bilateral Frontotemporal & Parieto-Occipital                   |
@@ -49,28 +51,28 @@ This repository documents our **complete end-to-end scientific research journey*
 
 ---
 
-## 2. The Complete Scientific Research Journey
+## 2. Step-by-Step Project Roadmap & Methodological Evolution
 
 ```mermaid
 flowchart TD
-    subgraph P1["Phase 1: Literature Replication (Sample-Level 80/20)"]
-        RawDE["SEED-IV DE Features (37,575 frames)"] --> RandShuffle["Random 80/20 Frame Shuffling per Subject"]
+    subgraph P1["Phase 1: Conventional Literature Replication (Sample-Level 80/20)"]
+        RawDE["SEED-IV DE Features (37,575 frames, 62 ch, 5 bands)"] --> RandShuffle["Random 80/20 Frame Shuffling per Subject"]
         RandShuffle --> TREHNet["TREH-Net (Riemannian 55D + Topo 33D + Evidential Head) -> 95.64% Acc"]
         RandShuffle --> NaiveModels["Unconstrained MLP / LightGBM -> 99.5% - 100.0% Acc"]
     end
 
     subgraph P2["Phase 2: Mathematical Data Leakage Proof"]
-        NaiveModels --> Autocorr["Stage 1: Moving-Average Autocorrelation (rho > 0.95 across adjacent 1s frames)"]
+        NaiveModels --> Autocorr["Stage 1 Leakage: Moving-Average Autocorrelation (rho > 0.95 across adjacent 1s frames)"]
         Autocorr --> BuffExcl["Buffered Frame Shuffle (+/- 8s Temporal Exclusion Buffer) -> 99.10% Acc"]
-        BuffExcl --> StimulusMem["Stage 2: Continuous Stimulus Identity Fingerprint (Movie Clip Memorization)"]
+        BuffExcl --> StimulusMem["Stage 2 Leakage: Continuous Stimulus Identity Fingerprint (Movie Clip Memorization)"]
     end
 
     subgraph P3["Phase 3: Strict Zero-Leakage Whole-Trial Quarantine"]
         StimulusMem --> TrialQuarantine["Strict Whole-Trial Isolation: Train Trials INTERSECT Test Trials = EMPTY"]
-        TrialQuarantine --> SubjectDependent["Subject-Dependent 4-Fold Trial Grouped CV (True Affective Generalization)"]
+        TrialQuarantine --> SubjectDependent["Subject-Dependent 4-Fold Trial Grouped CV (True Generalization to Unseen Clips)"]
     end
 
-    subgraph P4["Phase 4: SOTA Geometric & Evidential Architectures"]
+    subgraph P4["Phase 4: SOTA Geometric & Transfer Architectures"]
         SubjectDependent --> AVCNet["AVC-Net (Valence-Aware Climax Salience & Quadratic Evidential Consensus)"]
         SubjectDependent --> CSTNet["CST-Net (Cross-Session Multi-Source Auxiliary Transfer) -> 78.47% Cohort Acc"]
         SubjectDependent --> RMAPNet["RMAP-Net (Riemannian Tangent Space + Prototype Alignment) -> 79.86% Cohort Acc | 95.83% Peak"]
@@ -83,32 +85,32 @@ flowchart TD
 ```
 
 ### 2.1 Understanding Frame Accuracy vs. Trial Accuracy
-In EEG emotion recognition research, evaluation granularity fundamentally dictates what capability the model is demonstrating:
+In EEG affective computing, the evaluation granularity fundamentally defines what capability is being measured:
 
 1. **Frame-Level Accuracy (Instantaneous 1-Second Decoding)**:
-   - Each EEG trial lasts between $12$ to $64$ seconds, sliced into 1-second non-overlapping frames ($N = 37,575$ total frames across SEED-IV).
-   - In frame-level evaluation, every single 1-second frame $\mathbf{x}_i$ is classified independently.
-   - While informative for temporal dynamics, emotional states evolve on supra-second continuous cognitive timescales. Many individual 1-second frames correspond to transitional or ambiguous movie scenes where the subject's affective response is neutral or recovering.
+   - Each EEG trial lasts between $12$ to $64$ seconds, sliced into 1-second non-overlapping epochs ($N = 37,575$ total frames across SEED-IV).
+   - Evaluates whether an isolated 1-second frame $\mathbf{x}_i$ can be classified independently.
+   - While valuable for assessing temporal dynamics, individual 1-second frames include transitional, ambiguous, or recovery periods where affective induction is subdued.
 
 2. **Trial-Level Consensus Accuracy (Holistic Stimulus Decoding)**:
-   - Evaluates the model's ability to decode the overarching emotional state induced by an entire continuous movie trial ($K=24$ trials per session, each 12–64 seconds).
-   - Uses evidential consensus pooling across all climax and attentive frames within the trial:
-     $$\mathbf{e}_{	ext{trial}} = \sum_{w \in \Omega_{	ext{climax}}} lpha_w \mathbf{e}_w, \quad \hat{y}_{	ext{trial}} = rg\max_{c} e_{	ext{trial}, c}$$
-   - **Trial Accuracy measures real-world clinical and BCI utility**: can the system correctly identify the human emotional experience induced by an unseen stimulus?
+   - Evaluates whether the system correctly decodes the overarching emotional experience elicited by a continuous movie trial ($K=24$ trials per session, each 12–64 seconds).
+   - Aggregates evidential predictions across attentive climax windows via quadratic evidential consensus:
+     $$\mathbf{e}_{\text{trial}} = \sum_{w \in \Omega_{\text{climax}}} \alpha_w \mathbf{e}_w, \quad \hat{y}_{\text{trial}} = \arg\max_{c} e_{\text{trial}, c}$$
+   - **Trial Accuracy reflects real-world clinical and BCI utility**: can the neural interface correctly recognize human affective states elicited by unseen stimuli?
 
 ### 2.2 The Two-Stage Data Leakage Proof
-In affective computing literature, many papers report **95%+ accuracy** on SEED-IV using sample-level frame-based cross-validation. We conducted a deep experimental dissection to expose the mechanisms behind these numbers:
+In published literature, numerous papers report **95%+ accuracy** on SEED-IV using sample-level frame-based cross-validation. Our experimental dissection revealed why:
 
 1. **Stage 1 (Moving-Average Filter Temporal Autocorrelation)**: 
-   The official SEED-IV Differential Entropy (DE) features are smoothed across time using a moving-average filter. When 1-second frames are randomly shuffled into an 80/20 train/test split, adjacent frames ($t$ and $t+1$) share overlapping filter kernel windows. A standard model trivially interpolates adjacent frames, yielding an artificial **99.99% accuracy**.
+   The official SEED-IV Differential Entropy (DE) features are smoothed across time using a moving-average filter. When 1-second frames are randomly shuffled into an 80/20 train/test split, adjacent frames ($t$ and $t+1$) share overlapping filter kernel windows ($\rho > 0.95$). Standard models trivially interpolate between overlapping windows, reaching an artificial **99.99% accuracy**.
 2. **Stage 2 (Continuous Stimulus Identity Memorization)**:
-   To eliminate adjacent-frame autocorrelation, we constructed the **Buffered Frame Shuffle Benchmark** with a quarantined $\pm 8$-second exclusion buffer:
-   $$\min |t_{	ext{train}} - t_{	ext{test}}| \ge 8.0	ext{ s}$$
-   Even with zero filter overlap, models achieved **99.10% accuracy** because frames within the *same continuous movie trial* share tonic audio-visual fingerprints (narrative arc, background soundtrack, luminance, scene pacing). The model learned to identify *which movie clip was playing* rather than decoding genuine emotional state.
+   To test if autocorrelation was the sole factor, we built the **Buffered Frame Shuffle Benchmark** with a quarantined $\pm 8$-second temporal exclusion buffer:
+   $$\min |t_{\text{train}} - t_{\text{test}}| \ge 8.0\text{ s}$$
+   Even with zero filter overlap, models scored **99.10% accuracy** because frames from the *same movie trial* share tonic audio-visual background cues (soundtrack frequencies, ambient lighting, scene pacing). The model learned to identify *which movie was playing* rather than decoding true emotional affect.
 3. **The Gold Standard (Strict Whole-Trial Quarantine)**:
-   To measure true affective generalization to unseen stimuli, entire trials must be held out:
-   $$	ext{assert len(set(train\_trial\_ids).intersection(set(test\_trial\_ids))) == 0}$$
-   Under strict whole-trial quarantine, naive baselines achieve $55\%–65\%$, establishing the real-world baseline upon which our SOTA architectures were engineered.
+   To evaluate genuine affective generalizability to unseen stimuli, complete trials must be isolated:
+   $$\text{assert len(set(train\_trial\_ids).intersection(set(test\_trial\_ids))) == 0}$$
+   Under strict whole-trial quarantine, baseline models achieve $55\%–65\%$, establishing the authentic scientific baseline upon which our SOTA architectures were developed.
 
 ---
 
@@ -122,7 +124,7 @@ All models evaluated on the official SEED-IV dataset ($N = 37,575$ frames, 62 ch
 | **Calibrated ExtraTrees** | Shallow Ensemble (Restricted Capacity) | Sample 80/20 Shuffled | Calibrated Literature Consensus | **95.62%** [95.14%, 96.11%] | — | **0.9541** [0.9491, 0.9592] | **0.9922** [0.9912, 0.9932] | **0.9413** |
 | **Shallow MLP** | Neural Baseline (128-64-4) | Sample 80/20 Shuffled | Overfitting Autocorrelation | **99.46%** [99.38%, 99.53%] | — | **0.9943** [0.9934, 0.9951] | **0.9927** [0.9917, 0.9937] | **0.9927** |
 | **LightGBM** | GBDT Tabular | Sample 80/20 Shuffled | Overfitting Autocorrelation | **99.99%** [99.96%, 100.0%] | — | **0.9999** [0.9996, 1.0000] | **1.0000** [1.0000, 1.0000] | **0.9998** |
-| **Buffered Frame Shuffle** | $\pm 8	ext{s}$ Temporal Buffer | Intra-Trial Buffered | Stimulus Memorization Leakage | **99.10%** [99.01%, 99.19%] | — | **0.9906** [0.9896, 0.9915] | **0.9880** [0.9867, 0.9891] | **0.9880** |
+| **Buffered Frame Shuffle** | $\pm 8\text{s}$ Temporal Buffer | Intra-Trial Buffered | Stimulus Memorization Leakage | **99.10%** [99.01%, 99.19%] | — | **0.9906** [0.9896, 0.9915] | **0.9880** [0.9867, 0.9891] | **0.9880** |
 | **RMAP-Net (Ours SOTA)** | Riemannian Tangent + Prototypes + EDL | Whole-Trial 4-Fold CV | **100% Zero-Leakage Quarantine** | **70.81%** [70.37%, 71.31%] | **68.89%** [66.11%, 71.57%]<br/>*(Resp: **79.86%**, Peak: **95.83%**)* | **0.6885** [0.6604, 0.7145]<br/>*(Resp: **0.7981**, Peak: **0.9580**)* | **0.8788** [0.8628, 0.8943]<br/>*(Resp: **0.9461**, Peak: **1.0000**)* | **0.5852**<br/>*(Resp: **0.7315**)* |
 | **CST-Net (Ours SOTA)** | Multi-Session Transfer + AVC-Net | Whole-Trial 4-Fold CV | **100% Zero-Leakage Quarantine** | **70.48%** [70.03%, 70.97%] | **68.98%** [66.20%, 71.67%]<br/>*(Resp: **78.47%**, Peak: **95.83%**)* | **0.6893** [0.6607, 0.7162]<br/>*(Resp: **0.7842**, Peak: **0.9580**)* | **0.8700** [0.8538, 0.8860]<br/>*(Resp: **0.9359**, Peak: **0.9977**)* | **0.5864**<br/>*(Resp: **0.7130**)* |
 | **AVC-Net (Ours)** | Valence-Aware Climax Attention | Whole-Trial 4-Fold CV | **100% Zero-Leakage Quarantine** | **63.59%** [63.11%, 64.12%] | **61.85%** [59.07%, 64.72%]<br/>*(Resp: **71.06%**, Peak: **91.67%**)* | **0.6142** [0.5848, 0.6435] | **0.8332** [0.8159, 0.8502] | **0.4914** |
@@ -138,14 +140,14 @@ All models evaluated on the official SEED-IV dataset ($N = 37,575$ frames, 62 ch
 
 ## 4. Literature Replication Benchmark: TREH-Net (15-Subject Breakdown)
 
-The **Topological-Riemannian Evidential Hybrid Network (TREH-Net)** was constructed to replicate the literature-reported $95\%–97\%$ accuracy using a mathematically grounded tri-modal feature space (398D total) under conventional sample-level 80/20 random frame shuffling:
-- **310D Differential Entropy (DE)**: Canonical multi-frequency band spectral power across 62 channels $	imes$ 5 bands.
-- **55D Riemannian Tangent Space Vector**: Projected symmetric positive definite covariance matrix $\mathbf{C} \in \mathcal{S}_{++}^{10}$ across 10 key spatial hubs.
-- **33D Topological Feature Descriptors**: Local manifold persistence characteristics capturing higher-order non-linear affective loops.
+The **Topological-Riemannian Evidential Hybrid Network (TREH-Net)** combines a 398D Tri-Modal feature space evaluated under conventional sample-level 80/20 random frame shuffling:
+- **310D Differential Entropy (DE)**: Canonical spectral power across 62 channels $\times$ 5 frequency bands.
+- **55D Riemannian Tangent Space Vector**: Log-Euclidean projection of $10 \times 10$ cortical covariance matrix $\mathbf{C} \in \mathcal{S}_{++}^{10}$.
+- **33D Topological Feature Descriptors**: Multi-scale persistent lobar summaries and inter-regional geodesic distance proxies.
 
-Evaluated across all 15 human subjects ($N = 37,575$ frames, $N_{	ext{test}} = 7,515$ frames):
+Evaluated across all 15 human subjects ($N = 37,575$ frames, $N_{\text{test}} = 7,515$ frames):
 
-| Subject ID | $N_{	ext{train}}$ | $N_{	ext{test}}$ | Accuracy (%) | Macro-F1 | Macro ROC-AUC | Cohen's $\kappa$ | Mean Uncertainty ($u$) | Architecture Configuration |
+| Subject ID | $N_{\text{train}}$ | $N_{\text{test}}$ | Accuracy (%) | Macro-F1 | Macro ROC-AUC | Cohen's $\kappa$ | Mean Uncertainty ($u$) | Architecture Configuration |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
 | **Sub 01** | 2,004 | 501 | **95.21%** | 0.9469 | 0.9864 | 0.9357 | 0.2857 | `TREH-ExtraTrees(depth=3, feats=0.05, n_est=30)` |
 | **Sub 02** | 2,004 | 501 | **96.81%** | 0.9657 | 0.9992 | 0.9572 | 0.2857 | `TREH-ExtraTrees(depth=4, feats=0.03, n_est=30)` |
@@ -258,8 +260,8 @@ Affective neuroscience literature (e.g., Coan & Allen, 2004; Davidson, 2004) dem
 ## 7. Native Riemannian Explainable AI (GEA Framework)
 
 ### 7.1 Why Standard Euclidean XAI Fails on Covariance Manifolds
-Conventional explainability methods such as LIME, SHAP, and Integrated Gradients (Sundararajan et al., 2017) perform straight-line interpolation between a baseline $\mathbf{x}_{	ext{base}}$ and an input $\mathbf{x}$:
-$$\mathbf{x}(t) = \mathbf{x}_{	ext{base}} + t (\mathbf{x} - \mathbf{x}_{	ext{base}}), \quad t \in [0, 1]$$
+Conventional explainability methods such as LIME, SHAP, and Integrated Gradients (Sundararajan et al., 2017) perform straight-line interpolation between a baseline $\mathbf{x}_{\text{base}}$ and an input $\mathbf{x}$:
+$$\mathbf{x}(t) = \mathbf{x}_{\text{base}} + t (\mathbf{x} - \mathbf{x}_{\text{base}}), \quad t \in [0, 1]$$
 
 When applied to Symmetric Positive Definite (SPD) covariance matrices $\mathbf{C} \in \mathcal{S}_{++}^D$, linear interpolation crosses through non-positive-definite matrices with negative or zero eigenvalues, violating the Riemannian geometry of the manifold:
 
@@ -272,17 +274,17 @@ When applied to Symmetric Positive Definite (SPD) covariance matrices $\mathbf{C
 ```
 
 ### 7.2 The Geodesic Evidential Attribution (GEA) Formulation
-**Geodesic Evidential Attribution (GEA)** solves this by calculating path integrals along the true affine-invariant Riemannian geodesic on $\mathcal{S}_{++}^D$:
+**Geodesic Evidential Attribution (GEA)** calculates path integrals along the true affine-invariant Riemannian geodesic on $\mathcal{S}_{++}^D$:
 
-$$\mathbf{C}(t) = \mathbf{C}_{	ext{base}}^{1/2} \exp\left(t \log\left(\mathbf{C}_{	ext{base}}^{-1/2} \mathbf{C} \mathbf{C}_{	ext{base}}^{-1/2}ight)ight) \mathbf{C}_{	ext{base}}^{1/2}, \quad t \in [0, 1]$$
+$$\mathbf{C}(t) = \mathbf{C}_{\text{base}}^{1/2} \exp\left(t \log\left(\mathbf{C}_{\text{base}}^{-1/2} \mathbf{C} \mathbf{C}_{\text{base}}^{-1/2}\right)\right) \mathbf{C}_{\text{base}}^{1/2}, \quad t \in [0, 1]$$
 
-For the combined multi-modal feature vector $\mathbf{x} = [\mathbf{x}_{	ext{DE}}, \mathbf{v}_{	ext{tangent}}, \mathbf{x}_{	ext{topo}}]$, GEA computes class-specific evidence attributions:
-$$	ext{GEA}_c(x_j) = (x_j - x_{j,	ext{base}}) 	imes rac{1}{M} \sum_{m=1}^M rac{\partial e_c(\mathbf{x}(t_m))}{\partial x_j}$$
+For the combined multi-modal feature vector $\mathbf{x} = [\mathbf{x}_{\text{DE}}, \mathbf{v}_{\text{tangent}}, \mathbf{x}_{\text{topo}}]$, GEA computes class-specific evidence attributions without altering model parameters or classification accuracy:
+$$\text{GEA}_c(x_j) = (x_j - x_{j,\text{base}}) \times \frac{1}{M} \sum_{m=1}^M \frac{\partial e_c(\mathbf{x}(t_m))}{\partial x_j}$$
 
 ### 7.3 Closed-Form Analytical Epistemic Uncertainty Decomposition
-By leveraging Evidential Deep Learning (Dirichlet distribution parameterization), GEA extracts exact closed-form gradients of epistemic uncertainty $u(\mathbf{x}) = rac{K}{\sum_k e_k + K}$ without sampling or Monte Carlo approximations:
+By leveraging Evidential Deep Learning (Dirichlet distribution parameterization), GEA extracts exact closed-form gradients of epistemic uncertainty $u(\mathbf{x}) = \frac{K}{\sum_k e_k + K}$ without sampling or Monte Carlo approximations:
 
-$$	ext{GEA}_u(x_j) = rac{\partial u(\mathbf{x})}{\partial x_j} = -rac{K}{S(\mathbf{x})^2} \sum_{k=1}^K rac{\partial e_k(\mathbf{x})}{\partial x_j}, \quad S(\mathbf{x}) = \sum_{k=1}^K (e_k + 1)$$
+$$\text{GEA}_u(x_j) = \frac{\partial u(\mathbf{x})}{\partial x_j} = -\frac{K}{S(\mathbf{x})^2} \sum_{k=1}^K \frac{\partial e_k(\mathbf{x})}{\partial x_j}, \quad S(\mathbf{x}) = \sum_{k=1}^K (e_k + 1)$$
 
 ### 7.4 Neurobiological Insights from GEA
 
@@ -308,32 +310,31 @@ Which cortical regions provide the model with the highest certainty when decodin
 
 ### 8.1 RMAP-Net (Riemannian Manifold Alignment & Prototype-Guided Evidential Network)
 1. **Riemannian Covariance & Tangent Space Projection**:
-   $$\mathbf{C} = rac{1}{N_f - 1} \sum_{i=1}^{N_f} (\mathbf{z}_i - ar{\mathbf{z}})(\mathbf{z}_i - ar{\mathbf{z}})^T \in \mathcal{S}_{++}^{10}$$
-   $$\mathbf{v}_{	ext{tangent}} = 	ext{vec}_{	ext{upper}}\left(\log(\mathbf{P}_{	ext{ref}}^{-1/2} \mathbf{C} \mathbf{P}_{	ext{ref}}^{-1/2})ight) \in \mathbb{R}^{55}$$
+   $$\mathbf{C} = \frac{1}{N_f - 1} \sum_{i=1}^{N_f} (\mathbf{z}_i - \bar{\mathbf{z}})(\mathbf{z}_i - \bar{\mathbf{z}})^T \in \mathcal{S}_{++}^{10}$$
+   $$\mathbf{v}_{\text{tangent}} = \text{vec}_{\text{upper}}\left(\log(\mathbf{P}_{\text{ref}}^{-1/2} \mathbf{C} \mathbf{P}_{\text{ref}}^{-1/2})\right) \in \mathbb{R}^{55}$$
 2. **Prototype Alignment Loss**:
-   $$\mathcal{L}_{	ext{proto}} = rac{1}{N} \sum_{i=1}^N \| \mathbf{h}_i - \mathbf{\mu}_{y_i} \|_2^2 - rac{\lambda_{	ext{sep}}}{K(K-1)} \sum_{j 
-eq k} \| \mathbf{\mu}_j - \mathbf{\mu}_k \|_2^2$$
+   $$\mathcal{L}_{\text{proto}} = \frac{1}{N} \sum_{i=1}^N \| \mathbf{h}_i - \mathbf{\mu}_{y_i} \|_2^2 - \frac{\lambda_{\text{sep}}}{K(K-1)} \sum_{j \neq k} \| \mathbf{\mu}_j - \mathbf{\mu}_k \|_2^2$$
 3. **Dirichlet Evidential Output**:
-   $$\mathbf{e} = 	ext{softplus}(\mathbf{W}_{	ext{evid}} \mathbf{h} + \mathbf{b}), \quad \mathbf{lpha} = \mathbf{e} + 1, \quad u = rac{K}{\sum_{k=1}^K lpha_k}$$
+   $$\mathbf{e} = \text{softplus}(\mathbf{W}_{\text{evid}} \mathbf{h} + \mathbf{b}), \quad \mathbf{\alpha} = \mathbf{e} + 1, \quad u = \frac{K}{\sum_{k=1}^K \alpha_k}$$
 
 ### 8.2 CST-Net (Cross-Session Transfer Learning Network)
 1. **Stage 1 (Multi-Source Auxiliary Pre-training)**:
-   Pre-trains shared encoder $\mathcal{E}_{	heta}$ across 48 auxiliary trials from the subject's remaining two sessions:
-   $$\mathcal{L}_{	ext{aux}} = \mathcal{L}_{	ext{EDL}}(\mathbf{e}_{	ext{aux}}, \mathbf{y}_{	ext{aux}}) + \gamma \mathcal{L}_{	ext{entropy}}$$
+   Pre-trains shared encoder $\mathcal{E}_{\theta}$ across 48 auxiliary trials from the subject's remaining two sessions:
+   $$\mathcal{L}_{\text{aux}} = \mathcal{L}_{\text{EDL}}(\mathbf{e}_{\text{aux}}, \mathbf{y}_{\text{aux}}) + \gamma \mathcal{L}_{\text{entropy}}$$
 2. **Stage 2 (Target Domain Fine-Tuning)**:
    Fine-tunes with low learning rate on the 18 training trials of the target session:
-   $$\mathcal{L}_{	ext{tgt}} = \mathcal{L}_{	ext{EDL}}(\mathbf{e}_{	ext{tgt}, 	ext{train}}, \mathbf{y}_{	ext{tgt}, 	ext{train}})$$
+   $$\mathcal{L}_{\text{tgt}} = \mathcal{L}_{\text{EDL}}(\mathbf{e}_{\text{tgt}, \text{train}}, \mathbf{y}_{\text{tgt}, \text{train}})$$
 3. **Margin-Gated Evidential Attention Consensus**:
    Aggregates climax frames with quadratic confidence weighting across the 6 quarantined test trials.
 
 ### 8.3 AVC-Net (Valence-Aware Climax Salience Network)
 1. **Joint Salience Scoring**:
-   $$S_w = 0.6 \cdot 	ilde{E}_w + 0.4 \cdot \widetilde{	ext{FAA}}_w$$
-   where $	ilde{E}_w$ is normalized high-frequency energy and $\widetilde{	ext{FAA}}_w$ is Frontal Alpha Asymmetry.
+   $$S_w = 0.6 \cdot \tilde{E}_w + 0.4 \cdot \widetilde{\text{FAA}}_w$$
+   where $\tilde{E}_w$ is normalized high-frequency energy and $\widetilde{\text{FAA}}_w$ is Frontal Alpha Asymmetry.
 2. **Top-6 Climax Extraction**:
-   $$\Omega_{	ext{climax}} = 	ext{argtop-6}_{w} (S_w)$$
+   $$\Omega_{\text{climax}} = \text{argtop-6}_{w} (S_w)$$
 3. **Quadratic Evidential Consensus**:
-   $$\mathbf{e}_{	ext{trial}} = \sum_{w \in \Omega_{	ext{climax}}} \left(rac{S_w - \min S}{\max S - \min S + \epsilon}ight)^2 \mathbf{e}_w$$
+   $$\mathbf{e}_{\text{trial}} = \sum_{w \in \Omega_{\text{climax}}} \left(\frac{S_w - \min S}{\max S - \min S + \epsilon}\right)^2 \mathbf{e}_w$$
 
 ---
 
@@ -445,7 +446,7 @@ To prepare the dataset:
    python load_seed_iv.py
    python verify_seed_iv.py
    ```
-   This compiles `seed_iv_processed.npz` containing 37,575 samples across 62 channels $	imes$ 5 frequency bands (310 DE features) with perfectly aligned trial, session, subject, and 4-class emotion labels.
+   This compiles `seed_iv_processed.npz` containing 37,575 samples across 62 channels $\times$ 5 frequency bands (310 DE features) with perfectly aligned trial, session, subject, and 4-class emotion labels.
 
 ---
 
