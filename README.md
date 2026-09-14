@@ -114,7 +114,9 @@ In published literature, numerous papers report **95%+ accuracy** on SEED-IV usi
    Even with zero filter overlap, models scored **99.10% accuracy** because frames from the *same movie trial* share tonic audio-visual background cues (soundtrack frequencies, ambient lighting, scene pacing). The model learned to identify *which movie was playing* rather than decoding true emotional affect.
 3. **The Gold Standard (Strict Whole-Trial Quarantine)**:
    To evaluate genuine affective generalizability to unseen stimuli, complete trials must be isolated:
-   $$\text{assert len(set(train\_trial\_ids).intersection(set(test\_trial\_ids))) == 0}$$
+   ```python
+   assert len(set(train_trial_ids).intersection(set(test_trial_ids))) == 0, "Zero-leakage trial quarantine active"
+   ```
    Under strict whole-trial quarantine, baseline models achieve $55\%–65\%$, establishing the authentic scientific baseline upon which our SOTA architectures were developed.
 
 ---
@@ -150,7 +152,13 @@ The **Topological-Riemannian Evidential Hybrid Network (TREH-Net)** combines a 3
 - **55D Riemannian Tangent Space Vector**: Log-Euclidean projection of $10 \times 10$ cortical covariance matrix $\mathbf{C} \in \mathcal{S}_{++}^{10}$.
 - **33D Topological Feature Descriptors**: Multi-scale persistent lobar summaries and inter-regional geodesic distance proxies.
 
-Evaluated across all 15 human subjects ($N = 37,575$ frames, $N_{\text{test}} = 7,515$ frames):
+| Metric (N = 7,515 Test Frames) | Pooled Mean | 95% Bootstrap CI | Cohen's $\kappa$ | Mean Epistemic Uncertainty ($u$) | Expected Calibration Error (ECE) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **TREH-Net Performance** | **95.64%** | **[95.17%, 96.11%]** | **0.9415** [0.9353, 0.9479] | **0.2857** | **45.54%** |
+
+<details>
+<summary><b>🔍 Click to expand full 15-subject literature replication breakdown table</b></summary>
+<br>
 
 | Subject ID | $N_{\text{train}}$ | $N_{\text{test}}$ | Accuracy (%) | Macro-F1 | Macro ROC-AUC | Cohen's $\kappa$ | Mean Uncertainty ($u$) | Architecture Configuration |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -171,13 +179,23 @@ Evaluated across all 15 human subjects ($N = 37,575$ frames, $N_{\text{test}} = 
 | **Sub 15** | 2,004 | 501 | **95.21%** | 0.9498 | 0.9958 | 0.9359 | 0.2857 | `TREH-ExtraTrees(depth=3, feats=0.05, n_est=50)` |
 | **Pooled Mean** | **30,060** | **7,515** | **95.64%** [95.17%, 96.11%] | **0.9538** [0.9489, 0.9589] | **0.9905** [0.9891, 0.9918] | **0.9415** [0.9353, 0.9479] | **0.2857** | **TREH-Net (Ours)** |
 
+</details>
+
 ---
 
 ## 5. Zero-Leakage SOTA Benchmark: RMAP-Net (Complete 45-Session Matrix)
 
 The **Riemannian Manifold Alignment & Prototype-Guided Evidential Network (RMAP-Net)** establishes the gold-standard SOTA under **100% strict whole-trial quarantine** ($N = 1,080$ trials across 45 sessions). 
 
-### Full Exhaustive 45-Session Breakdown:
+### Cohort Benchmark Summary:
+- **Complete Population ($N=1,080$ trials, 45 sessions)**: **68.89%** Trial Accuracy [66.11%, 71.57%], **70.81%** Frame Accuracy, **0.8788** ROC-AUC.
+- **Responsive Affective Cohort ($N=432$ trials, 18 sessions)**: **79.86%** Trial Accuracy [74.54%, 83.33%], **80.59%** Frame Accuracy, **0.9461** ROC-AUC.
+- **Peak Attentive Sessions ($N=168$ trials, 7 sessions)**: **87.50%** Trial Accuracy [82.14%, 92.26%], **89.16%** Frame Accuracy, **0.9671** ROC-AUC.
+- **Peak Individual Sessions**: **Sub 15 Sess 2 & Sub 07 Sess 3** achieve **95.83% Trial Accuracy** (23/24 trials correct).
+
+<details>
+<summary><b>📊 Click to expand exhaustive 45-session matrix (All 15 Subjects & 1,080 Trials)</b></summary>
+<br>
 
 | Subject ID | Session ID | Trial Consensus Acc (Correct) | Frame-Level Acc | Trial Macro-F1 | Trial ROC-AUC | Cohen's $\kappa$ | Cohort Classification |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
@@ -229,6 +247,8 @@ The **Riemannian Manifold Alignment & Prototype-Guided Evidential Network (RMAP-
 | **Population** | **45 Sessions** | **68.89%** (744/1080) | **70.81%** | **0.6885** | **0.8788** | **0.5852** | **Complete Population ($N=1,080$)** |
 | **Responsive** | **18 Sessions** | **79.86%** (345/432) | **80.59%** | **0.7981** | **0.9461** | **0.7315** | **Responsive Cohort ($N=432$)** |
 | **Peak Attentive**| **7 Sessions** | **87.50%** (147/168) | **89.16%** | **0.8737** | **0.9671** | **0.8333** | **Peak Attentive ($N=168$)** |
+
+</details>
 
 ---
 
@@ -313,6 +333,10 @@ Which cortical regions provide the model with the highest certainty when decodin
 
 ## 8. Architectural Formulations (SOTA Zero-Leakage Models)
 
+<details>
+<summary><b>📐 Click to expand mathematical formulations: RMAP-Net, CST-Net, and AVC-Net</b></summary>
+<br>
+
 ### 8.1 RMAP-Net (Riemannian Manifold Alignment & Prototype-Guided Evidential Network)
 1. **Riemannian Covariance & Tangent Space Projection**:
    $$\mathbf{C} = \frac{1}{N_f - 1} \sum_{i=1}^{N_f} (\mathbf{z}_i - \bar{\mathbf{z}})(\mathbf{z}_i - \bar{\mathbf{z}})^T \in \mathcal{S}_{++}^{10}$$
@@ -341,9 +365,15 @@ Which cortical regions provide the model with the highest certainty when decodin
 3. **Quadratic Evidential Consensus**:
    $$\mathbf{e}_{\text{trial}} = \sum_{w \in \Omega_{\text{climax}}} \left(\frac{S_w - \min S}{\max S - \min S + \epsilon}\right)^2 \mathbf{e}_w$$
 
+</details>
+
 ---
 
 ## 9. Repository Structure
+
+<details open>
+<summary><b>📂 Annotated Repository File Tree</b></summary>
+<br>
 
 ```
 eri/
@@ -388,6 +418,8 @@ eri/
 └── requirements.txt                     # Pinned project dependencies
 ```
 
+</details>
+
 ---
 
 ## 10. Quickstart & Execution Guide
@@ -398,7 +430,11 @@ Launch Jupyter to explore all models and visualizations interactively:
 jupyter notebook demo/interactive_walkthrough.ipynb
 ```
 
-### 2. Conventional Literature Replication (95%–97% Operational Window)
+<details open>
+<summary><b>💻 Click to expand terminal execution commands</b></summary>
+<br>
+
+#### A. Conventional Literature Replication (95%–97% Operational Window)
 ```bash
 # Run TREH-Net (Topological-Riemannian Evidential Hybrid Network | 95.64% Pooled Acc)
 python -u random_sampling/train_treh_net_literature.py --device cuda
@@ -410,13 +446,13 @@ python -u random_sampling/train_random_sampling_literature.py --device cuda
 python -u evaluation/evaluate_treh_advanced_suite.py --device cuda
 ```
 
-### 3. Native Riemannian Explainable AI (GEA Framework)
+#### B. Native Riemannian Explainable AI (GEA Framework)
 ```bash
 # Run Geodesic Evidential Attribution (Riemannian Geodesics + Dirichlet Uncertainty)
 python -u xai/geodesic_evidential_attribution.py --device cuda
 ```
 
-### 4. Rigorous Zero-Leakage SOTA Benchmarks (Strict Whole-Trial Quarantine)
+#### C. Rigorous Zero-Leakage SOTA Benchmarks (Strict Whole-Trial Quarantine)
 ```bash
 # Run RMAP-Net (Riemannian Manifold Alignment & Prototype Transfer | 95.83% Peak Acc)
 python -u train_rmap_net_sota.py --device cuda
@@ -437,7 +473,7 @@ python -u train_dynacu_net_sota.py --device cuda
 python -u train_responsive_cohort_sota.py --device cuda
 ```
 
-### 5. Data Leakage Investigation Benchmarks
+#### D. Data Leakage Investigation Benchmarks
 ```bash
 # Run Temporal Autocorrelation Leakage-Free Frame Shuffle (+/- 8s Exclusion Buffer)
 python -u evaluate_buffered_frame_shuffle.py --device cuda
@@ -446,9 +482,15 @@ python -u evaluate_buffered_frame_shuffle.py --device cuda
 python -u evaluate_paper_replication_benchmark.py
 ```
 
+</details>
+
 ---
 
 ## 11. Dataset Preparation
+
+<details>
+<summary><b>📦 Click to expand step-by-step SEED-IV dataset extraction & verification guide</b></summary>
+<br>
 
 > **Dataset Notice**: Raw Differential Entropy MATLAB feature files (`eeg_feature_smooth/`) and the compiled dataset (`seed_iv_processed.npz`, ~84 MB) are excluded via `.gitignore` to comply with GitHub file size constraints.
 
@@ -468,6 +510,8 @@ To prepare the dataset:
    python verify_seed_iv.py
    ```
    This compiles `seed_iv_processed.npz` containing 37,575 samples across 62 channels $\times$ 5 frequency bands (310 DE features) with perfectly aligned trial, session, subject, and 4-class emotion labels.
+
+</details>
 
 ---
 
