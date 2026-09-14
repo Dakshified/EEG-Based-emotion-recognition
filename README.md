@@ -1,13 +1,18 @@
 # EEG-Based Emotion Recognition on SEED-IV: From Literature Replication to Rigorous Zero-Leakage Manifold Decoding
 
-[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/)
-[![PyTorch 2.5](https://img.shields.io/badge/PyTorch-2.5%20CUDA-EE4C2C.svg)](https://pytorch.org/)
-[![Dataset](https://img.shields.io/badge/Dataset-SEED--IV%20(4--Class)-green.svg)](https://bcmi.sjtu.edu.cn/home/seed/seed-iv.html)
-[![Zero-Leakage Guarantee](https://img.shields.io/badge/Protocol-100%25%20Zero--Leakage%20Quarantine-brightgreen.svg)]()
-[![XAI](https://img.shields.io/badge/XAI-Riemannian%20Geodesic%20Attribution-purple.svg)]()
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+[![PyTorch 2.x](https://img.shields.io/badge/PyTorch-2.x%20CUDA-EE4C2C.svg)](https://pytorch.org/)
+[![Dataset: SEED-IV](https://img.shields.io/badge/Dataset-SEED--IV%20(4--Class)-green.svg)](https://bcmi.sjtu.edu.cn/home/seed/seed-iv.html)
+[![Literature Baseline](https://img.shields.io/badge/Literature%20Baseline-95.64%25%20(TREH--Net)-informational.svg)]()
+[![Quarantined SOTA](https://img.shields.io/badge/Quarantined%20SOTA-68.89%25%20(Pop)%20%7C%2079.86%25%20(Resp)%20%7C%2095.83%25%20(Peak)-brightgreen.svg)]()
+[![Zero-Leakage Guarantee](https://img.shields.io/badge/Protocol-100%25%20Whole--Trial%20Quarantine-success.svg)]()
+[![XAI: Riemannian GEA](https://img.shields.io/badge/XAI-Riemannian%20Geodesic%20Attribution-purple.svg)]()
+[![Release: v1.0.0](https://img.shields.io/badge/Release-v1.0.0-blue.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 An exhaustive, publication-grade deep learning and neurocomputational research framework for 4-class EEG affective state recognition (**Neutral, Sad, Fear, Happy**) on the official **SEED-IV** benchmark ($N = 37,575$ frames, 62 channels, 5 frequency bands, 15 human subjects, 45 sessions, 1,080 continuous movie trials).
+
+> 💡 **Interactive Walkthrough Demo**: Explore model predictions, t-SNE latent manifolds, confidence reliability curves, and Riemannian GEA brain topomaps interactively in [`demo/interactive_walkthrough.ipynb`](demo/interactive_walkthrough.ipynb).
 
 This repository bridges our **dual-track research methodology**:
 1. **Conventional Literature Replication Track**: Replicating published methodologies via sample-level random shuffling to reproduce the literature-standard $95\%–97\%$ consensus window using our novel **Topological-Riemannian Evidential Hybrid Network (TREH-Net, 95.64% pooled accuracy)**.
@@ -342,6 +347,11 @@ Which cortical regions provide the model with the highest certainty when decodin
 
 ```
 eri/
+├── demo/                                # Interactive Jupyter walkthrough notebook
+│   └── interactive_walkthrough.ipynb    # Full visual metrics dashboard & topomaps
+├── evaluation/                          # Advanced evaluation suites & feature ablations
+│   ├── evaluate_treh_advanced_suite.py  # Tri-modal ablation, t-SNE & ECE calibration suite
+│   └── results/                         # treh_advanced_metrics.json
 ├── random_sampling/                     # Conventional literature replication benchmarks
 │   ├── train_treh_net_literature.py     # TREH-Net (Riemannian 55D + Topo 33D + Evidential Head | 95.64% Acc)
 │   ├── train_random_sampling_literature.py # Calibrated ExtraTrees ensemble (95.62% Acc)
@@ -350,6 +360,7 @@ eri/
 │   ├── geodesic_evidential_attribution.py # Native Geodesic Evidential Attribution (GEA) framework
 │   └── results/                         # gea_attribution_metrics.json
 ├── figures/                             # Publication-grade 300 DPI figures
+│   ├── evaluation/                      # t-SNE manifolds, ECE calibration curves, ablation bars
 │   ├── geodesic_attribution/            # GEA 2D topomaps, 62-channel band matrices, uncertainty curves
 │   ├── treh_net_replication/            # TREH-Net per-subject accuracy, 15-subject CM & ROC curves
 │   ├── paper_replication/               # Conventional literature replication CM, ROC & bar charts
@@ -373,6 +384,7 @@ eri/
 ├── evaluate_paper_replication_benchmark.py # Unconstrained literature replication benchmark (99.9% / 99.4%)
 ├── load_seed_iv.py                      # Parser & compiler for raw SEED-IV Differential Entropy MATLAB files
 ├── verify_seed_iv.py                    # Dataset integrity & shape verification script
+├── CONTRIBUTING.md                      # Open-source collaboration guidelines
 └── requirements.txt                     # Pinned project dependencies
 ```
 
@@ -380,22 +392,31 @@ eri/
 
 ## 10. Quickstart & Execution Guide
 
-### 1. Conventional Literature Replication (95%–97% Operational Window)
+### 1. Interactive Demo Notebook
+Launch Jupyter to explore all models and visualizations interactively:
+```bash
+jupyter notebook demo/interactive_walkthrough.ipynb
+```
+
+### 2. Conventional Literature Replication (95%–97% Operational Window)
 ```bash
 # Run TREH-Net (Topological-Riemannian Evidential Hybrid Network | 95.64% Pooled Acc)
 python -u random_sampling/train_treh_net_literature.py --device cuda
 
 # Run Calibrated ExtraTrees Ensemble Benchmark (95.62% Pooled Acc)
 python -u random_sampling/train_random_sampling_literature.py --device cuda
+
+# Run TREH-Net Advanced Evaluation (Ablation, t-SNE, ECE Reliability Diagrams)
+python -u evaluation/evaluate_treh_advanced_suite.py --device cuda
 ```
 
-### 2. Native Riemannian Explainable AI (GEA Framework)
+### 3. Native Riemannian Explainable AI (GEA Framework)
 ```bash
 # Run Geodesic Evidential Attribution (Riemannian Geodesics + Dirichlet Uncertainty)
 python -u xai/geodesic_evidential_attribution.py --device cuda
 ```
 
-### 3. Rigorous Zero-Leakage SOTA Benchmarks (Strict Whole-Trial Quarantine)
+### 4. Rigorous Zero-Leakage SOTA Benchmarks (Strict Whole-Trial Quarantine)
 ```bash
 # Run RMAP-Net (Riemannian Manifold Alignment & Prototype Transfer | 95.83% Peak Acc)
 python -u train_rmap_net_sota.py --device cuda
@@ -416,7 +437,7 @@ python -u train_dynacu_net_sota.py --device cuda
 python -u train_responsive_cohort_sota.py --device cuda
 ```
 
-### 4. Data Leakage Investigation Benchmarks
+### 5. Data Leakage Investigation Benchmarks
 ```bash
 # Run Temporal Autocorrelation Leakage-Free Frame Shuffle (+/- 8s Exclusion Buffer)
 python -u evaluate_buffered_frame_shuffle.py --device cuda
@@ -450,7 +471,13 @@ To prepare the dataset:
 
 ---
 
-## 12. Citation & Academic Reference
+## 12. Contributing & Collaboration
+
+We welcome contributions! Please see [`CONTRIBUTING.md`](CONTRIBUTING.md) for development environment setup, zero-leakage testing rules, and pull request guidelines.
+
+---
+
+## 13. Citation & Academic Reference
 
 If you find this codebase or our zero-leakage benchmarks useful in your research, please consider citing:
 
@@ -465,6 +492,6 @@ If you find this codebase or our zero-leakage benchmarks useful in your research
 
 ---
 
-## 13. License
+## 14. License
 
 Distributed under the **MIT License**. See `LICENSE` for more information.
